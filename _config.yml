@@ -1,0 +1,33 @@
+# this is only for search engines, it does not appear in the home
+# as long as the json variables name and description are provided
+title: Welcome
+baseurl: ""
+url: https://zepvalue.github.io
+
+# this information is shown on the homepage, all fields are optional and
+# can be declared either as a single string or as a string array/hash
+json:
+  name: Giuseppe V
+  description:
+    - Software Engineer
+  contact:
+    email: zepvalue@gmail.com
+  profiles:
+    linkedin: https://www.linkedin.com/in./zepvalue
+    github: https://github.com/zepvalue
+
+exclude:
+  - LICENSE
+  - README.md
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+whitelist:
+  - jekyll-sitemap
+
+sass:
+  sass_dir: _sass
+  style: compressed
+  sourcemap: never
