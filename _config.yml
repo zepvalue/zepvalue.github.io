@@ -15,6 +15,7 @@ json:
   profiles:
     linkedin: https://www.linkedin.com/in./zepvalue
     github: https://github.com/zepvalue
+    blog: "/blog"
 
 exclude:
   - LICENSE
@@ -23,6 +24,7 @@ exclude:
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-feed
 
 whitelist:
   - jekyll-sitemap
