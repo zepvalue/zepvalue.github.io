@@ -38,3 +38,46 @@ a {
     color: var(--oc-green-5);
   }
 }
+
+.legal {
+  position: static;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+  line-height: 1.65;
+  color: var(--oc-gray-3);
+  white-space: normal;
+
+  h1, h2, h3 {
+    color: var(--oc-green-4);
+    line-height: 1.3;
+  }
+
+  h1 { margin-bottom: 0.25rem; }
+  h2 { margin-top: 2.25rem; }
+
+  a {
+    color: var(--oc-green-4);
+    font-style: normal;
+    text-decoration: underline;
+  }
+
+  ul { padding-left: 1.25rem; }
+  li { margin-bottom: 0.4rem; }
+
+  code {
+    background-color: var(--oc-gray-8);
+    color: var(--oc-green-3);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .updated {
+    color: var(--oc-gray-5);
+    font-size: 0.9em;
+    margin-bottom: 2rem;
+  }
+
+  .home-link { margin-top: 3rem; }
+}

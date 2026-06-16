@@ -1,0 +1,40 @@
+---
+layout: default
+title: Apps
+# Edit this list to add your projects. Each app supports: name, description, link, privacy, terms.
+apps:
+  - name: media_sync
+    description: A personal local tool to republish your own short-form videos to TikTok.
+    link: /apps/media-sync/
+    privacy: /privacy/
+    terms: /terms/
+---
+
+<main class="json">
+  <div class="block">
+    <span class="array-key">apps</span>
+    <div class="array">
+      {% for app in page.apps %}
+      <p><span class="list-key">{{ forloop.index0 }}</span></p>
+      <div class="list">
+        <p><span class="list-subkey">name</span><span class="list-attr">{{ app.name }}</span></p>
+        {% if app.description %}
+        <p><span class="list-subkey">description</span><span class="list-attr">{{ app.description }}</span></p>
+        {% endif %}
+        {% if app.link %}
+        <p><span class="list-subkey">link</span><span class="list-attr"><a href="{{ app.link }}" target="_blank">{{ app.link }}</a></span></p>
+        {% endif %}
+        {% if app.privacy %}
+        <p><span class="list-subkey">privacy</span><span class="list-attr"><a href="{{ app.privacy }}">{{ app.privacy }}</a></span></p>
+        {% endif %}
+        {% if app.terms %}
+        <p><span class="list-subkey">terms</span><span class="list-attr"><a href="{{ app.terms }}">{{ app.terms }}</a></span></p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="block">
+    <p><span class="key">home</span><span class="attr"><a href="{{ site.url }}">{{ site.url }}</a></span></p>
+  </div>
+</main>

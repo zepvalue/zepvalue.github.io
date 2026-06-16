@@ -16,6 +16,7 @@ json:
     linkedin: https://www.linkedin.com/in/zepvalue
     github: https://github.com/zepvalue
     blog: "/blog"
+    apps: "/apps"
 
 exclude:
   - LICENSE
