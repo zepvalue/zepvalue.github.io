@@ -1,5 +1,5 @@
 ---
-layout: legal
+layout: prose
 title: media_sync
 permalink: /apps/media-sync/
 ---

@@ -1,0 +1,10 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© {{ site.time | date: '%Y' }} {{ site.json.name | default: site.title }}</span>
+    <span class="footer-links">
+      {% if site.json.profiles.github %}<a href="{{ site.json.profiles.github }}" target="_blank">github</a>{% endif %}
+      {% if site.json.profiles.linkedin %}<a href="{{ site.json.profiles.linkedin }}" target="_blank">linkedin</a>{% endif %}
+      {% if site.json.contact.email %}<a href="mailto:{{ site.json.contact.email }}">email</a>{% endif %}
+    </span>
+  </div>
+</footer>

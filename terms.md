@@ -1,5 +1,5 @@
 ---
-layout: legal
+layout: prose
 title: Terms of Service — media_sync
 permalink: /terms/
 ---

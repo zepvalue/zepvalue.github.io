@@ -1,5 +1,5 @@
 ---
-layout: legal
+layout: prose
 title: Privacy Policy — media_sync
 permalink: /privacy/
 ---

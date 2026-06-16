@@ -1,0 +1,273 @@
+// ── Readable prose for articles, posts, and legal pages ───────────────────
+
+.prose {
+  // Readable sans-serif body; headings keep the monospace brand.
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+
+  h1, h2, h3, h4 {
+    font-family: "hack", monospace;
+    color: var(--heading);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+  h2 {
+    font-size: 1.25rem;
+    margin: 3rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; }
+
+  p { margin: 0 0 1.25rem; }
+
+  strong { color: var(--oc-gray-1); font-weight: 600; }
+  em { color: var(--oc-gray-2); }
+
+  a {
+    color: var(--accent);
+    font-style: normal;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover { color: var(--accent-bright); }
+  }
+
+  ul, ol { margin: 0 0 1.25rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+
+  blockquote {
+    margin: 0 0 1.25rem;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  img { max-width: 100%; border-radius: 6px; }
+
+  // Inline code
+  code {
+    font-family: "hack", monospace;
+    background-color: var(--surface);
+    color: var(--accent-bright);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.85em;
+    word-break: break-word;
+  }
+
+  // Code blocks (Jekyll/Rouge: .highlight wraps a <pre>)
+  pre, .highlight {
+    margin: 0 0 1.5rem;
+  }
+
+  pre {
+    background-color: #15171a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
+
+    code {
+      background: none;
+      color: var(--oc-gray-3);
+      padding: 0;
+      font-size: inherit;
+    }
+  }
+
+  .updated { color: var(--muted); font-size: 0.9em; margin-bottom: 2.5rem; }
+}
+
+// ── Page + post headers ───────────────────────────────────────────────────
+
+.page-header {
+  margin-bottom: 3rem;
+
+  h1 {
+    font-family: "hack", monospace;
+    color: var(--heading);
+    font-size: 2.25rem;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+}
+
+.page-lead {
+  color: var(--muted);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.post-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+
+  h1 { font-size: 2.25rem; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+}
+
+.post-meta {
+  font-family: "hack", monospace;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 3.5rem;
+  font-family: "hack", monospace;
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-style: normal;
+
+  &:hover { color: var(--accent); }
+}
+
+// ── Blog index ────────────────────────────────────────────────────────────
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-item + .post-item {
+  border-top: 1px solid var(--border);
+}
+
+.post-item-link {
+  display: block;
+  padding: 1.75rem 1rem;
+  margin: 0 -1rem;
+  text-decoration: none;
+  font-style: normal;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+
+    .post-item-title { color: var(--accent-bright); }
+  }
+}
+
+.post-item-date {
+  display: block;
+  font-family: "hack", monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.post-item-title {
+  font-family: "hack", monospace;
+  color: var(--accent);
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.post-item-excerpt {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+// ── Apps / projects index ─────────────────────────────────────────────────
+
+.app-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-item {
+  padding: 1.75rem 0;
+
+  & + & { border-top: 1px solid var(--border); }
+}
+
+.app-item-title {
+  font-family: "hack", monospace;
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+
+  a {
+    color: var(--accent);
+    font-style: normal;
+    text-decoration: none;
+
+    &:hover { color: var(--accent-bright); }
+  }
+}
+
+.app-item-desc {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 0.85rem;
+}
+
+.app-item-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin: 0;
+
+  a {
+    font-family: "hack", monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: normal;
+    text-decoration: none;
+
+    &:before { content: "→ "; color: var(--border); }
+    &:hover { color: var(--accent); }
+  }
+}
+
+// ── 404 ───────────────────────────────────────────────────────────────────
+
+.notfound {
+  text-align: center;
+  padding: 5rem 1.5rem;
+
+  h1 {
+    font-family: "hack", monospace;
+    color: var(--heading);
+    font-size: 4rem;
+    margin: 0 0 0.5rem;
+  }
+
+  p { color: var(--muted); margin-bottom: 2rem; }
+
+  a {
+    font-family: "hack", monospace;
+    color: var(--accent);
+    font-style: normal;
+    text-decoration: none;
+
+    &:hover { color: var(--accent-bright); }
+  }
+}

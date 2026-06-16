@@ -1,0 +1,92 @@
+// ── Site chrome: nav, page container, footer ──────────────────────────────
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(20, 21, 23, 0.85);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner,
+.page,
+.footer-inner {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.5rem;
+}
+
+.nav-brand {
+  font-family: "hack", monospace;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+
+  &:before { content: "~/"; color: var(--muted); }
+  &:hover { color: var(--accent-bright); }
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+
+  a {
+    font-family: "hack", monospace;
+    font-style: normal;
+    font-size: 0.95rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover { color: var(--accent); }
+  }
+}
+
+.page {
+  min-height: calc(100vh - 3.5rem - 5rem);
+  padding-top: 3.5rem;
+  padding-bottom: 4rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  font-family: "hack", monospace;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  min-height: 5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.25rem;
+
+  a {
+    color: var(--muted);
+    font-style: normal;
+    text-decoration: none;
+
+    &:hover { color: var(--accent); }
+  }
+}

@@ -1,13 +1,16 @@
 ---
-layout: default
+layout: page
 ---
-
-<div class="block">
-  <h1>{{ page.title }}</h1>
-  <p>{{ page.date | date_to_string }} - {{ page.author }}</p>
+<article class="prose">
+  <header class="post-header">
+    <h1>{{ page.title }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      {% if page.author %} · {{ page.author }}{% endif %}
+    </p>
+  </header>
 
   {{ content }}
 
-  <a href="{{ site.url }}">{{ home }}</a>
-</div>
-
+  <a class="back-link" href="/blog">&larr; all posts</a>
+</article>
