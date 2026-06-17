@@ -50,39 +50,139 @@
   animation: fadeLeft 0.5s ease 0.3s both;
 }
 
-// ── GitHub card (contribution graph) ────────────────────────────────────────
-.github {
+// Founder / startup highlight card
+.founder-card {
   grid-column: span 2;
-  height: 176px;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 0.4rem;
 }
 
-.github-graph {
+.founder-badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.founder-head {
   display: flex;
-  gap: 3px;
-  overflow: hidden;
-  justify-content: flex-end;
-  flex: 1;
   align-items: center;
+  gap: 0.45rem;
 
-  .week { display: flex; flex-direction: column; gap: 3px; }
-
-  .day {
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    background: var(--border);
-    transition: transform 0.1s ease;
-
-    &:hover { transform: scale(1.2); }
-    &.level-1 { background: #0e4429; }
-    &.level-2 { background: #006d32; }
-    &.level-3 { background: #26a641; }
-    &.level-4 { background: #39d353; }
+  .founder-name { font-size: 0.85rem; font-weight: 600; color: var(--fg); }
+  .founder-tag {
+    margin-left: auto;
+    font-size: 0.6rem;
+    color: var(--fg-muted);
+    transition: color 0.15s ease;
   }
+  &:hover .founder-tag { color: var(--fg); }
+}
+
+.founder-blurb {
+  font-size: 0.62rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.founder-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+
+  a {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--fg-muted);
+    transition: color 0.15s ease;
+
+    &:before { content: "→ "; color: var(--border-hover); }
+    &:hover { color: var(--fg); }
+  }
+}
+
+// Published npm packages card
+.npm-card {
+  grid-column: span 2;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.npm-badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: #fff;
+  background: #cb3837;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+
+.npm-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  .npm-title { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
+  .npm-total {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--fg-muted);
+  }
+}
+
+.npm-pkg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.625rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+
+  &:hover { transform: translateY(-1px); border-color: var(--border-hover); }
+}
+
+.npm-pkg-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.npm-pkg-name { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
+.npm-pkg-ver {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 400;
+  color: var(--fg-muted);
+  margin-left: 0.3rem;
+}
+.npm-pkg-dl {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--green);
+  white-space: nowrap;
+}
+.npm-pkg-desc {
+  font-size: 0.6rem;
+  color: var(--fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gh-stats-grid {
@@ -94,7 +194,12 @@
   text-align: center;
 }
 
-.gh-stat-value { font-size: 0.85rem; font-weight: 600; color: var(--fg); }
+.gh-stat-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fg);
+  white-space: nowrap;
+}
 .gh-stat-label {
   font-size: 0.5rem;
   text-transform: uppercase;
@@ -106,6 +211,7 @@
 // ── Pinned repos card ───────────────────────────────────────────────────────
 .pinned {
   min-height: 176px;
+  align-self: stretch;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -154,6 +260,7 @@
 // ── Languages + activity card ───────────────────────────────────────────────
 .lang-activity {
   min-height: 176px;
+  align-self: stretch;
   padding: 0.5rem;
   display: flex;
   flex-direction: column;

@@ -12,7 +12,8 @@ json:
   avatar: https://github.com/zepvalue.png
   # the bio is "typed" out under your name; add more lines for a rotating effect
   description:
-    - Software Engineer
+    - Backend Engineer
+    - Distributed systems · gRPC · Node
   github_user: zepvalue
   # live local time is shown using this IANA timezone
   timezone: Europe/Rome
@@ -21,12 +22,12 @@ json:
   profiles:
     linkedin: https://www.linkedin.com/in/zepvalue
     github: https://github.com/zepvalue
-    blog: "/blog"
+    x: https://x.com/zepvalue
     apps: "/apps"
 
 # ── Center-column link rows (icon + label + arrow) ──────────────────────────
-# icon must match an SVG name in _includes/icons.html (github, linkedin, email,
-# blog, apps). external links open in a new tab automatically.
+# icon must match an SVG name in _includes/icon.html (github, linkedin, x,
+# email, blog, apps). external links open in a new tab automatically.
 links:
   - label: GitHub
     icon: github
@@ -34,27 +35,27 @@ links:
   - label: LinkedIn
     icon: linkedin
     url: https://www.linkedin.com/in/zepvalue
+  - label: X
+    icon: x
+    url: https://x.com/zepvalue
   - label: Email
     icon: email
     url: mailto:zepvalue@gmail.com
   - label: Apps
     icon: apps
     url: /apps/
-  - label: Blog
-    icon: blog
-    url: /blog
 
 # ── Left sidebar: pinned repositories (newest/most relevant first) ──────────
 # leave empty to let the GitHub card auto-fill from your public repos.
 pinned:
-  - name: media_sync
-    description: Republish your own short-form videos to TikTok.
-    language: Python
-    color: "#3572A5"
-  - name: zepvalue.github.io
-    description: This website — built with Jekyll.
-    language: SCSS
-    color: "#c6538c"
+  - name: firecomm
+    description: Feature library for gRPC-Node.
+    language: JavaScript
+    color: "#f1e05a"
+  - name: zippy-fit
+    description: "A co-op fitness game: keep a shared streak going."
+    language: TypeScript
+    color: "#3178c6"
 
 exclude:
   - LICENSE

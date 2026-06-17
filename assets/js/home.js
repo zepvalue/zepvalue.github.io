@@ -66,6 +66,39 @@
     setInterval(tick, 1000);
   })();
 
+  // ── Published npm packages ────────────────────────────────────────────────
+  (function npmPackages() {
+    var card = document.querySelector(".npm-card");
+    if (!card) return;
+    var PKGS = ["firecomm", "two-auth"];
+    var set = function (sel, val) {
+      if (val == null) return;
+      var el = card.querySelector(sel);
+      if (el) el.textContent = val;
+    };
+    var npm = function (url) {
+      return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });
+    };
+
+    var totalYr = 0, done = 0;
+    PKGS.forEach(function (pkg) {
+      npm("https://api.npmjs.org/downloads/point/last-year/" + pkg)
+        .then(function (d) {
+          set('[data-np="' + pkg + '-dl"]', compact(d.downloads) + " ↓/yr");
+          totalYr += d.downloads || 0;
+        })
+        .catch(function () {})
+        .then(function () {
+          if (++done === PKGS.length && totalYr) {
+            set("#npm-total", compact(totalYr) + " downloads / yr");
+          }
+        });
+      npm("https://registry.npmjs.org/" + pkg + "/latest")
+        .then(function (d) { set('[data-np="' + pkg + '-v"]', "v" + d.version); })
+        .catch(function () {});
+    });
+  })();
+
   if (!USER) return;
 
   var json = function (url) {
@@ -155,36 +188,6 @@
         "</div></a>";
     }).join("");
   }
-
-  // ── Contribution graph ────────────────────────────────────────────────────
-  json("https://github-contributions-api.jogruber.de/v4/" + USER + "?y=last")
-    .then(function (data) {
-      var days = (data && data.contributions) || [];
-      if (!days.length) return;
-      var graph = document.getElementById("gh-graph");
-      if (!graph) return;
-
-      // group consecutive days into week columns (7 per column)
-      var weeks = [], week = [];
-      // pad so the first column starts on the correct weekday
-      var firstDow = new Date(days[0].date + "T00:00:00").getDay();
-      for (var p = 0; p < firstDow; p++) week.push(null);
-      days.forEach(function (d) {
-        week.push(d);
-        if (week.length === 7) { weeks.push(week); week = []; }
-      });
-      if (week.length) weeks.push(week);
-
-      graph.innerHTML = weeks.map(function (w) {
-        return '<div class="week">' + w.map(function (d) {
-          if (!d) return '<div class="day" style="visibility:hidden"></div>';
-          var lvl = d.level || 0;
-          return '<div class="day' + (lvl ? " level-" + lvl : "") +
-            '" title="' + d.count + " on " + d.date + '"></div>';
-        }).join("") + "</div>";
-      }).join("");
-    })
-    .catch(function () { /* leave skeleton */ });
 
   // ── Recent activity ───────────────────────────────────────────────────────
   json("https://api.github.com/users/" + USER + "/events/public?per_page=30")

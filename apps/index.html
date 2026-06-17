@@ -1,31 +1,130 @@
 ---
 layout: page
-title: Apps
-# Edit this list to add your projects. Each app supports: name, description, link, privacy, terms.
-apps:
-  - name: media_sync
-    description: A personal local tool to republish your own short-form videos to TikTok.
-    link: /apps/media-sync/
-    privacy: /privacy/
-    terms: /terms/
+title: Projects
+# ── Curated projects, grouped by category. Edit freely. ─────────────────────
+# Each project: name, desc, lang, color, badge (optional), and a list of links.
+categories:
+  - name: Products
+    note: Things people actually use.
+    projects:
+      - name: UbqArt
+        desc: "Social network created by artists, for artists — showcase work, discover creators, connect globally. My first startup, shipped on web, iOS &amp; Android."
+        badge: founder
+        meta: web · iOS · Android
+        links:
+          - { label: site, url: "https://ubqart.com" }
+          - { label: App Store, url: "https://itunes.apple.com/us/app/ubqart/id903670050?mt=8" }
+          - { label: Google Play, url: "https://play.google.com/store/apps/details?id=com.ebigle.bartists" }
+      - name: zippy-fit
+        desc: "A co-op fitness game: pair up, keep a shared streak, and don't be the one who breaks it."
+        lang: TypeScript
+        color: "#3178c6"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
+      - name: media_sync
+        desc: "A personal local tool to republish your own short-form videos to TikTok."
+        lang: Python
+        color: "#3572A5"
+        links:
+          - { label: details, url: "/apps/media-sync/" }
+
+  - name: Open source
+    note: Published packages on npm.
+    projects:
+      - name: firecomm
+        desc: "Feature library for gRPC-Node — build typed, streaming gRPC services with less boilerplate."
+        badge: npm
+        lang: JavaScript
+        color: "#f1e05a"
+        links:
+          - { label: npm, url: "https://www.npmjs.com/package/firecomm" }
+          - { label: source, url: "https://github.com/zepvalue/firecomm" }
+      - name: two-auth
+        desc: "Two-factor SMS authentication with the Twilio API in three lines of code."
+        badge: npm
+        lang: JavaScript
+        color: "#f1e05a"
+        links:
+          - { label: npm, url: "https://www.npmjs.com/package/two-auth" }
+          - { label: source, url: "https://github.com/zepvalue/two-auth" }
+
+  - name: Backend &amp; infrastructure
+    note: APIs, serverless, and real-time systems.
+    projects:
+      - name: car-fleet-express-lambda
+        desc: "Serverless car-fleet REST API — Express running on AWS Lambda."
+        lang: TypeScript
+        color: "#3178c6"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/car-fleet-express-lambda" }
+      - name: graphQL-NestJS
+        desc: "GraphQL API built with NestJS."
+        lang: TypeScript
+        color: "#3178c6"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/graphQL-NestJS-test" }
+      - name: Zadia
+        desc: "Controller-integrated gaming platform with real-time WebSockets."
+        lang: JavaScript
+        color: "#f1e05a"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/Zadia" }
+      - name: BreakoutRooms
+        desc: "Leveraging the Zoom API to gather metadata on meetings."
+        lang: Python
+        color: "#3572A5"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/BreakoutRooms" }
+
+  - name: Web &amp; experiments
+    note: Smaller builds across the stack.
+    projects:
+      - name: inventory-app
+        desc: "An offline-first inventory app built with SvelteKit."
+        lang: Svelte
+        color: "#ff3e00"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/inventory-app" }
+      - name: sharad
+        desc: "Shareable crowdfunding for billboards."
+        lang: Scala
+        color: "#c22d40"
+        links:
+          - { label: source, url: "https://github.com/zepvalue/sharad" }
 ---
 <header class="page-header">
-  <h1>Apps</h1>
-  <p class="page-lead">Things I've designed and built.</p>
+  <h1>Projects</h1>
+  <p class="page-lead">A selection of things I've designed, built, and shipped.</p>
 </header>
 
-<ul class="app-list">
-  {% for app in page.apps %}
-  <li class="app-item">
-    <h2 class="app-item-title">
-      {% if app.link %}<a href="{{ app.link }}">{{ app.name }}</a>{% else %}{{ app.name }}{% endif %}
-    </h2>
-    {% if app.description %}<p class="app-item-desc">{{ app.description }}</p>{% endif %}
-    <p class="app-item-links">
-      {% if app.link %}<a href="{{ app.link }}">view</a>{% endif %}
-      {% if app.privacy %}<a href="{{ app.privacy }}">privacy</a>{% endif %}
-      {% if app.terms %}<a href="{{ app.terms }}">terms</a>{% endif %}
-    </p>
-  </li>
-  {% endfor %}
-</ul>
+{% for cat in page.categories %}
+<section class="proj-category">
+  <div class="proj-cat-head">
+    <h2 class="proj-cat-title">{{ cat.name }}</h2>
+    {% if cat.note %}<span class="proj-cat-note">{{ cat.note }}</span>{% endif %}
+  </div>
+
+  <ul class="app-list">
+    {% for p in cat.projects %}
+    <li class="app-item">
+      <h3 class="app-item-title">
+        {{ p.name }}
+        {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
+        {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
+      </h3>
+      {% if p.desc %}<p class="app-item-desc">{{ p.desc }}</p>{% endif %}
+      <div class="app-item-foot">
+        {% if p.lang %}<span class="app-item-lang"><span class="lang-dot" style="background:{{ p.color }}"></span>{{ p.lang }}</span>{% endif %}
+        {% if p.meta %}<span class="app-item-meta">{{ p.meta }}</span>{% endif %}
+        <span class="app-item-links">
+          {% for l in p.links %}
+          {% assign scheme = l.url | slice: 0, 4 %}
+          <a href="{{ l.url }}"{% if scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ l.label }}</a>
+          {% endfor %}
+        </span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
