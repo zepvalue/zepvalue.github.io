@@ -1,81 +1,99 @@
 ---
 layout: default
 ---
+<div class="home-wrap">
+  <div class="layout" data-github-user="{{ site.json.github_user }}" data-timezone="{{ site.json.timezone }}">
 
-<main class="json">
-  <div class="block">
-    {% if site.json.name %}
-    <p><span class="key">name</span><span class="attr">{{ site.json.name }}</span></p>
-    {% else %}
-    <p><span class="key">name</span><span class="attr">{{ site.title }}</span></p>
-    {% endif %}
-    {% if site.json.description %}
-    {% if site.json.description.first %}
-    <div id="typed-strings">
-      {% for i in site.json.description %}
-      <span>{{ i | prepend: '"' | append: '",'}}</span>
-      {% endfor %}
-    </div>
-    <p><span class="key">description</span>{% include typed.html %}</p>
-    {% else %}
-    <p><span class="key">description</span><span class="attr">{{ site.json.description }}</span></p>
-    {% endif %}
-    {% else %}
-    <p><span class="key">description</span><span class="attr">{{ site.description }}</span></p>
-    {% endif %}
+    <!-- ════════ LEFT SIDEBAR — live GitHub ════════ -->
+    <aside class="sidebar-left">
+      <!-- contribution graph -->
+      <section class="card github">
+        <div class="github-graph" id="gh-graph">
+          <div class="skeleton" style="width:100%;height:70px"></div>
+        </div>
+      </section>
+
+      <!-- pinned repos -->
+      <section class="card pinned">
+        <span class="pinned-title">Pinned</span>
+        <div class="pinned-list" id="gh-pinned">
+          {% for repo in site.pinned %}
+          <a class="pinned-repo" href="https://github.com/{{ site.json.github_user }}/{{ repo.name }}" target="_blank" rel="noopener">
+            <div class="pinned-name">{{ repo.name }}</div>
+            {% if repo.description %}<div class="pinned-desc">{{ repo.description }}</div>{% endif %}
+            <div class="pinned-meta">
+              {% if repo.color %}<span class="lang-dot" style="background:{{ repo.color }}"></span>{% endif %}
+              <span>{{ repo.language }}</span>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- languages + activity -->
+      <section class="card lang-activity">
+        <div class="lang-block">
+          <span class="block-title">Languages</span>
+          <div class="languages-bar" id="gh-lang-bar">
+            <div class="skeleton" style="width:100%;height:4px"></div>
+          </div>
+          <div class="lang-list" id="gh-lang-list"></div>
+        </div>
+        <div class="activity-block">
+          <span class="block-title">Activity</span>
+          <div class="activity-list" id="gh-activity">
+            <div class="skeleton" style="width:100%;height:10px;margin-bottom:4px"></div>
+            <div class="skeleton" style="width:80%;height:10px"></div>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- ════════ CENTER COLUMN ════════ -->
+    <main class="center">
+      {% if site.json.avatar %}
+      <a href="{{ site.json.profiles.github | default: '/' }}" target="_blank" rel="noopener">
+        <img class="avatar" src="{{ site.json.avatar }}" alt="{{ site.json.name }}" width="88" height="88" />
+      </a>
+      {% endif %}
+
+      <h1 class="name">{{ site.json.name | default: site.title }}</h1>
+
+      {% if site.json.description %}
+      <div id="typed-strings" hidden>
+        {% for line in site.json.description %}<span>{{ line }}</span>{% endfor %}
+      </div>
+      <p class="bio"><span id="typed"></span><span class="cursor">|</span></p>
+      {% endif %}
+
+      <p class="timezone" id="clock">—</p>
+
+      <span class="uptime-badge">
+        <span class="uptime-dot operational"></span>
+        <span id="uptime-text">operational</span>
+      </span>
+
+      <nav class="links">
+        {% for link in site.links %}
+        {% assign scheme = link.url | slice: 0, 4 %}
+        <a class="link-row" href="{{ link.url }}"{% if scheme == "http" or scheme == "mail" %} target="_blank" rel="noopener"{% endif %}>
+          {% include icon.html name=link.icon class="link-icon" %}
+          <span class="link-label">{{ link.label }}</span>
+          {% include icon.html name="arrow" class="arrow" %}
+        </a>
+        {% endfor %}
+      </nav>
+
+      <footer class="center-footer">
+        <span>© {{ site.time | date: '%Y' }} · {{ site.json.name }}</span>
+        <span class="center-footer-links">
+          <a href="/blog">blog</a>
+          <a href="/apps/">apps</a>
+        </span>
+      </footer>
+    </main>
+
   </div>
-  <div class="block">
-    {% if site.json.cv %}
-    {% assign cv = site.json.cv | split: "/" | slice: -1 %}
-    <p><span class="key">cv</span><span class="attr"><a href="{{ site.json.cv }}" target="_blank">{{ cv }}</a></span></p>
-    {% endif %}
-  </div>
-  <div class="block">
-    {% if site.json.address %}
-    {% if site.json.address.first %}
-    <p><span class="array-key">address</span></p>
-    <div class="array">
-      {% for i in site.json.address %}
-      <p class="array-attr">{{ i }}</p>
-      {% endfor %}
-    </div>
-    {% else %}
-    <p><span class="key">address</span><span class="attr">{{ site.json.address }}</span></p>
-    {% endif %}
-    {% endif %}
-  </div>
-  <div class="block">
-    {% if site.json.contact %}
-    {% if site.json.contact.first %}
-    <p><span class="list-key">contact</span></p>
-    <div class="list">
-      {% for i in site.json.contact %}
-      <p><span class="list-subkey">{{ i | slice: 0 }}</span><span class="list-attr">{{ i | slice: 1 }}</span></p>
-      {% endfor %}
-    </div>
-    {% else %}
-    <p><span class="key">contact</span><span class="attr">{{ site.json.contact }}</span></p>
-    {% endif %}
-    {% endif %}
-  </div>
-  <div class="block">
-    {% if site.json.demo %}
-    {% assign demo = site.json.demo | split: "//" | slice: 1 %}
-    <p><span class="key">demo</span><span class="attr"><a href="{{ site.json.demo }}" target="_blank">{{ demo }}</a></span></p>
-    {% endif %}
-    {% if site.json.source %}
-    {% assign source = site.json.source | split: "github.com/" | slice: 1 %}
-    <p><span class="key">source</span><span class="attr"><a href="{{ site.json.source }}" target="_blank">{{ source }}</a></span></p>
-    {% endif %}
-  </div>
-  <div class="block">
-    {% if site.json.profiles %}
-    <span class="array-key">profiles</span>
-    <div class="array">
-      {% for i in site.json.profiles %}
-      <p class="array-attr"><a href="{{ i | slice: 1 }}" target="_blank">{{ i | slice: 0 }}</a></p>
-      {% endfor %}
-    </div>
-    {% endif %}
-  </div>
-</main>
+</div>
+
+<script src="/assets/js/home.js" defer></script>

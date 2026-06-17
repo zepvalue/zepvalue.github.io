@@ -3,8 +3,7 @@
 # only main files contain this front matter, not partials.
 ---
 
-@import "fonts";
 @import "base";
+@import "home";
 @import "layout";
 @import "content";
-@import "json";

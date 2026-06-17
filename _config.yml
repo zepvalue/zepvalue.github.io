@@ -1,15 +1,21 @@
 # this is only for search engines, it does not appear in the home
 # as long as the json variables name and description are provided
-title: Welcome
+title: Giuseppe V
+description: Software Engineer
 baseurl: ""
 url: https://zepvalue.github.io
 
-# this information is shown on the homepage, all fields are optional and
-# can be declared either as a single string or as a string array/hash
+# ── Profile shown on the homepage ───────────────────────────────────────────
 json:
   name: Giuseppe V
+  # avatar shown in the center column (GitHub serves your avatar at /<user>.png)
+  avatar: https://github.com/zepvalue.png
+  # the bio is "typed" out under your name; add more lines for a rotating effect
   description:
     - Software Engineer
+  github_user: zepvalue
+  # live local time is shown using this IANA timezone
+  timezone: Europe/Rome
   contact:
     email: zepvalue@gmail.com
   profiles:
@@ -18,9 +24,44 @@ json:
     blog: "/blog"
     apps: "/apps"
 
+# ── Center-column link rows (icon + label + arrow) ──────────────────────────
+# icon must match an SVG name in _includes/icons.html (github, linkedin, email,
+# blog, apps). external links open in a new tab automatically.
+links:
+  - label: GitHub
+    icon: github
+    url: https://github.com/zepvalue
+  - label: LinkedIn
+    icon: linkedin
+    url: https://www.linkedin.com/in/zepvalue
+  - label: Email
+    icon: email
+    url: mailto:zepvalue@gmail.com
+  - label: Apps
+    icon: apps
+    url: /apps/
+  - label: Blog
+    icon: blog
+    url: /blog
+
+# ── Left sidebar: pinned repositories (newest/most relevant first) ──────────
+# leave empty to let the GitHub card auto-fill from your public repos.
+pinned:
+  - name: media_sync
+    description: Republish your own short-form videos to TikTok.
+    language: Python
+    color: "#3572A5"
+  - name: zepvalue.github.io
+    description: This website — built with Jekyll.
+    language: SCSS
+    color: "#c6538c"
+
 exclude:
   - LICENSE
   - README.md
+  - Makefile
+  - Gemfile
+  - Gemfile.lock
 
 plugins:
   - jekyll-seo-tag

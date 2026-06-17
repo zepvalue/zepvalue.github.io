@@ -1,59 +1,71 @@
 :root {
-  --bg: var(--oc-gray-9);
-  --surface: var(--oc-gray-8);
-  --text: var(--oc-gray-3);
-  --muted: var(--oc-gray-5);
-  --heading: var(--oc-gray-0);
-  --accent: var(--oc-green-4);
-  --accent-bright: var(--oc-green-3);
-  --border: #2b2f36;
+  --bg: #09090b;
+  --surface: #18181b;
+  --border: #27272a;
+  --border-hover: #3f3f46;
+  --fg: #fafafa;
+  --fg-muted: #71717a;
+  --accent: #fafafa;
+  --accent-bright: #ffffff;
+  --green: #22c55e;
+
+  // aliases used by content-page styles (nav / footer / prose / blog)
+  --text: #d4d4d8;
+  --muted: var(--fg-muted);
+  --heading: var(--fg);
+  --surface-2: #1f1f23;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: "Fira Code", "SF Mono", "JetBrains Mono", ui-monospace, monospace;
 }
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
 body {
-  font-family: "hack", monospace;
+  font-family: var(--font-sans);
   font-size: 16px;
   font-weight: 400;
   background-color: var(--bg);
-  color: var(--accent);
-  margin: 0;
+  color: var(--fg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-// Signature centered "JSON résumé" pages (home + apps index).
-main.json {
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-transform: lowercase;
-
-  @media (min-width: 576px) {
-    font-size: 18px;
-    width: 80%;
-  }
-
-  @media (min-width: 768px) {
-    font-size: 20px;
-    width: 60%;
-  }
-}
-
-p {
-  margin: 0;
+  line-height: 1.5;
 }
 
 a {
   color: inherit;
-  font-style: italic;
+  text-decoration: none;
+}
 
-  &:hover,
-  &:active {
-    color: var(--accent-bright);
-  }
+img { max-width: 100%; display: block; }
+
+// ── Entrance animations ─────────────────────────────────────────────────────
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
