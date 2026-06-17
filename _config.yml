@@ -1,13 +1,13 @@
 # this is only for search engines, it does not appear in the home
 # as long as the json variables name and description are provided
-title: Giuseppe V
+title: Giuseppe Zep V
 description: Software Engineer
 baseurl: ""
 url: https://zepvalue.github.io
 
 # ── Profile shown on the homepage ───────────────────────────────────────────
 json:
-  name: Giuseppe V
+  name: Giuseppe Zep V
   # avatar shown in the center column (GitHub serves your avatar at /<user>.png)
   avatar: https://github.com/zepvalue.png
   # the bio is "typed" out under your name; add more lines for a rotating effect
