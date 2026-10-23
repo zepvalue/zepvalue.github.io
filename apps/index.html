@@ -3,11 +3,16 @@ layout: page
 title: Projects
 # ── Curated projects, grouped by category. Edit freely. ─────────────────────
 # Each project: name, desc, lang, color, badge (optional), and a list of links.
+# The first link is where the whole card goes. Projects in a `featured`
+# category get a large card with a tinted monogram (`tint`); a `founder`
+# project spans the full row. `meta` is split on " · " into platform chips.
 categories:
   - name: Products
     note: Things people actually use.
+    featured: true
     projects:
       - name: UbqArt
+        tint: "#a855f7"
         desc: "Social network created by artists, for artists — showcase work, discover creators, connect globally. My first startup, shipped on web, iOS &amp; Android."
         badge: founder
         meta: web · iOS · Android
@@ -15,22 +20,26 @@ categories:
           - { label: site, url: "https://ubqart.com" }
 
       - name: RaveCam
+        tint: "#ec4899"
         desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
         meta: iOS · Android
         links:
           - { label: site, url: "https://ravecam.onrender.com/" }
       - name: LuxLife
+        tint: "#f59e0b"
         desc: "Share the trip, split the cost — join shared trips to split villas, festival camps and adventures you couldn't do alone."
         meta: web
         links:
           - { label: site, url: "https://luxlife-ihjq.onrender.com/" }
       - name: zippy-fit
+        tint: "#22c55e"
         desc: "A co-op fitness game: pair up, keep a shared streak, and don't be the one who breaks it."
         lang: TypeScript
         color: "#3178c6"
         links:
           - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
       - name: media_sync
+        tint: "#38bdf8"
         desc: "A personal local tool to republish your own short-form videos to TikTok."
         lang: Python
         color: "#3572A5"
@@ -107,25 +116,38 @@ categories:
 </header>
 
 {% for cat in page.categories %}
-<section class="proj-category">
+<section class="proj-category{% if cat.featured %} is-featured{% endif %}">
   <div class="proj-cat-head">
-    <h2 class="proj-cat-title">{{ cat.name }}</h2>
+    <h2 class="proj-cat-title">{{ cat.name }}<span class="proj-cat-count">{{ cat.projects.size }}</span></h2>
     {% if cat.note %}<span class="proj-cat-note">{{ cat.note }}</span>{% endif %}
   </div>
 
-  <ul class="app-list">
+  <ul class="app-grid">
     {% for p in cat.projects %}
-    <li class="app-item">
-      <h3 class="app-item-title">
-        {{ p.name }}
-        {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
-        {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
-      </h3>
-      {% if p.desc %}<p class="app-item-desc">{{ p.desc }}</p>{% endif %}
-      <div class="app-item-foot">
-        {% if p.lang %}<span class="app-item-lang"><span class="lang-dot" style="background:{{ p.color }}"></span>{{ p.lang }}</span>{% endif %}
-        {% if p.meta %}<span class="app-item-meta">{{ p.meta }}</span>{% endif %}
-        <span class="app-item-links">
+    {% assign main = p.links.first %}
+    {% assign main_scheme = main.url | slice: 0, 4 %}
+    <li class="app-card{% if p.badge == 'founder' %} is-lead{% endif %}" style="--i:{{ forloop.index0 }}">
+      <div class="app-card-head">
+        {% if cat.featured %}
+        <span class="app-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>
+        {% endif %}
+        <h3 class="app-card-title">
+          <a class="app-card-link" href="{{ main.url }}"{% if main_scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ p.name }}</a>
+          {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
+          {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
+        </h3>
+        <span class="app-card-arrow" aria-hidden="true">&nearr;</span>
+      </div>
+      {% if p.desc %}<p class="app-card-desc">{{ p.desc }}</p>{% endif %}
+      <div class="app-card-foot">
+        {% if p.lang %}<span class="app-card-lang"><span class="lang-dot" style="background:{{ p.color }}"></span>{{ p.lang }}</span>{% endif %}
+        {% if p.meta %}
+        <span class="app-card-chips">
+          {% assign platforms = p.meta | split: " · " %}
+          {% for pl in platforms %}<span class="app-chip">{{ pl }}</span>{% endfor %}
+        </span>
+        {% endif %}
+        <span class="app-card-links">
           {% for l in p.links %}
           {% assign scheme = l.url | slice: 0, 4 %}
           <a href="{{ l.url }}"{% if scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ l.label }}</a>
