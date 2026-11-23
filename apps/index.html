@@ -4,7 +4,8 @@ title: Projects
 # ── Curated projects, grouped by category. Edit freely. ─────────────────────
 # Each project: name, desc, lang, color, badge (optional), and a list of links.
 # The first link is where the whole card goes. Projects in a `featured`
-# category get a large card with a tinted monogram (`tint`); a `founder`
+# category get a large card with a tinted monogram (`tint`) and an optional
+# site screenshot (`preview`, 1280x800 in /assets/previews/); a `founder`
 # project spans the full row. `meta` is split on " · " into platform chips.
 categories:
   - name: Products
@@ -21,12 +22,14 @@ categories:
 
       - name: RaveCam
         tint: "#ec4899"
+        preview: /assets/previews/ravecam.png
         desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
         meta: iOS · Android
         links:
           - { label: site, url: "https://ravecam.onrender.com/" }
       - name: LuxLife
         tint: "#f59e0b"
+        preview: /assets/previews/luxlife.png
         desc: "Share the trip, split the cost — join shared trips to split villas, festival camps and adventures you couldn't do alone."
         meta: web
         links:
@@ -126,7 +129,10 @@ categories:
     {% for p in cat.projects %}
     {% assign main = p.links.first %}
     {% assign main_scheme = main.url | slice: 0, 4 %}
-    <li class="app-card{% if p.badge == 'founder' %} is-lead{% endif %}" style="--i:{{ forloop.index0 }}">
+    <li class="app-card{% if p.badge == 'founder' %} is-lead{% endif %}{% if p.preview %} has-preview{% endif %}" style="--i:{{ forloop.index0 }}">
+      {% if p.preview %}
+      <img class="app-preview" src="{{ p.preview }}" alt="{{ p.name }} home page" width="1280" height="800" loading="lazy" decoding="async">
+      {% endif %}
       <div class="app-card-head">
         {% if cat.featured %}
         <span class="app-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>

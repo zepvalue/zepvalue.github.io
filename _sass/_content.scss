@@ -277,6 +277,22 @@
   }
 }
 
+// Site screenshot, edge to edge at the top of the card.
+.app-preview {
+  width: calc(100% + 2.3rem);
+  max-width: none;
+  margin: -1.1rem -1.15rem 1rem;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+  object-position: top;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0.6rem 0.6rem 0 0;
+  transition: opacity 0.2s ease;
+
+  .app-card:not(:hover):not(:focus-within) & { opacity: 0.85; }
+}
+
 .app-card-head {
   display: flex;
   align-items: center;
