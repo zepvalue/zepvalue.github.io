@@ -26,7 +26,14 @@
   box-sizing: border-box;
 }
 
+// Fluid root size: rem-based UI grows on large screens and keeps the user's
+// browser font setting (100% = their default, usually 16px).
 html {
+  font-size: 100%;
+  @media (min-width: 1280px) { font-size: 112.5%; }
+  @media (min-width: 1680px) { font-size: 125%; }
+  @media (min-width: 2200px) { font-size: 137.5%; }
+
   scrollbar-width: none;
 
   &::-webkit-scrollbar { display: none; }
@@ -34,7 +41,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   background-color: var(--bg);
   color: var(--fg);
