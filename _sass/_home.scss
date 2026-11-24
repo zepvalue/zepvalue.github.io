@@ -12,10 +12,19 @@
 
 .layout {
   display: grid;
-  grid-template-columns: auto 20rem;
+  grid-template-columns: auto 20rem 20rem;
   gap: 2rem;
   align-items: center;
   justify-content: center;
+}
+
+// Projects deck (see _panels.scss).
+.sidebar-right {
+  min-width: 0;
+  animation: fadeUp 0.5s ease 0.3s both;
+  text-align: left;
+
+  @media (prefers-reduced-motion: reduce) { animation: none; }
 }
 
 // ── Reusable card ───────────────────────────────────────────────────────────
@@ -445,21 +454,24 @@
 // ════════════════════════════════════════════════════════════════════════
 //  Responsive — collapse to single centered column
 // ════════════════════════════════════════════════════════════════════════
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .home-wrap { padding: 2rem 1rem; }
 
+  // minmax(0, …): a plain 1fr cannot shrink below its widest content, which
+  // pushed the columns past the screen edge on phones.
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
     max-width: 360px;
     width: 100%;
   }
 
   .center { order: 1; width: 100%; }
+  .sidebar-right { order: 2; }
   .sidebar-left {
-    order: 2;
+    order: 3;
     justify-self: stretch;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .github { height: auto; min-height: 150px; }

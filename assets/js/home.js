@@ -68,13 +68,12 @@
 
   // ── Published npm packages ────────────────────────────────────────────────
   (function npmPackages() {
-    var card = document.querySelector(".npm-card");
-    if (!card) return;
+    // Fills every match on the page: the npm card and the projects deck.
+    if (!document.querySelector("[data-np]")) return;
     var PKGS = ["firecomm", "two-auth"];
     var set = function (sel, val) {
       if (val == null) return;
-      var el = card.querySelector(sel);
-      if (el) el.textContent = val;
+      document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
     };
     var npm = function (url) {
       return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });

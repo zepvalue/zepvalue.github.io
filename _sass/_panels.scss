@@ -45,10 +45,29 @@
     overscroll-behavior-y: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--border-hover) transparent;
-
-    @media (min-width: 640px) { flex-basis: calc((100% - 1rem) / 2); }
-    @media (min-width: 1100px) { flex-basis: calc((100% - 2rem) / 3); }
   }
+}
+
+// Panels per view follow the deck's own width, not the screen's, so the same
+// deck shows 1 panel in the home column and 2–3 on /apps/.
+.deck { container-type: inline-size; }
+
+@container (min-width: 40rem) {
+  .deck.is-ready .panel { flex-basis: calc((100% - 1rem) / 2); }
+}
+
+@container (min-width: 66rem) {
+  .deck.is-ready .panel { flex-basis: calc((100% - 2rem) / 3); }
+}
+
+// Home page right column: shorter panels, no name in the bar (it is in the
+// centre column), and the bar is not sticky.
+.deck--column {
+  &.is-ready .panel { height: clamp(24rem, calc(100svh - 12rem), 38rem); }
+
+  .deck-name { display: none; }
+  .deck-bar { position: static; padding-bottom: 0; background: none; }
+  .deck-arrows { margin-left: auto; }
 }
 
 // ── Panel content ─────────────────────────────────────────────────────────
