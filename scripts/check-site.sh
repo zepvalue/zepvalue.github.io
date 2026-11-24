@@ -48,6 +48,7 @@ done
 check "home: deck sits in the right column" "grep -q '<aside class=\"sidebar-right\"' '$H'"
 check "home: left sidebar and profile stay" "grep -q 'class=\"sidebar-left\"' '$H' && grep -q 'id=\"clock\"' '$H' && grep -q 'id=\"gh-pinned\"' '$H'"
 check "home: still loads home.js" "grep -q 'src=\"/assets/js/home.js\"' '$H'"
+check "home: no languages section" "! grep -q 'gh-lang' '$H' && ! grep -q '>Languages<' '$H'"
 check "home: one title, Engineer who ships" "grep -A1 'id=\"typed-strings\"' '$H' | tail -1 | grep -qx ' *<span>Engineer who ships</span>'"
 check "home: no Projects link row (the deck replaces it)" "! grep -q 'class=\"link-label\">Projects<' '$H'"
 

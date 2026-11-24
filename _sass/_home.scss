@@ -291,58 +291,19 @@
 .lang-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 // ── Languages + activity card ───────────────────────────────────────────────
-// Same padding and title style as the Pinned card next to it. Activity sits
-// at the bottom, so spare height goes between the two blocks.
-.lang-activity {
+// Same padding and title style as the Pinned card next to it.
+.activity-card {
   min-height: 11rem;
   align-self: stretch;
   padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
 }
 
-.lang-block,
-.activity-block { display: flex; flex-direction: column; gap: 0.45rem; }
-
-.activity-block {
-  margin-top: auto;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--border);
-}
+.activity-block { display: flex; flex-direction: column; gap: 0.6rem; }
 
 .block-title { font-size: 0.7rem; font-weight: 500; color: var(--fg-muted); }
 
-.languages-bar {
-  display: flex;
-  gap: 2px;
-  height: 5px;
-  border-radius: 3px;
-  overflow: hidden;
+.activity-list { display: flex; flex-direction: column; gap: 0.65rem; }
 
-  span { height: 100%; }
-}
-
-// One language per row: dot + name on the left, percent on the right.
-.lang-list { display: flex; flex-direction: column; gap: 0.35rem; }
-.lang {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.62rem;
-  line-height: 1.2;
-  color: var(--fg);
-
-  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .lang-percent {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    color: var(--fg-muted);
-  }
-}
-
-.activity-list { display: flex; flex-direction: column; gap: 0.55rem; }
 // Two lines per event: action + time on top, repo name under it.
 .activity-item {
   display: grid;
