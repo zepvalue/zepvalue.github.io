@@ -41,7 +41,7 @@ title: Projects
       </div>
       {% if p.desc %}<p class="app-card-desc">{{ p.desc }}</p>{% endif %}
       <div class="app-card-foot">
-        {% if p.case_study %}<span class="cs-label">case study</span>{% endif %}
+        {% if p.case_study and p.case_study_label != false %}<span class="cs-label">case study</span>{% endif %}
         {% if p.lang %}<span class="app-card-lang"><span class="lang-dot" style="background:{{ p.color }}"></span>{{ p.lang }}</span>{% endif %}
         {% if p.meta %}
         <span class="app-card-chips">

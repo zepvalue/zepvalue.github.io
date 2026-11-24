@@ -55,5 +55,5 @@ I was co-founder and Android engineer:
 
 ## Results
 
-- Shipped on 3 platforms: web, App Store and Google Play.
+- Shipped on 3 platforms: web, iOS and Android.
 - The move to React Native gave 40% more active users.
