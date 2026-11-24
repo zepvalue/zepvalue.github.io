@@ -26,11 +26,15 @@
     <span class="item-body">
       <span class="item-name">{{ p.name }}{% if p.badge == "npm" %} <span class="npm-badge">npm</span>{% endif %}{% if show_label %} <span class="cs-label">case study</span>{% endif %}</span>
       <span class="item-desc">{{ p.desc }}</span>
-      {% if p.badge == "npm" %}
-      <span class="item-sub is-live"><span data-np="{{ p.id }}-v">v{{ p.npm_version }}</span> · <span data-np="{{ p.id }}-dl">{{ p.npm_downloads }} ↓/yr</span></span>
-      {% else %}
-      <span class="item-sub">{% if p.lang %}{{ p.lang }} · {% endif %}{{ host }}</span>
-      {% endif %}
+      <span class="item-foot">
+        {% if p.lang %}<span class="item-lang"><span class="lang-dot" style="background:{{ p.color | default: '#71717a' }}"></span>{{ p.lang }}</span>{% endif %}
+        {% if p.badge == "npm" %}
+        <span class="item-sub is-live"><span data-np="{{ p.id }}-v">v{{ p.npm_version }}</span> · <span data-np="{{ p.id }}-dl">{{ p.npm_downloads }} ↓/yr</span></span>
+        {% else %}
+        <span class="item-sub">{{ host }}</span>
+        {% endif %}
+        <span class="item-arrow" aria-hidden="true">{% if p.case_study %}&rarr;{% else %}&nearr;{% endif %}</span>
+      </span>
     </span>
   {% endif %}
   </a>

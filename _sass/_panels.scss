@@ -151,8 +151,9 @@
 }
 
 .panel-list {
-  display: grid;
-  gap: 0.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -160,24 +161,80 @@
   &.is-featured { gap: 0.75rem; }
 }
 
+// List panels (all but Products): each project is a bordered card. In the
+// deck, the cards share the panel's height, so a panel with 2 projects has
+// no empty space; they never shrink below their content (the panel scrolls).
+.deck.is-ready .panel {
+  display: flex;
+  flex-direction: column;
+
+  .panel-list:not(.is-featured) { flex: 1 0 auto; }
+  .panel-list:not(.is-featured) > .panel-item { flex: 1 0 auto; display: flex; min-width: 0; }
+}
+
 .item-link {
   display: flex;
-  align-items: flex-start;
+  flex: 1;
+  min-width: 0; // lets the one-line footer truncate instead of widening the card
+  align-items: stretch;
   gap: 0.75rem;
-  margin: 0 -0.55rem;
-  padding: 0.6rem 0.55rem;
+  padding: 0.85rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 0.65rem;
   color: inherit;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 
-  &:hover { background: var(--surface-2); }
+  &:hover {
+    background: var(--surface-2);
+    border-color: var(--border-hover);
+
+    .item-arrow { color: var(--fg); transform: translate(2px, -2px); }
+  }
 
   &:focus-visible {
     outline: 2px solid var(--fg-muted);
-    outline-offset: 0;
+    outline-offset: 2px;
   }
 
-  .is-featured & { display: block; }
+  // Products: screenshot cards without a frame.
+  .is-featured & {
+    display: block;
+    margin: 0 -0.55rem;
+    padding: 0.55rem;
+    background: none;
+    border: 0;
+
+    &:hover { background: var(--surface-2); }
+  }
+}
+
+.item-foot {
+  display: flex;
+  flex-wrap: wrap; // npm numbers go to a second line instead of being cut
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin-top: auto; // pins the row to the bottom of a stretched card
+  padding-top: 0.6rem;
+  min-width: 0;
+}
+
+.item-lang {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+
+  .lang-dot { width: 7px; height: 7px; border-radius: 50%; }
+}
+
+.item-arrow {
+  margin-left: auto;
+  color: var(--border-hover);
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .item-shot {
@@ -237,8 +294,9 @@
 
 .item-body {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.25rem;
   min-width: 0;
 }
 
@@ -249,6 +307,7 @@
 }
 
 .item-sub {
+  min-width: 0;
   overflow: hidden;
   font-family: var(--font-mono);
   font-size: 0.66rem;
