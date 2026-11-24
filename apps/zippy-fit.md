@@ -8,7 +8,6 @@ years: "2026"
 stats:
   - { value: "2", label: players per duo }
   - { value: iOS · Android, label: platforms }
-  - { value: <span class="todo">TODO</span>, label: testers }
 ---
 
 ## Problem
@@ -40,4 +39,3 @@ and do a daily challenge together.
 
 - Runs end to end on Expo, with a local FastAPI backend and a Convex dev deployment.
 - Next: native builds and tester builds with Fastlane and Firebase App Distribution.
-- <span class="todo">TODO: tester feedback or numbers when you have them.</span>

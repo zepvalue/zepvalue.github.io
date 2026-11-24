@@ -14,7 +14,9 @@ stats:
 ## Problem
 
 Artists had few places to show their work that were made for artists first.
-<span class="todo">TODO: say it in your words — what was wrong with the options at the time?</span>
+On general social networks, ads compete with the work, and it is hard for an
+artist to reach museums or people who give commissions. UbqArt was a platform
+with no ads, made to connect artists with museums and possible commissions.
 
 ## What I built
 
