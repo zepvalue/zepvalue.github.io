@@ -1,63 +1,111 @@
 ---
 layout: page
 title: Projects
+page_class: page--wide
+scripts:
+  - /assets/js/panels-core.js
+  - /assets/js/panels.js
 # Card data lives in _data/projects.yml.
+# Each category is one panel. Each project has:
+#   - an item: a real link (case study or first link), so the page works without JS;
+#   - a <template id="sheet-<id>">: what panels.js shows in the <dialog> sheet.
+# Without JS the panels show as stacked sections; panels.js adds .is-ready.
 ---
-<header class="page-header">
+<header class="page-header deck-header">
   <h1>Projects</h1>
   <p class="page-lead">A selection of things I've designed, built, and shipped.</p>
 </header>
 
-{% for cat in site.data.projects.categories %}
-{% assign projects = site.data.projects.projects | where: "category", cat.id %}
-<section class="proj-category{% if cat.featured %} is-featured{% endif %}">
-  <div class="proj-cat-head">
-    <h2 class="proj-cat-title">{{ cat.name }}<span class="proj-cat-count">{{ projects.size }}</span></h2>
-    {% if cat.note %}<span class="proj-cat-note">{{ cat.note }}</span>{% endif %}
+<div class="deck" data-deck>
+  <div class="deck-track" data-track tabindex="0" aria-label="Project categories">
+  {% for cat in site.data.projects.categories %}
+  {% assign projects = site.data.projects.projects | where: "category", cat.id %}
+  <section class="panel" id="{{ cat.id }}" aria-labelledby="{{ cat.id }}-title" data-panel>
+    <div class="panel-head">
+      <h2 class="panel-title" id="{{ cat.id }}-title">{{ cat.name }}<span class="panel-count">{{ projects.size }}</span></h2>
+      {% if cat.note %}<p class="panel-note">{{ cat.note }}</p>{% endif %}
+    </div>
+
+    <ul class="panel-list{% if cat.featured %} is-featured{% endif %}">
+    {% for p in projects %}
+      {% if p.case_study %}{% capture main_url %}/apps/{{ p.id }}/{% endcapture %}{% else %}{% assign main_url = p.links.first.url %}{% endif %}
+      {% assign main_scheme = main_url | slice: 0, 4 %}
+      {% assign initial = p.name | slice: 0 | upcase %}
+      <li class="panel-item">
+        <a class="item-link" href="{{ main_url }}" data-sheet="{{ p.id }}"{% if main_scheme == "http" %} target="_blank" rel="noopener"{% endif %}>
+        {% if cat.featured %}
+          {% if p.preview %}
+          <img class="item-shot" src="{{ p.preview }}" alt="" width="1280" height="800" loading="lazy" decoding="async">
+          {% else %}
+          <span class="item-shot is-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: '#71717a' }}" aria-hidden="true">{{ p.name }}</span>
+          {% endif %}
+          <span class="item-cap">
+            <span class="item-name">{{ p.name }}</span>
+            {% if p.case_study and p.case_study_label != false %}<span class="cs-label">case study</span>{% endif %}
+            <span class="item-meta">{% if p.badge == "founder" %}founder{% elsif p.meta %}{{ p.meta }}{% else %}{{ p.lang }}{% endif %}</span>
+          </span>
+        {% else %}
+          {% assign host = p.links.first.url | remove: "https://" | remove: "http://" | remove: "www." | split: "/" | first %}
+          <span class="app-mark" style="--tint:{{ p.color | default: p.tint | default: '#71717a' }}" aria-hidden="true">{{ initial }}</span>
+          <span class="item-body">
+            <span class="item-name">{{ p.name }}{% if p.badge == "npm" %} <span class="npm-badge">npm</span>{% endif %}{% if p.case_study and p.case_study_label != false %} <span class="cs-label">case study</span>{% endif %}</span>
+            <span class="item-desc">{{ p.desc }}</span>
+            <span class="item-sub">{% if p.lang %}{{ p.lang }} · {% endif %}{{ host }}</span>
+          </span>
+        {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
   </div>
 
-  <ul class="app-grid">
-    {% for p in projects %}
-    {% if p.case_study %}
-      {% capture main_url %}/apps/{{ p.id }}/{% endcapture %}
-    {% else %}
-      {% assign main_url = p.links.first.url %}
-    {% endif %}
-    {% assign main_scheme = main_url | slice: 0, 4 %}
-    <li class="app-card{% if p.badge == 'founder' %} is-lead{% endif %}{% if p.preview %} has-preview{% endif %}{% if p.case_study %} has-case-study{% endif %}" style="--i:{{ forloop.index0 }}">
-      {% if p.preview %}
-      <img class="app-preview" src="{{ p.preview }}" alt="{{ p.name }} home page" width="1280" height="800" loading="lazy" decoding="async">
-      {% endif %}
-      <div class="app-card-head">
-        {% if cat.featured %}
-        <span class="app-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>
-        {% endif %}
-        <h3 class="app-card-title">
-          <a class="app-card-link" href="{{ main_url }}"{% if main_scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ p.name }}</a>
-          {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
-          {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
-        </h3>
-        <span class="app-card-arrow" aria-hidden="true">{% if p.case_study %}&rarr;{% else %}&nearr;{% endif %}</span>
-      </div>
-      {% if p.desc %}<p class="app-card-desc">{{ p.desc }}</p>{% endif %}
-      <div class="app-card-foot">
-        {% if p.case_study and p.case_study_label != false %}<span class="cs-label">case study</span>{% endif %}
-        {% if p.lang %}<span class="app-card-lang"><span class="lang-dot" style="background:{{ p.color }}"></span>{{ p.lang }}</span>{% endif %}
-        {% if p.meta %}
-        <span class="app-card-chips">
-          {% assign platforms = p.meta | split: " · " %}
-          {% for pl in platforms %}<span class="app-chip">{{ pl }}</span>{% endfor %}
-        </span>
-        {% endif %}
-        <span class="app-card-links">
-          {% for l in p.links %}
-          {% assign scheme = l.url | slice: 0, 4 %}
-          <a href="{{ l.url }}"{% if scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ l.label }}</a>
-          {% endfor %}
-        </span>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
+  <div class="deck-bar" data-bar hidden>
+    <span class="deck-name">{{ site.json.name }}</span>
+    <span class="deck-count" data-count></span>
+    <span class="deck-arrows">
+      <button type="button" class="deck-btn" data-prev aria-label="Previous section">&lsaquo;</button>
+      <button type="button" class="deck-btn" data-next aria-label="Next section">&rsaquo;</button>
+    </span>
+  </div>
+</div>
+
+{% for p in site.data.projects.projects %}
+{% assign cs = site.pages | where: "project", p.id | first %}
+{% capture cs_url %}/apps/{{ p.id }}/{% endcapture %}
+{% assign parts = "" | split: "" %}
+{% if cs.years %}{% assign parts = parts | push: cs.years %}{% endif %}
+{% if p.lang %}{% assign parts = parts | push: p.lang %}{% endif %}
+{% if p.meta %}{% assign parts = parts | push: p.meta %}{% endif %}
+<template id="sheet-{{ p.id }}">
+  <div class="sheet-head">
+    <span class="app-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: p.color | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>
+    <div>
+      <h2 class="sheet-title" id="sheet-title">{{ p.name }}{% if p.badge == "founder" %} <span class="founder-badge">founder</span>{% endif %}{% if p.badge == "npm" %} <span class="npm-badge">npm</span>{% endif %}</h2>
+      {% if parts.size > 0 %}<p class="sheet-meta">{{ parts | join: " · " }}</p>{% endif %}
+    </div>
+  </div>
+  {% if p.preview %}<img class="sheet-shot" src="{{ p.preview }}" alt="{{ p.name }} home page" width="1280" height="800" decoding="async">{% endif %}
+  <p class="sheet-desc">{{ cs.summary | default: p.desc }}</p>
+  {% if cs.stats %}
+  <dl class="sheet-stats">
+    {% for s in cs.stats %}<div><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>{% endfor %}
+  </dl>
+  {% endif %}
+  <p class="sheet-links">
+    {%- for l in p.links -%}{%- unless l.url == cs_url -%}{%- assign scheme = l.url | slice: 0, 4 -%}<a href="{{ l.url }}"{% if scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ l.label }} &nearr;</a>{%- endunless -%}{%- endfor -%}
+  </p>
+  {% if p.case_study %}<a class="sheet-more" href="{{ cs_url }}">Read more &rarr;</a>{% endif %}
+</template>
 {% endfor %}
+
+<dialog class="sheet" aria-labelledby="sheet-title" data-sheet-dialog>
+  <div class="sheet-grip" aria-hidden="true"></div>
+  <div class="sheet-body" data-sheet-body></div>
+  <div class="sheet-nav">
+    <button type="button" class="deck-btn" data-sheet-prev aria-label="Previous project">&lsaquo;</button>
+    <button type="button" class="sheet-close" data-sheet-close>Close</button>
+    <button type="button" class="deck-btn" data-sheet-next aria-label="Next project">&rsaquo;</button>
+  </div>
+</dialog>

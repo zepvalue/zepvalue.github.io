@@ -1,0 +1,448 @@
+// ── /apps/ panel deck ─────────────────────────────────────────────────────
+// Without JS: panels stack as sections. panels.js adds .is-ready to .deck,
+// which turns the track into a horizontal scroll-snap deck with a bottom bar.
+
+.page.page--wide { max-width: 84rem; }
+
+.deck-header { margin-bottom: 1.5rem; }
+
+.deck-track {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  min-width: 0;
+  padding: 1.1rem 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.deck.is-ready {
+  .deck-track {
+    position: relative; // offsetParent for panel offsets
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+
+    &:focus-visible {
+      outline: 2px solid var(--fg-muted);
+      outline-offset: 4px;
+      border-radius: 1rem;
+    }
+  }
+
+  .panel {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    height: clamp(26rem, calc(100svh - 16rem), 46rem);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-hover) transparent;
+
+    @media (min-width: 640px) { flex-basis: calc((100% - 1rem) / 2); }
+    @media (min-width: 1100px) { flex-basis: calc((100% - 2rem) / 3); }
+  }
+}
+
+// ── Panel content ─────────────────────────────────────────────────────────
+
+.panel-head { margin-bottom: 1rem; }
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.panel-count {
+  padding: 0 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+.panel-note {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.panel-list {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &.is-featured { gap: 0.75rem; }
+}
+
+.item-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0 -0.55rem;
+  padding: 0.6rem 0.55rem;
+  border-radius: 0.65rem;
+  color: inherit;
+  transition: background-color 0.15s ease;
+
+  &:hover { background: var(--surface-2); }
+
+  &:focus-visible {
+    outline: 2px solid var(--fg-muted);
+    outline-offset: 0;
+  }
+
+  .is-featured & { display: block; }
+}
+
+.item-shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+  object-position: top;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  transition: border-color 0.15s ease;
+
+  .item-link:hover & { border-color: var(--border-hover); }
+
+  &.is-mark {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--tint);
+    background: color-mix(in srgb, var(--tint) 10%, var(--surface-2));
+    border-color: color-mix(in srgb, var(--tint) 30%, transparent);
+  }
+
+  &.is-founder {
+    color: #fff;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    border-color: transparent;
+  }
+}
+
+.item-cap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+  font-size: 0.92rem;
+}
+
+.item-name {
+  font-weight: 500;
+  color: var(--fg);
+
+  .npm-badge, .cs-label { font-size: 0.6rem; vertical-align: 0.1em; }
+}
+
+.item-meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.item-desc {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.item-sub {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.app-mark {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--tint);
+  background: color-mix(in srgb, var(--tint) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tint) 35%, transparent);
+
+  &.is-founder {
+    color: #fff;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    border-color: transparent;
+  }
+}
+
+// ── Bottom bar ────────────────────────────────────────────────────────────
+
+// Sticks to the bottom of the screen while the deck is in view.
+.deck-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0.25rem calc(0.75rem + env(safe-area-inset-bottom));
+  background: var(--bg);
+  font-size: 0.85rem;
+
+  &[hidden] { display: none; }
+}
+
+.deck-name { color: var(--fg); }
+
+.deck-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.deck-arrows {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.deck-btn,
+.sheet-close {
+  display: inline-grid;
+  place-items: center;
+  height: 2.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
+
+  &:hover:not(:disabled) { border-color: var(--border-hover); }
+
+  &:focus-visible {
+    outline: 2px solid var(--fg-muted);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (pointer: coarse) { height: 2.75rem; }
+}
+
+.deck-btn {
+  width: 2.25rem;
+  font-size: 1.3rem;
+  line-height: 1;
+
+  @media (pointer: coarse) { width: 2.75rem; }
+}
+
+.sheet-close {
+  padding: 0 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+// ── Project sheet (<dialog>) ──────────────────────────────────────────────
+// Bottom sheet on phones, centred modal from 640px.
+
+html:has(.sheet[open]) { overflow: hidden; }
+
+.sheet {
+  width: min(100%, 34rem);
+  max-width: 100%;
+  max-height: min(88svh, 46rem);
+  margin: auto auto 0;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-hover);
+  border-bottom: 0;
+  border-radius: 1rem 1rem 0 0;
+  color: var(--fg);
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+    animation: sheetUp 0.25s ease both;
+  }
+
+  &::backdrop { background: rgba(0, 0, 0, 0.6); }
+
+  @media (min-width: 640px) {
+    width: min(100% - 2rem, 34rem);
+    margin: auto;
+    border-bottom: 1px solid var(--border-hover);
+    border-radius: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &[open] { animation: none; }
+  }
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(1.5rem); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.sheet-grip {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 4px;
+  margin: 0.6rem auto 0;
+  border-radius: 2px;
+  background: var(--border-hover);
+
+  @media (min-width: 640px) { display: none; }
+}
+
+.sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem 0.5rem;
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .app-mark { width: 2.5rem; height: 2.5rem; font-size: 1.1rem; }
+}
+
+.sheet-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  .founder-badge, .npm-badge { font-size: 0.6rem; }
+}
+
+.sheet-meta {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.sheet-shot {
+  width: 100%;
+  margin-top: 1rem;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+}
+
+.sheet-desc {
+  margin: 1rem 0;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.sheet-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+
+  div {
+    padding: 0.55rem 0.7rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+  }
+
+  dt { font-size: 0.7rem; color: var(--muted); }
+  dd { margin: 0; font-size: 0.95rem; font-weight: 500; }
+}
+
+.sheet-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+
+  &:empty { display: none; }
+
+  a {
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--border-hover);
+    border-radius: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg);
+    transition: background-color 0.15s ease;
+
+    &:hover { background: var(--surface-2); }
+  }
+}
+
+.sheet-more {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--green);
+
+  &:hover { text-decoration: underline; }
+}
+
+.sheet-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--border);
+}
