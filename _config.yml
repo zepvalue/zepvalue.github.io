@@ -12,8 +12,7 @@ json:
   avatar: https://github.com/zepvalue.png
   # the bio is "typed" out under your name; add more lines for a rotating effect
   description:
-    - Backend Engineer
-    - Distributed systems · gRPC · Node
+    - Engineer who ships
   github_user: zepvalue
   # live local time is shown using this IANA timezone
   timezone: Europe/Rome
