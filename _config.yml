@@ -41,9 +41,6 @@ links:
   - label: Email
     icon: email
     url: mailto:zepvalue@gmail.com
-  - label: Projects
-    icon: apps
-    url: /apps/
 
 # ── Left sidebar: pinned repositories (newest/most relevant first) ──────────
 # leave empty to let the GitHub card auto-fill from your public repos.

@@ -40,7 +40,7 @@ done
 check "home: deck sits in the right column" "grep -q '<aside class=\"sidebar-right\"' '$H'"
 check "home: left sidebar and profile stay" "grep -q 'class=\"sidebar-left\"' '$H' && grep -q 'id=\"clock\"' '$H' && grep -q 'id=\"gh-pinned\"' '$H'"
 check "home: still loads home.js" "grep -q 'src=\"/assets/js/home.js\"' '$H'"
-check "home: link label is Projects" "grep -q '>Projects<' '$H'"
+check "home: no Projects link row (the deck replaces it)" "! grep -q 'class=\"link-label\">Projects<' '$H'"
 
 # ── Site-wide ─────────────────────────────────────────────────────────────
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"
