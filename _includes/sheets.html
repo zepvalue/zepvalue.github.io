@@ -1,0 +1,43 @@
+{%- comment -%}
+  Sheet content for every project, plus the <dialog> that
+  panels.js fills from a <template id="sheet-<id>">.
+{%- endcomment -%}
+{% assign deck_projects = site.data.projects.projects | where_exp: "p", "p.deck != false" %}
+{% for p in deck_projects %}
+{%- assign cs = site.pages | where: "project", p.id | first -%}
+{%- capture cs_url -%}/apps/{{ p.id }}/{%- endcapture -%}
+{%- assign parts = "" | split: "" -%}
+{%- if cs.years -%}{%- assign parts = parts | push: cs.years -%}{%- endif -%}
+{%- if p.lang -%}{%- assign parts = parts | push: p.lang -%}{%- endif -%}
+{%- if p.meta -%}{%- assign parts = parts | push: p.meta -%}{%- endif -%}
+<template id="sheet-{{ p.id }}">
+  <div class="sheet-head">
+    <span class="app-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: p.color | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>
+    <div>
+      <h2 class="sheet-title" id="sheet-title">{{ p.name }}{% if p.badge == "founder" %} <span class="founder-badge">founder</span>{% endif %}{% if p.badge == "npm" %} <span class="npm-badge">npm</span>{% endif %}</h2>
+      {% if parts.size > 0 %}<p class="sheet-meta">{{ parts | join: " · " }}</p>{% endif %}
+    </div>
+  </div>
+  {% if p.preview %}<img class="sheet-shot" src="{{ p.preview }}" alt="{{ p.name }} home page" width="1280" height="800" decoding="async">{% endif %}
+  <p class="sheet-desc">{{ cs.summary | default: p.desc }}</p>
+  {% if cs.stats %}
+  <dl class="sheet-stats">
+    {% for s in cs.stats %}<div><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>{% endfor %}
+  </dl>
+  {% endif %}
+  <p class="sheet-links">
+    {%- for l in p.links -%}{%- unless l.url == cs_url -%}{%- assign scheme = l.url | slice: 0, 4 -%}<a href="{{ l.url }}"{% if scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ l.label }} &nearr;</a>{%- endunless -%}{%- endfor -%}
+  </p>
+  {% if p.case_study %}<a class="sheet-more" href="{{ cs_url }}">Read more &rarr;</a>{% endif %}
+</template>
+{% endfor %}
+
+<dialog class="sheet" aria-labelledby="sheet-title" data-sheet-dialog>
+  <div class="sheet-grip" aria-hidden="true"></div>
+  <div class="sheet-body" data-sheet-body></div>
+  <div class="sheet-nav">
+    <button type="button" class="deck-btn" data-sheet-prev aria-label="Previous project">&lsaquo;</button>
+    <button type="button" class="sheet-close" data-sheet-close>Close</button>
+    <button type="button" class="deck-btn" data-sheet-next aria-label="Next project">&rsaquo;</button>
+  </div>
+</dialog>

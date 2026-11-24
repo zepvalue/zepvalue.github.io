@@ -2,7 +2,9 @@
 layout: default
 ---
 {% include nav.html %}
-<div class="page">
+<div class="page{% if page.page_class %} {{ page.page_class }}{% endif %}">
   {{ content }}
 </div>
 {% include footer.html %}
+{% for src in page.scripts %}<script src="{{ src }}" defer></script>
+{% endfor %}

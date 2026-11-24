@@ -12,8 +12,7 @@ json:
   avatar: https://github.com/zepvalue.png
   # the bio is "typed" out under your name; add more lines for a rotating effect
   description:
-    - Backend Engineer
-    - Distributed systems · gRPC · Node
+    - Engineer who ships
   github_user: zepvalue
   # live local time is shown using this IANA timezone
   timezone: Europe/Rome
@@ -41,9 +40,6 @@ links:
   - label: Email
     icon: email
     url: mailto:zepvalue@gmail.com
-  - label: Apps
-    icon: apps
-    url: /apps/
 
 # ── Left sidebar: pinned repositories (newest/most relevant first) ──────────
 # leave empty to let the GitHub card auto-fill from your public repos.
@@ -63,6 +59,10 @@ exclude:
   - Makefile
   - Gemfile
   - Gemfile.lock
+  - scripts
+  - tests
+  - serve.ps1
+  - vendor
 
 plugins:
   - jekyll-seo-tag

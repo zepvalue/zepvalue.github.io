@@ -1,0 +1,160 @@
+# ── Projects: the deck on /apps/ and in the home page's right column ───────
+# categories: display order and headings; each category is one deck panel.
+# `short` is the tab label above the deck (falls back to `name`).
+# A `featured` category gets large cards with a tinted monogram (`tint`) and an
+# optional screenshot (`preview`, 1280x800 in /assets/previews/).
+# npm projects: `npm_version` and `npm_downloads` are the fallback text; the
+# home page replaces them with live numbers from npm.
+# projects: one entry per card, in display order. `category` must match a
+# category id. The first link is where the card goes, unless the project has
+# `case_study: true` — then the card goes to /apps/<id>/, which must be a page
+# in apps/<id>.md with `layout: case-study` and `project: <id>`.
+# `meta` is split on " · " into platform chips. badge: founder | npm.
+# `deck: false` leaves a project out of the deck (its case-study page stays).
+
+categories:
+  - id: products
+    name: Products
+    note: Things people actually use.
+    featured: true
+  - id: open-source
+    name: Open source
+    note: Published packages on npm.
+  - id: backend
+    name: Backend &amp; infrastructure
+    short: Backend
+    note: APIs, serverless, and real-time systems.
+  - id: web
+    name: Web &amp; experiments
+    short: Web
+    note: Smaller builds across the stack.
+
+projects:
+  - id: ubqart
+    category: products
+    name: UbqArt
+    tint: "#a855f7"
+    preview: /assets/previews/ubqart.png
+    desc: "Social network created by artists, for artists — showcase work, discover creators, connect globally. My first startup, shipped on web, iOS &amp; Android."
+    badge: founder
+    meta: web · iOS · Android
+    case_study: true
+    case_study_label: false   # has a detail page, but the card shows no "case study" tag
+    deck: false               # not in the deck; keeps its case-study page and home founder card
+    links:
+      - { label: site, url: "https://ubqart.com" }
+
+  - id: luxlife
+    category: products
+    name: LuxLife
+    tint: "#f59e0b"
+    preview: /assets/previews/luxlife.png
+    desc: "Share the trip, split the cost — join shared trips to split villas, festival camps and adventures you couldn't do alone."
+    meta: web
+    links:
+      - { label: site, url: "https://luxlife.site/" }
+
+  - id: zippy-fit
+    category: products
+    name: Zippy Fit
+    tint: "#22c55e"
+    preview: /assets/previews/zippy-fit.png
+    desc: "A co-op fitness game: pair up, keep a shared streak, and don't be the one who breaks it."
+    meta: iOS · Android
+    color: "#3178c6"
+    case_study: true
+    links:
+      - { label: site, url: "https://zepvalue.github.io/zippy-fit/" }
+      - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
+
+  - id: ravecam
+    category: products
+    name: RaveCam
+    tint: "#ec4899"
+    preview: /assets/previews/ravecam.png
+    desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
+    meta: iOS · Android
+    links:
+      - { label: site, url: "https://ravecam.onrender.com/" }
+
+  - id: firecomm
+    category: open-source
+    name: firecomm
+    desc: "Feature library for gRPC-Node — build typed, streaming gRPC services with less boilerplate."
+    badge: npm
+    npm_version: 2.0.5
+    npm_downloads: 1.1k
+    lang: JavaScript
+    color: "#f1e05a"
+    case_study: true
+    links:
+      - { label: npm, url: "https://www.npmjs.com/package/firecomm" }
+      - { label: source, url: "https://github.com/zepvalue/firecomm" }
+      - { label: docs, url: "https://firecomm.github.io" }
+
+  - id: two-auth
+    category: open-source
+    name: two-auth
+    desc: "Two-factor SMS authentication with the Twilio API in three lines of code."
+    badge: npm
+    npm_version: 2.0.3
+    npm_downloads: "409"
+    lang: JavaScript
+    color: "#f1e05a"
+    links:
+      - { label: npm, url: "https://www.npmjs.com/package/two-auth" }
+      - { label: source, url: "https://github.com/zepvalue/two-auth" }
+
+  - id: car-fleet-express-lambda
+    category: backend
+    name: car-fleet-express-lambda
+    desc: "Serverless car-fleet REST API — Express running on AWS Lambda."
+    lang: TypeScript
+    color: "#3178c6"
+    links:
+      - { label: source, url: "https://github.com/zepvalue/car-fleet-express-lambda" }
+
+  - id: graphql-nestjs
+    category: backend
+    name: graphQL-NestJS
+    desc: "GraphQL API built with NestJS."
+    lang: TypeScript
+    color: "#3178c6"
+    links:
+      - { label: source, url: "https://github.com/zepvalue/graphQL-NestJS-test" }
+
+  - id: zadia
+    category: backend
+    name: Zadia
+    desc: "Controller-integrated gaming platform with real-time WebSockets."
+    lang: JavaScript
+    color: "#f1e05a"
+    links:
+      - { label: source, url: "https://github.com/zepvalue/Zadia" }
+
+  - id: breakoutrooms
+    category: backend
+    name: BreakoutRooms
+    desc: "Leveraging the Zoom API to gather metadata on meetings."
+    lang: Python
+    color: "#3572A5"
+    links:
+      - { label: source, url: "https://github.com/zepvalue/BreakoutRooms" }
+
+  - id: inventory-app
+    category: web
+    name: inventory-app
+    desc: "An offline-first inventory app built with SvelteKit."
+    lang: Svelte
+    color: "#ff3e00"
+    links:
+      - { label: source, url: "https://github.com/zepvalue/inventory-app" }
+
+  - id: sharad
+    category: web
+    name: sharad
+    desc: "Shareable crowdfunding for billboards."
+    lang: Scala
+    color: "#c22d40"
+    links:
+      - { label: source, url: "https://github.com/zepvalue/sharad" }

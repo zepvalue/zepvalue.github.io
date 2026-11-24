@@ -12,10 +12,41 @@
 
 .layout {
   display: grid;
-  grid-template-columns: auto 20rem;
+  grid-template-columns: auto 20rem 20rem;
   gap: 2rem;
   align-items: center;
   justify-content: center;
+}
+
+// Projects deck (see _panels.scss).
+// On wide screens the three columns share one top and bottom edge. The row
+// height comes from the profile column; `contain: size` keeps the deck from
+// setting it, and the deck fills the height it gets (the panel scrolls).
+.sidebar-right {
+  min-width: 0;
+  align-self: stretch;
+  contain: size;
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.5s ease 0.3s both;
+  text-align: left;
+
+  .deck {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .deck-track {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto; // without JS the panels stack; let them scroll
+  }
+
+  .deck.is-ready .panel { height: auto; }
+
+  @media (prefers-reduced-motion: reduce) { animation: none; }
 }
 
 // ── Reusable card ───────────────────────────────────────────────────────────
@@ -44,8 +75,10 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
+  grid-template-rows: auto auto 1fr; // the last row (pinned + languages) takes the spare height
   gap: 0.5rem;
   align-items: start;
+  align-self: stretch;
   justify-self: end;
   animation: fadeLeft 0.5s ease 0.3s both;
 }
@@ -258,55 +291,43 @@
 .lang-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 // ── Languages + activity card ───────────────────────────────────────────────
-.lang-activity {
+// Same padding and title style as the Pinned card next to it.
+.activity-card {
   min-height: 11rem;
   align-self: stretch;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 0.75rem;
 }
 
-.lang-block,
-.activity-block { display: flex; flex-direction: column; gap: 0.3rem; }
+.activity-block { display: flex; flex-direction: column; gap: 0.6rem; }
 
-.activity-block { border-top: 1px solid var(--border); padding-top: 0.4rem; }
+.block-title { font-size: 0.7rem; font-weight: 500; color: var(--fg-muted); }
 
-.block-title { font-size: 0.6rem; font-weight: 500; color: var(--fg-muted); }
+.activity-list { display: flex; flex-direction: column; gap: 0.65rem; }
 
-.languages-bar {
-  display: flex;
-  height: 4px;
-  border-radius: 2px;
-  overflow: hidden;
-
-  span { height: 100%; }
-}
-
-.lang-list { display: flex; flex-wrap: wrap; gap: 0.3rem 0.5rem; }
-.lang {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  font-size: 0.55rem;
-  color: var(--fg);
-
-  .dot { width: 5px; height: 5px; border-radius: 50%; }
-  .lang-percent { color: var(--fg-muted); opacity: 0.7; }
-}
-
-.activity-list { display: flex; flex-direction: column; gap: 0.25rem; }
+// Two lines per event: action + time on top, repo name under it.
 .activity-item {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.5rem;
-  line-height: 1.2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.1rem 0.5rem;
+  font-size: 0.62rem;
+  line-height: 1.25;
   color: var(--fg-muted);
 
-  .activity-icon { width: 10px; height: 10px; flex-shrink: 0; opacity: 0.7; }
-  a { color: var(--fg); &:hover { text-decoration: underline; } }
-  .activity-time { opacity: 0.7; margin-left: auto; }
+  &:hover .activity-verb { text-decoration: underline; }
+
+  .activity-verb { color: var(--fg); }
+  .activity-repo {
+    grid-column: 1 / -1;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .activity-time {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -445,21 +466,36 @@
 // ════════════════════════════════════════════════════════════════════════
 //  Responsive — collapse to single centered column
 // ════════════════════════════════════════════════════════════════════════
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .home-wrap { padding: 2rem 1rem; }
 
+  // minmax(0, …): a plain 1fr cannot shrink below its widest content, which
+  // pushed the columns past the screen edge on phones.
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
     max-width: 360px;
     width: 100%;
   }
 
   .center { order: 1; width: 100%; }
-  .sidebar-left {
+
+  // One column: the deck sets its own height again (see .deck--column).
+  .sidebar-right {
     order: 2;
+    contain: none;
+    display: block;
+
+    .deck { display: block; }
+    .deck-track { overflow-y: visible; }
+    .deck.is-ready .panel { height: clamp(24rem, calc(100svh - 12rem), 38rem); }
+  }
+
+  .sidebar-left {
+    order: 3;
     justify-self: stretch;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
   }
 
   .github { height: auto; min-height: 150px; }

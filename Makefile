@@ -23,8 +23,9 @@ install: ## Install Ruby gem dependencies (run after setup)
 serve: ## Run the site locally with live reload (http://localhost:4000)
 	bundle exec jekyll serve --livereload --open-url
 
-test: build ## Build and check the site for broken output (CI-friendly)
-	@echo "Build OK — output in _site/"
+test: build ## Build the site, check the projects pages, run JS unit tests (CI-friendly)
+	bash scripts/check-site.sh
+	node --test tests/panels-core.test.js
 
 build: ## Build the static site into _site/
 	bundle exec jekyll build

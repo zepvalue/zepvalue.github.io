@@ -1,0 +1,67 @@
+---
+layout: page
+---
+{% comment %}
+  Case-study page. Card data (name, desc, links, badge, meta) comes from
+  _data/projects.yml via `page.project`. Page front matter adds:
+    summary  – one-line lead (falls back to the card desc)
+    years    – e.g. "2019 – 2022"
+    hero     – screenshot path (falls back to the card preview)
+    stats    – list of { value, label }
+  The body uses `## Problem`, `## What I built`, `## Stack` (a list, shown
+  as chips) and `## Results` sections.
+{% endcomment %}
+{% assign p = site.data.projects.projects | where: "id", page.project | first %}
+{% assign studies = site.data.projects.projects | where: "case_study", true %}
+{% assign hero = page.hero | default: p.preview %}
+<article class="cs">
+  <a class="cs-back" href="/apps/">&larr; all projects</a>
+
+  <header class="cs-hero">
+    <div class="cs-kicker">
+      {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
+      {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
+      <span class="cs-meta">{% if page.years %}{{ page.years }}{% endif %}{% if page.years and p.meta %} · {% endif %}{{ p.meta | default: p.lang }}</span>
+    </div>
+    <h1 class="cs-title">{{ p.name }}</h1>
+    <p class="cs-lead">{{ page.summary | default: p.desc }}</p>
+    {% if p.links.size > 0 %}
+    <div class="cs-actions">
+      {% for l in p.links %}
+      {% assign scheme = l.url | slice: 0, 4 %}
+      <a class="cs-btn{% if forloop.first %} is-primary{% endif %}" href="{{ l.url }}"{% if scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ l.label }}{% if scheme == "http" %} &nearr;{% endif %}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </header>
+
+  {% if page.stats %}
+  <dl class="cs-stats">
+    {% for s in page.stats %}
+    <div class="cs-stat"><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>
+    {% endfor %}
+  </dl>
+  {% endif %}
+
+  {% if hero %}
+  <img class="cs-shot" src="{{ hero }}" alt="{{ p.name }} screenshot" width="1280" height="800" decoding="async">
+  {% endif %}
+
+  <div class="cs-body">
+    {{ content }}
+  </div>
+
+  {% assign prev = nil %}{% assign next = nil %}
+  {% for s in studies %}
+    {% if s.id == p.id %}
+      {% assign i_prev = forloop.index0 | minus: 1 %}
+      {% assign i_next = forloop.index0 | plus: 1 %}
+      {% if i_prev >= 0 %}{% assign prev = studies[i_prev] %}{% endif %}
+      {% assign next = studies[i_next] %}
+    {% endif %}
+  {% endfor %}
+  <nav class="cs-pager" aria-label="More case studies">
+    {% if prev %}<a href="/apps/{{ prev.id }}/">&larr; {{ prev.name }}</a>{% else %}<span></span>{% endif %}
+    {% if next %}<a href="/apps/{{ next.id }}/">{{ next.name }} &rarr;</a>{% endif %}
+  </nav>
+</article>

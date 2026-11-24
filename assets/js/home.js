@@ -68,13 +68,12 @@
 
   // ── Published npm packages ────────────────────────────────────────────────
   (function npmPackages() {
-    var card = document.querySelector(".npm-card");
-    if (!card) return;
+    // Fills every match on the page: the npm card and the projects deck.
+    if (!document.querySelector("[data-np]")) return;
     var PKGS = ["firecomm", "two-auth"];
     var set = function (sel, val) {
       if (val == null) return;
-      var el = card.querySelector(sel);
-      if (el) el.textContent = val;
+      document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
     };
     var npm = function (url) {
       return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });
@@ -106,7 +105,7 @@
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); });
   };
 
-  // ── Profile stats + languages + pinned fallback ───────────────────────────
+  // ── Profile stats + pinned fallback ───────────────────────────
   Promise.all([
     json("https://api.github.com/users/" + USER),
     json("https://api.github.com/users/" + USER + "/repos?per_page=100&sort=pushed")
@@ -121,7 +120,6 @@
       Following: user.following
     });
 
-    renderLanguages(repos);
     fillPinnedIfEmpty(repos);
   }).catch(function () { /* leave dashes */ });
 
@@ -139,37 +137,6 @@
   function compact(n) {
     if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k";
     return String(n);
-  }
-
-  function renderLanguages(repos) {
-    var totals = {};
-    repos.forEach(function (r) {
-      if (r.language) totals[r.language] = (totals[r.language] || 0) + 1;
-    });
-    var entries = Object.keys(totals).map(function (k) {
-      return { name: k, count: totals[k] };
-    }).sort(function (a, b) { return b.count - a.count; });
-    if (!entries.length) return;
-
-    var sum = entries.reduce(function (s, e) { return s + e.count; }, 0);
-    var top = entries.slice(0, 5);
-
-    var bar = document.getElementById("gh-lang-bar");
-    if (bar) {
-      bar.innerHTML = top.map(function (e) {
-        var pct = (e.count / sum * 100).toFixed(1);
-        return '<span style="width:' + pct + "%;background:" + langColor(e.name) + '"></span>';
-      }).join("");
-    }
-    var list = document.getElementById("gh-lang-list");
-    if (list) {
-      list.innerHTML = top.map(function (e) {
-        var pct = Math.round(e.count / sum * 100);
-        return '<span class="lang"><span class="dot" style="background:' +
-          langColor(e.name) + '"></span>' + e.name +
-          ' <span class="lang-percent">' + pct + "%</span></span>";
-      }).join("");
-    }
   }
 
   function fillPinnedIfEmpty(repos) {
@@ -196,31 +163,33 @@
       if (!box || !events) return;
       var lines = [];
       for (var i = 0; i < events.length && lines.length < 3; i++) {
-        var e = events[i], txt = describe(e);
-        if (txt) lines.push({ txt: txt, repo: e.repo.name, when: e.created_at });
+        var e = events[i], d = describe(e);
+        if (d) lines.push({ verb: d.verb, name: d.name, repo: e.repo.name, when: e.created_at });
       }
       if (!lines.length) return;
       box.innerHTML = lines.map(function (l) {
-        return '<div class="activity-item">' +
-          '<a href="https://github.com/' + l.repo + '" target="_blank" rel="noopener">' +
-          esc(l.txt) + "</a>" +
-          '<span class="activity-time">' + ago(l.when) + "</span></div>";
+        return '<a class="activity-item" href="https://github.com/' + l.repo + '" target="_blank" rel="noopener">' +
+          '<span class="activity-verb">' + esc(l.verb) + "</span>" +
+          '<span class="activity-time">' + ago(l.when) + "</span>" +
+          '<span class="activity-repo">' + esc(l.name) + "</span></a>";
       }).join("");
     })
     .catch(function () { /* leave skeleton */ });
 
   function describe(e) {
-    var repo = e.repo.name.split("/")[1] || e.repo.name;
+    var name = e.repo.name.split("/")[1] || e.repo.name;
+    var verb;
     switch (e.type) {
-      case "PushEvent": return "pushed to " + repo;
-      case "CreateEvent": return "created " + repo;
-      case "WatchEvent": return "starred " + repo;
-      case "ForkEvent": return "forked " + repo;
-      case "PullRequestEvent": return (e.payload.action || "updated") + " PR · " + repo;
-      case "IssuesEvent": return (e.payload.action || "updated") + " issue · " + repo;
-      case "ReleaseEvent": return "released " + repo;
+      case "PushEvent": verb = "pushed"; break;
+      case "CreateEvent": verb = "created"; break;
+      case "WatchEvent": verb = "starred"; break;
+      case "ForkEvent": verb = "forked"; break;
+      case "PullRequestEvent": verb = (e.payload.action || "updated") + " PR"; break;
+      case "IssuesEvent": verb = (e.payload.action || "updated") + " issue"; break;
+      case "ReleaseEvent": verb = "released"; break;
       default: return null;
     }
+    return { verb: verb, name: name };
   }
 
   function ago(iso) {

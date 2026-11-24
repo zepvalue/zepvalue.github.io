@@ -16,8 +16,6 @@ layout: default
         <p class="founder-blurb">My first startup — a community where artists showcase and discover work. Shipped on web, iOS &amp; Android.</p>
         <div class="founder-links">
           <a href="https://ubqart.com" target="_blank" rel="noopener">web</a>
-          <a href="https://itunes.apple.com/us/app/ubqart/id903670050?mt=8" target="_blank" rel="noopener">App Store</a>
-          <a href="https://play.google.com/store/apps/details?id=com.ebigle.bartists" target="_blank" rel="noopener">Google Play</a>
         </div>
       </section>
 
@@ -61,15 +59,8 @@ layout: default
         </div>
       </section>
 
-      <!-- languages + activity -->
-      <section class="card lang-activity">
-        <div class="lang-block">
-          <span class="block-title">Languages</span>
-          <div class="languages-bar" id="gh-lang-bar">
-            <div class="skeleton" style="width:100%;height:4px"></div>
-          </div>
-          <div class="lang-list" id="gh-lang-list"></div>
-        </div>
+      <!-- recent activity -->
+      <section class="card activity-card">
         <div class="activity-block">
           <span class="block-title">Activity</span>
           <div class="activity-list" id="gh-activity">
@@ -120,7 +111,16 @@ layout: default
       </footer>
     </main>
 
+    <!-- ════════ RIGHT COLUMN — projects deck ════════ -->
+    <aside class="sidebar-right" aria-label="Projects">
+      {% include project-deck.html class="deck--column" %}
+    </aside>
+
   </div>
 </div>
 
+{% include sheets.html %}
+
 <script src="/assets/js/home.js" defer></script>
+<script src="/assets/js/panels-core.js" defer></script>
+<script src="/assets/js/panels.js" defer></script>

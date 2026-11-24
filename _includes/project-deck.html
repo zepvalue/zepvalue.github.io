@@ -1,0 +1,30 @@
+{%- comment -%}
+  The projects deck: one panel per category in _data/projects.yml, plus the
+  ‹ › bar. Used on /apps/ and in the home page's right column. The page must
+  also include sheets.html and load panels-core.js + panels.js.
+  Param: class (extra class on .deck, e.g. "deck--column").
+{%- endcomment -%}
+<div class="deck{% if include.class %} {{ include.class }}{% endif %}" data-deck>
+  <nav class="deck-tabs" aria-label="Project categories" data-tabs>
+    {%- for cat in site.data.projects.categories %}
+    <a class="deck-tab" href="#{{ cat.id }}" data-tab="{{ forloop.index0 }}">{{ cat.short | default: cat.name }}</a>
+    {%- endfor %}
+  </nav>
+  <div class="deck-track" data-track tabindex="0" aria-label="Project categories">
+  {% for cat in site.data.projects.categories %}
+  {% assign projects = site.data.projects.projects | where: "category", cat.id | where_exp: "p", "p.deck != false" %}
+  <section class="panel" id="{{ cat.id }}" aria-labelledby="{{ cat.id }}-title" data-panel>
+    <div class="panel-head">
+      <h2 class="panel-title" id="{{ cat.id }}-title">{{ cat.name }}<span class="panel-count">{{ projects.size }}</span></h2>
+      {% if cat.note %}<p class="panel-note">{{ cat.note }}</p>{% endif %}
+    </div>
+    <ul class="panel-list{% if cat.featured %} is-featured{% endif %}">
+    {% for p in projects %}
+      {% include project-item.html p=p featured=cat.featured %}
+    {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+  </div>
+  {% include deck-bar.html %}
+</div>
