@@ -130,28 +130,41 @@
     openSheet(link.dataset.sheet, true);
   });
 
+  // Runs once per close. It is called directly by closeSheet() and, for Esc,
+  // by the dialog's "close" event, so it does not depend on event timing.
+  // fromHistory: the back button closed the sheet, so do not go back again.
+  function onClosed(fromHistory) {
+    if (openId === null) return;
+    openId = null;
+    if (!fromHistory) {
+      if (history.state && history.state.sheet) {
+        history.back(); // removes the sheet entry; popstate then sees no project
+      } else if (core.parseHash(location.hash, panelIds, projectPanels).project) {
+        setHash(panelIds[current]); // opened from a shared link: no entry to go back to
+      }
+    }
+    if (opener && document.contains(opener)) opener.focus();
+    opener = null;
+  }
+
+  function closeSheet(fromHistory) {
+    if (dialog.open) dialog.close();
+    onClosed(fromHistory);
+  }
+
   sheetPrev.addEventListener("click", function () { step(-1); });
   sheetNext.addEventListener("click", function () { step(1); });
-  sheetClose.addEventListener("click", function () { dialog.close(); });
+  sheetClose.addEventListener("click", function () { closeSheet(false); });
 
   // A click on the backdrop lands on the <dialog> itself (its content fills it).
-  dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener("click", function (e) { if (e.target === dialog) closeSheet(false); });
 
   dialog.addEventListener("keydown", function (e) {
     if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
     if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
   });
 
-  dialog.addEventListener("close", function () {
-    openId = null;
-    if (history.state && history.state.sheet) {
-      history.back(); // removes the sheet entry; popstate then sees no project
-    } else if (core.parseHash(location.hash, panelIds, projectPanels).project) {
-      setHash(panelIds[current]); // opened from a shared link: no entry to go back to
-    }
-    if (opener && document.contains(opener)) opener.focus();
-    opener = null;
-  });
+  dialog.addEventListener("close", function () { onClosed(false); }); // Esc
 
   // ── Hash ────────────────────────────────────────────────────────────────
 
@@ -161,7 +174,11 @@
       if (r.panel !== current) go(r.panel, false);
       openSheet(r.project, false);
     } else if (dialog.open) {
-      dialog.close();
+      closeSheet(true);
+    } else {
+      // An in-page link such as <a href="/#products"> lands here too.
+      var named = core.namedPanel(location.hash, panelIds);
+      if (named !== -1) go(named, true);
     }
   });
 

@@ -13,6 +13,14 @@
     return { panel: i === -1 ? 0 : i, project: null };
   }
 
+  // Panel index when the hash names a panel ("#backend" -> 2), else -1.
+  // Unlike parseHash, an empty or unknown hash does not mean "first panel".
+  function namedPanel(hash, panelIds) {
+    var id = (hash || "").replace(/^#/, "");
+    try { id = decodeURIComponent(id); } catch (e) { /* keep raw id */ }
+    return id ? panelIds.indexOf(id) : -1;
+  }
+
   // Index of the offset closest to `pos`.
   function nearestIndex(pos, offsets) {
     var best = 0;
@@ -30,7 +38,7 @@
     return j >= 0 && j < ids.length ? ids[j] : null;
   }
 
-  var api = { parseHash: parseHash, nearestIndex: nearestIndex, neighbor: neighbor };
+  var api = { parseHash: parseHash, namedPanel: namedPanel, nearestIndex: nearestIndex, neighbor: neighbor };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PanelsCore = api;
 })(this);

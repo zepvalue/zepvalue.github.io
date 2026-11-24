@@ -2,7 +2,7 @@
 // Run: node --test tests/panels-core.test.js   (or: make test)
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { parseHash, nearestIndex, neighbor } = require("../assets/js/panels-core.js");
+const { parseHash, nearestIndex, neighbor, namedPanel } = require("../assets/js/panels-core.js");
 
 const panels = ["products", "open-source", "backend", "web"];
 const projects = { ubqart: 0, "zippy-fit": 0, firecomm: 1, sharad: 3 };
@@ -26,6 +26,14 @@ test("parseHash: unknown id falls back to the first panel", () => {
 
 test("parseHash: decodes percent-encoded ids", () => {
   assert.deepEqual(parseHash("#zippy%2Dfit", panels, projects), { panel: 0, project: "zippy-fit" });
+});
+
+test("namedPanel: index only when the hash names a panel", () => {
+  assert.equal(namedPanel("#backend", panels), 2);
+  assert.equal(namedPanel("#products", panels), 0);
+  assert.equal(namedPanel("", panels), -1);
+  assert.equal(namedPanel("#firecomm", panels), -1);
+  assert.equal(namedPanel("#nope", panels), -1);
 });
 
 test("nearestIndex: picks the panel whose offset is closest", () => {
