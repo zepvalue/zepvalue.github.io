@@ -13,15 +13,27 @@ stats:
 
 ## Problem
 
-Artists had few places to show their work that were made for artists first.
-On general social networks, ads compete with the work, and it is hard for an
-artist to reach museums or people who give commissions. UbqArt was a platform
-with no ads, made to connect artists with museums and possible commissions.
+The contemporary art market runs through intermediaries. Living artists had few
+places made for them first: on general social networks, ads compete with the
+work, and it is hard to reach museums, buyers or people who give commissions.
+
+UbqArt (Ubiquitous Art) set out to be an open, horizontal and global place for
+contemporary art, with no ads, and a first step to a direct art market.
 
 ## What I built
 
-My first startup, at BIGLE. A mobile social network where artists show their
-work and find other creators. It shipped on the web, on iOS and on Android.
+My first startup, at BIGLE. A mobile social network for artists, their
+audience and buyers. It shipped on the web, on iOS and on Android.
+
+- **Free publishing.** Artists post images and videos of their work and studio
+  life at no cost.
+- **Engagement.** People vote on and comment on works, and share them to
+  other social networks with one tap.
+- **Direct contact.** Artists post updates to all followers, and send real-time
+  messages to one person or to other artists.
+- **Studio finder.** The mobile app shows artists' studios and workshops near
+  you, so people can book visits and go to openings and events.
+
 I was co-founder and Android engineer:
 
 - Built the native Android app in Java, with Dagger 2 for dependency
