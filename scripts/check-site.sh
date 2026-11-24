@@ -35,6 +35,7 @@ for page in "$A" "$H"; do
   check "$n: sheet dialog" "grep -q '<dialog class=\"sheet\"' '$page'"
   check "$n: 2 case-study labels (not UbqArt)" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 2 ]"
   check "$n: items keep a real link without JS" "grep -q 'href=\"/apps/ubqart/\" data-sheet=\"ubqart\"' '$page' && grep -q 'href=\"https://luxlife.site/\" data-sheet=\"luxlife\"' '$page'"
+  check "$n: UbqArt shows its screenshot" "grep -q 'src=\"/assets/previews/ubqart.png\"' '$page' && [ -f '$SITE/assets/previews/ubqart.png' ]"
   check "$n: zippy-fit site link" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$page'"
   check "$n: npm items have live-number hooks" "grep -q 'data-np=\"firecomm-dl\"' '$page' && grep -q 'data-np=\"two-auth-v\"' '$page'"
   check "$n: loads panels.js" "grep -q 'src=\"/assets/js/panels.js\"' '$page'"
