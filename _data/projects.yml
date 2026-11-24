@@ -75,7 +75,7 @@ projects:
     desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
     meta: iOS · Android
     links:
-      - { label: site, url: "https://ravecam.onrender.com/" }
+      - { label: site, url: "https://stashcam.onrender.com/" }
 
   - id: firecomm
     category: open-source
