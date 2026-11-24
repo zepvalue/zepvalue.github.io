@@ -4,7 +4,7 @@ title: firecomm
 project: firecomm
 permalink: /apps/firecomm/
 summary: A feature library for gRPC-Node. Typed, streaming gRPC services with less boilerplate.
-years: "2019"
+years: 2018–2020
 stats:
   - { value: 1.1k, label: npm downloads / yr }
   - { value: v2.0.5, label: latest version }
@@ -39,4 +39,8 @@ An open-source library on top of gRPC-Node:
 
 - Published on npm, with about 1.1k downloads a year.
 - Docs site at [firecomm.github.io](https://firecomm.github.io).
-- <span class="todo">TODO: team size, your part, what you learned.</span>
+- My part: co-architect and maintainer. I designed the `.proto` build step,
+  server binding, method handling, client-stub mapping, and the middleware and
+  interceptor layers.
+- Built-in health checks made services more fault tolerant: long-lived TCP
+  connections and fewer lost HTTP/2 frames.

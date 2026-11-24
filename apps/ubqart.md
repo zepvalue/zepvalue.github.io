@@ -4,11 +4,11 @@ title: UbqArt
 project: ubqart
 permalink: /apps/ubqart/
 summary: A social network made by artists, for artists. Show your work, find creators, connect.
-years: <span class="todo">TODO years</span>
+years: 2013–2016
 stats:
   - { value: "3", label: platforms }
-  - { value: founder, label: role }
-  - { value: <span class="todo">TODO</span>, label: users }
+  - { value: co-founder, label: role }
+  - { value: "+40%", label: active users }
 ---
 
 ## Problem
@@ -18,15 +18,28 @@ Artists had few places to show their work that were made for artists first.
 
 ## What I built
 
-My first startup. A community where artists show their work and find other
-creators. It shipped on the web, on iOS and on Android.
-<span class="todo">TODO: main features (feed, profiles, discovery?) and what you built yourself.</span>
+My first startup, at BIGLE. A mobile social network where artists show their
+work and find other creators. It shipped on the web, on iOS and on Android.
+I was co-founder and Android engineer:
+
+- Built the native Android app in Java, with Dagger 2 for dependency
+  injection and Retrofit for the API, analytics and data models.
+- Added push notifications with Firebase Cloud Messaging.
+- Added geolocation and geofencing for location- and distance-based search
+  and suggestions.
+- Built the backend data layer: SQL with Hibernate, and Caffeine as a cache
+  for a near-optimal hit rate.
+- Moved the native app to React Native: one codebase for iOS and Android.
 
 ## Stack
 
-- <span class="todo">TODO</span>
+- Java, Android
+- Dagger 2, Retrofit
+- Firebase Cloud Messaging
+- React Native
+- Hibernate, SQL, Caffeine
 
 ## Results
 
 - Shipped on 3 platforms: web, App Store and Google Play.
-- <span class="todo">TODO: users, artworks, press, what you learned.</span>
+- The move to React Native gave 40% more active users.
