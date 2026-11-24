@@ -66,6 +66,7 @@ projects:
     color: "#3178c6"
     case_study: true
     links:
+      - { label: site, url: "https://zepvalue.github.io/zippy-fit/" }
       - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
 
   - id: media-sync
