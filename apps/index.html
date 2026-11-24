@@ -1,136 +1,30 @@
 ---
 layout: page
 title: Projects
-# ── Curated projects, grouped by category. Edit freely. ─────────────────────
-# Each project: name, desc, lang, color, badge (optional), and a list of links.
-# The first link is where the whole card goes. Projects in a `featured`
-# category get a large card with a tinted monogram (`tint`) and an optional
-# site screenshot (`preview`, 1280x800 in /assets/previews/); a `founder`
-# project spans the full row. `meta` is split on " · " into platform chips.
-categories:
-  - name: Products
-    note: Things people actually use.
-    featured: true
-    projects:
-      - name: UbqArt
-        tint: "#a855f7"
-        desc: "Social network created by artists, for artists — showcase work, discover creators, connect globally. My first startup, shipped on web, iOS &amp; Android."
-        badge: founder
-        meta: web · iOS · Android
-        links:
-          - { label: site, url: "https://ubqart.com" }
-
-      - name: RaveCam
-        tint: "#ec4899"
-        preview: /assets/previews/ravecam.png
-        desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
-        meta: iOS · Android
-        links:
-          - { label: site, url: "https://ravecam.onrender.com/" }
-      - name: LuxLife
-        tint: "#f59e0b"
-        preview: /assets/previews/luxlife.png
-        desc: "Share the trip, split the cost — join shared trips to split villas, festival camps and adventures you couldn't do alone."
-        meta: web
-        links:
-          - { label: site, url: "https://luxlife-ihjq.onrender.com/" }
-      - name: zippy-fit
-        tint: "#22c55e"
-        preview: /assets/previews/zippy-fit.png
-        desc: "A co-op fitness game: pair up, keep a shared streak, and don't be the one who breaks it."
-        lang: TypeScript
-        color: "#3178c6"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
-      - name: media_sync
-        tint: "#38bdf8"
-        desc: "A personal local tool to republish your own short-form videos to TikTok."
-        lang: Python
-        color: "#3572A5"
-        links:
-          - { label: details, url: "/apps/media-sync/" }
-
-  - name: Open source
-    note: Published packages on npm.
-    projects:
-      - name: firecomm
-        desc: "Feature library for gRPC-Node — build typed, streaming gRPC services with less boilerplate."
-        badge: npm
-        lang: JavaScript
-        color: "#f1e05a"
-        links:
-          - { label: npm, url: "https://www.npmjs.com/package/firecomm" }
-          - { label: source, url: "https://github.com/zepvalue/firecomm" }
-      - name: two-auth
-        desc: "Two-factor SMS authentication with the Twilio API in three lines of code."
-        badge: npm
-        lang: JavaScript
-        color: "#f1e05a"
-        links:
-          - { label: npm, url: "https://www.npmjs.com/package/two-auth" }
-          - { label: source, url: "https://github.com/zepvalue/two-auth" }
-
-  - name: Backend &amp; infrastructure
-    note: APIs, serverless, and real-time systems.
-    projects:
-      - name: car-fleet-express-lambda
-        desc: "Serverless car-fleet REST API — Express running on AWS Lambda."
-        lang: TypeScript
-        color: "#3178c6"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/car-fleet-express-lambda" }
-      - name: graphQL-NestJS
-        desc: "GraphQL API built with NestJS."
-        lang: TypeScript
-        color: "#3178c6"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/graphQL-NestJS-test" }
-      - name: Zadia
-        desc: "Controller-integrated gaming platform with real-time WebSockets."
-        lang: JavaScript
-        color: "#f1e05a"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/Zadia" }
-      - name: BreakoutRooms
-        desc: "Leveraging the Zoom API to gather metadata on meetings."
-        lang: Python
-        color: "#3572A5"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/BreakoutRooms" }
-
-  - name: Web &amp; experiments
-    note: Smaller builds across the stack.
-    projects:
-      - name: inventory-app
-        desc: "An offline-first inventory app built with SvelteKit."
-        lang: Svelte
-        color: "#ff3e00"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/inventory-app" }
-      - name: sharad
-        desc: "Shareable crowdfunding for billboards."
-        lang: Scala
-        color: "#c22d40"
-        links:
-          - { label: source, url: "https://github.com/zepvalue/sharad" }
+# Card data lives in _data/projects.yml.
 ---
 <header class="page-header">
   <h1>Projects</h1>
   <p class="page-lead">A selection of things I've designed, built, and shipped.</p>
 </header>
 
-{% for cat in page.categories %}
+{% for cat in site.data.projects.categories %}
+{% assign projects = site.data.projects.projects | where: "category", cat.id %}
 <section class="proj-category{% if cat.featured %} is-featured{% endif %}">
   <div class="proj-cat-head">
-    <h2 class="proj-cat-title">{{ cat.name }}<span class="proj-cat-count">{{ cat.projects.size }}</span></h2>
+    <h2 class="proj-cat-title">{{ cat.name }}<span class="proj-cat-count">{{ projects.size }}</span></h2>
     {% if cat.note %}<span class="proj-cat-note">{{ cat.note }}</span>{% endif %}
   </div>
 
   <ul class="app-grid">
-    {% for p in cat.projects %}
-    {% assign main = p.links.first %}
-    {% assign main_scheme = main.url | slice: 0, 4 %}
-    <li class="app-card{% if p.badge == 'founder' %} is-lead{% endif %}{% if p.preview %} has-preview{% endif %}" style="--i:{{ forloop.index0 }}">
+    {% for p in projects %}
+    {% if p.case_study %}
+      {% capture main_url %}/apps/{{ p.id }}/{% endcapture %}
+    {% else %}
+      {% assign main_url = p.links.first.url %}
+    {% endif %}
+    {% assign main_scheme = main_url | slice: 0, 4 %}
+    <li class="app-card{% if p.badge == 'founder' %} is-lead{% endif %}{% if p.preview %} has-preview{% endif %}{% if p.case_study %} has-case-study{% endif %}" style="--i:{{ forloop.index0 }}">
       {% if p.preview %}
       <img class="app-preview" src="{{ p.preview }}" alt="{{ p.name }} home page" width="1280" height="800" loading="lazy" decoding="async">
       {% endif %}
@@ -139,14 +33,15 @@ categories:
         <span class="app-mark{% if p.badge == 'founder' %} is-founder{% endif %}" style="--tint:{{ p.tint | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>
         {% endif %}
         <h3 class="app-card-title">
-          <a class="app-card-link" href="{{ main.url }}"{% if main_scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ p.name }}</a>
+          <a class="app-card-link" href="{{ main_url }}"{% if main_scheme == "http" %} target="_blank" rel="noopener"{% endif %}>{{ p.name }}</a>
           {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
           {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
         </h3>
-        <span class="app-card-arrow" aria-hidden="true">&nearr;</span>
+        <span class="app-card-arrow" aria-hidden="true">{% if p.case_study %}&rarr;{% else %}&nearr;{% endif %}</span>
       </div>
       {% if p.desc %}<p class="app-card-desc">{{ p.desc }}</p>{% endif %}
       <div class="app-card-foot">
+        {% if p.case_study %}<span class="cs-label">case study</span>{% endif %}
         {% if p.lang %}<span class="app-card-lang"><span class="lang-dot" style="background:{{ p.color }}"></span>{{ p.lang }}</span>{% endif %}
         {% if p.meta %}
         <span class="app-card-chips">

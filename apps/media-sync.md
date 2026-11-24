@@ -1,13 +1,10 @@
 ---
-layout: prose
+layout: case-study
 title: media_sync
+project: media-sync
 permalink: /apps/media-sync/
+summary: A personal tool for creators.
 ---
-
-# media_sync
-
-<p class="updated">A personal tool for creators</p>
-
 media_sync is a personal, local tool that lets a creator republish their own
 short-form videos to TikTok. It runs on your own computer, acts only on your own
 content, and never posts publicly without you finalizing the post yourself inside the
