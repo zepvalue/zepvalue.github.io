@@ -70,6 +70,53 @@
   .deck-arrows { margin-left: auto; }
 }
 
+// ── Tabs above the deck ───────────────────────────────────────────────────
+// Real #id links (they also work without JS); panels.js marks the active one.
+
+.deck-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem;
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.deck-tab {
+  flex: 1 0 auto;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--muted);
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover { color: var(--fg); }
+
+  &:focus-visible {
+    outline: 2px solid var(--fg-muted);
+    outline-offset: -2px;
+  }
+
+  &.is-active {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+
+  &[aria-current="true"] {
+    background: var(--border-hover);
+  }
+
+  @media (pointer: coarse) { padding: 0.6rem 0.8rem; }
+}
+
 // ── Panel content ─────────────────────────────────────────────────────────
 
 .panel-head { margin-bottom: 1rem; }

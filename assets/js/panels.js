@@ -11,6 +11,8 @@
   var panels = Array.prototype.slice.call(deck.querySelectorAll("[data-panel]"));
   var bar = deck.querySelector("[data-bar]");
   var count = deck.querySelector("[data-count]");
+  var tabsNav = deck.querySelector("[data-tabs]");
+  var tabs = Array.prototype.slice.call(deck.querySelectorAll("[data-tab]"));
   var prevBtn = deck.querySelector("[data-prev]");
   var nextBtn = deck.querySelector("[data-next]");
   var body = dialog.querySelector("[data-sheet-body]");
@@ -58,6 +60,21 @@
     count.textContent = range + " / " + panels.length;
     prevBtn.disabled = left <= 1;
     nextBtn.disabled = left >= maxLeft - 1;
+
+    // Tabs: every visible panel is highlighted; the first one is "current".
+    tabs.forEach(function (tab, i) {
+      tab.classList.toggle("is-active", i >= current && i <= last);
+      if (i === current) tab.setAttribute("aria-current", "true");
+      else tab.removeAttribute("aria-current");
+    });
+    var active = tabs[current];
+    if (active && tabsNav.scrollWidth > tabsNav.clientWidth) {
+      // Keep the current tab in view inside the tab row (no page scroll).
+      var l = active.offsetLeft - tabsNav.offsetLeft;
+      if (l < tabsNav.scrollLeft || l + active.offsetWidth > tabsNav.scrollLeft + tabsNav.clientWidth) {
+        tabsNav.scrollLeft = l - 8;
+      }
+    }
   }
 
   function go(i, smooth) {
@@ -77,6 +94,14 @@
     clearTimeout(settle);
     settle = setTimeout(function () { if (!dialog.open) setHash(panelIds[current]); }, 150);
   }, { passive: true });
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function (e) {
+      e.preventDefault(); // the href is the no-JS fallback
+      go(i, true);
+      setHash(panelIds[i]);
+    });
+  });
 
   prevBtn.addEventListener("click", function () { go(current - 1, true); });
   nextBtn.addEventListener("click", function () { go(current + 1, true); });

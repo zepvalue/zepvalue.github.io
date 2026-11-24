@@ -1,5 +1,6 @@
 # ── Projects: the deck on /apps/ and in the home page's right column ───────
 # categories: display order and headings; each category is one deck panel.
+# `short` is the tab label above the deck (falls back to `name`).
 # A `featured` category gets large cards with a tinted monogram (`tint`) and an
 # optional screenshot (`preview`, 1280x800 in /assets/previews/).
 # npm projects: `npm_version` and `npm_downloads` are the fallback text; the
@@ -20,9 +21,11 @@ categories:
     note: Published packages on npm.
   - id: backend
     name: Backend &amp; infrastructure
+    short: Backend
     note: APIs, serverless, and real-time systems.
   - id: web
     name: Web &amp; experiments
+    short: Web
     note: Smaller builds across the stack.
 
 projects:

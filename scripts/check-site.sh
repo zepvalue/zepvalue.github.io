@@ -26,7 +26,10 @@ for page in "$A" "$H"; do
   check "$n: 4 panels" "[ \"\$(count '<section class=\"panel\"' '$page')\" -eq 4 ]"
   for id in products open-source backend web; do
     check "$n: panel #$id" "grep -q '<section class=\"panel\" id=\"$id\"' '$page'"
+    check "$n: tab links to #$id" "grep -q 'class=\"deck-tab\" href=\"#$id\"' '$page'"
   done
+  check "$n: tab row has 4 tabs" "[ \"\$(count 'class=\"deck-tab\"' '$page')\" -eq 4 ]"
+  check "$n: short tab names" "grep -q 'href=\"#backend\" data-tab=\"2\">Backend<' '$page'"
   check "$n: 12 project items" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 12 ]"
   check "$n: 12 sheet templates" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 12 ]"
   check "$n: sheet dialog" "grep -q '<dialog class=\"sheet\"' '$page'"
