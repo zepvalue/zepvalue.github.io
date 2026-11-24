@@ -64,6 +64,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - scripts
+  - tests
   - serve.ps1
   - vendor
 
