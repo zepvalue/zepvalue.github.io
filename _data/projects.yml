@@ -67,11 +67,11 @@ projects:
       - { label: site, url: "https://zepvalue.github.io/zippy-fit/" }
       - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
 
-  - id: ravecam
+  - id: stashcam
     category: products
-    name: RaveCam
+    name: StashCam
     tint: "#ec4899"
-    preview: /assets/previews/ravecam.png
+    preview: /assets/previews/stashcam.png
     desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
     meta: iOS · Android
     links:
