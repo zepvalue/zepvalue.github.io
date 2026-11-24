@@ -16,6 +16,7 @@ check "projects page shows 3 case-study labels (not UbqArt)" "[ \"\$(grep -o 'cl
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"
 check "ubqart card links to its case study" "grep -q 'href=\"/apps/ubqart/\"' '$SITE/apps/index.html'"
 check "no page for projects without a case study" "[ ! -e '$SITE/apps/luxlife' ] && [ ! -e '$SITE/apps/luxlife.html' ]"
+check "LuxLife card links to luxlife.site" "grep -q 'href=\"https://luxlife.site/\"' '$SITE/apps/index.html'"
 check "home link label is Projects" "grep -q '>Projects<' '$SITE/index.html'"
 
 exit $fail

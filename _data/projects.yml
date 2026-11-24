@@ -54,7 +54,7 @@ projects:
     desc: "Share the trip, split the cost — join shared trips to split villas, festival camps and adventures you couldn't do alone."
     meta: web
     links:
-      - { label: site, url: "https://luxlife-ihjq.onrender.com/" }
+      - { label: site, url: "https://luxlife.site/" }
 
   - id: zippy-fit
     category: products
