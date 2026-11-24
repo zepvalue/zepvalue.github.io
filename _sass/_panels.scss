@@ -60,11 +60,9 @@
   .deck.is-ready .panel { flex-basis: calc((100% - 2rem) / 3); }
 }
 
-// Home page right column: shorter panels, no name in the bar (it is in the
-// centre column), and the bar is not sticky.
+// Home page right column: no name in the bar (it is in the centre column),
+// and the bar is not sticky. Its height comes from _home.scss (.sidebar-right).
 .deck--column {
-  &.is-ready .panel { height: clamp(24rem, calc(100svh - 12rem), 38rem); }
-
   .deck-name { display: none; }
   .deck-bar { position: static; padding-bottom: 0; background: none; }
   .deck-arrows { margin-left: auto; }

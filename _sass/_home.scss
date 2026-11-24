@@ -19,10 +19,32 @@
 }
 
 // Projects deck (see _panels.scss).
+// On wide screens the three columns share one top and bottom edge. The row
+// height comes from the profile column; `contain: size` keeps the deck from
+// setting it, and the deck fills the height it gets (the panel scrolls).
 .sidebar-right {
   min-width: 0;
+  align-self: stretch;
+  contain: size;
+  display: flex;
+  flex-direction: column;
   animation: fadeUp 0.5s ease 0.3s both;
   text-align: left;
+
+  .deck {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .deck-track {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto; // without JS the panels stack; let them scroll
+  }
+
+  .deck.is-ready .panel { height: auto; }
 
   @media (prefers-reduced-motion: reduce) { animation: none; }
 }
@@ -53,8 +75,10 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
+  grid-template-rows: auto auto 1fr; // the last row (pinned + languages) takes the spare height
   gap: 0.5rem;
   align-items: start;
+  align-self: stretch;
   justify-self: end;
   animation: fadeLeft 0.5s ease 0.3s both;
 }
@@ -474,11 +498,23 @@
   }
 
   .center { order: 1; width: 100%; }
-  .sidebar-right { order: 2; }
+
+  // One column: the deck sets its own height again (see .deck--column).
+  .sidebar-right {
+    order: 2;
+    contain: none;
+    display: block;
+
+    .deck { display: block; }
+    .deck-track { overflow-y: visible; }
+    .deck.is-ready .panel { height: clamp(24rem, calc(100svh - 12rem), 38rem); }
+  }
+
   .sidebar-left {
     order: 3;
     justify-self: stretch;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
   }
 
   .github { height: auto; min-height: 150px; }
