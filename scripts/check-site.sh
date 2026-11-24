@@ -19,6 +19,7 @@ check "media_sync privacy and terms pages are gone" "[ ! -e '$SITE/privacy' ] &&
 check "media-sync page is gone" "[ ! -e '$SITE/apps/media-sync' ] && ! grep -q 'data-sheet=\"media-sync\"' '$H'"
 check "no page for projects without a case study" "[ ! -e '$SITE/apps/luxlife' ] && [ ! -e '$SITE/apps/luxlife.html' ]"
 check "zippy-fit case study links to its site" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$SITE/apps/zippy-fit/index.html'"
+check "ubqart case study keeps its screenshot" "grep -q '/assets/previews/ubqart.png' '$SITE/apps/ubqart/index.html' && [ -f '$SITE/assets/previews/ubqart.png' ]"
 
 # ── The projects deck, on /apps/ and on the home page ─────────────────────
 for page in "$A" "$H"; do
@@ -30,13 +31,14 @@ for page in "$A" "$H"; do
   done
   check "$n: tab row has 4 tabs" "[ \"\$(count 'class=\"deck-tab\"' '$page')\" -eq 4 ]"
   check "$n: short tab names" "grep -q 'href=\"#backend\" data-tab=\"2\">Backend<' '$page'"
-  check "$n: 12 project items" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 12 ]"
-  check "$n: 12 sheet templates" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 12 ]"
+  check "$n: 11 project items (no UbqArt)" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 11 ]"
+  check "$n: 11 sheet templates (no UbqArt)" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 11 ]"
   check "$n: sheet dialog" "grep -q '<dialog class=\"sheet\"' '$page'"
-  check "$n: 2 case-study labels (not UbqArt)" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 2 ]"
-  check "$n: items keep a real link without JS" "grep -q 'href=\"/apps/ubqart/\" data-sheet=\"ubqart\"' '$page' && grep -q 'href=\"https://luxlife.site/\" data-sheet=\"luxlife\"' '$page'"
+  check "$n: 2 case-study labels" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 2 ]"
+  check "$n: UbqArt is not in the deck" "! grep -q 'data-sheet=\"ubqart\"' '$page' && ! grep -q 'id=\"sheet-ubqart\"' '$page'"
+  check "$n: products order is LuxLife, zippy-fit, RaveCam" "[ \"\$(grep -o 'data-sheet=\"[a-z-]*\"' '$page' | head -3 | tr -d '\n')\" = 'data-sheet=\"luxlife\"data-sheet=\"zippy-fit\"data-sheet=\"ravecam\"' ]"
+  check "$n: items keep a real link without JS" "grep -q 'href=\"/apps/zippy-fit/\" data-sheet=\"zippy-fit\"' '$page' && grep -q 'href=\"https://luxlife.site/\" data-sheet=\"luxlife\"' '$page'"
   check "$n: 8 list cards have a footer row" "[ \"\$(count 'class=\"item-foot\"' '$page')\" -eq 8 ]"
-  check "$n: UbqArt shows its screenshot" "grep -q 'src=\"/assets/previews/ubqart.png\"' '$page' && [ -f '$SITE/assets/previews/ubqart.png' ]"
   check "$n: zippy-fit site link" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$page'"
   check "$n: npm items have live-number hooks" "grep -q 'data-np=\"firecomm-dl\"' '$page' && grep -q 'data-np=\"two-auth-v\"' '$page'"
   check "$n: loads panels.js" "grep -q 'src=\"/assets/js/panels.js\"' '$page'"

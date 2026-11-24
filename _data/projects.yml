@@ -10,6 +10,7 @@
 # `case_study: true` — then the card goes to /apps/<id>/, which must be a page
 # in apps/<id>.md with `layout: case-study` and `project: <id>`.
 # `meta` is split on " · " into platform chips. badge: founder | npm.
+# `deck: false` leaves a project out of the deck (its case-study page stays).
 
 categories:
   - id: products
@@ -39,18 +40,9 @@ projects:
     meta: web · iOS · Android
     case_study: true
     case_study_label: false   # has a detail page, but the card shows no "case study" tag
+    deck: false               # not in the deck; keeps its case-study page and home founder card
     links:
       - { label: site, url: "https://ubqart.com" }
-
-  - id: ravecam
-    category: products
-    name: RaveCam
-    tint: "#ec4899"
-    preview: /assets/previews/ravecam.png
-    desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
-    meta: iOS · Android
-    links:
-      - { label: site, url: "https://ravecam.onrender.com/" }
 
   - id: luxlife
     category: products
@@ -74,6 +66,16 @@ projects:
     links:
       - { label: site, url: "https://zepvalue.github.io/zippy-fit/" }
       - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
+
+  - id: ravecam
+    category: products
+    name: RaveCam
+    tint: "#ec4899"
+    preview: /assets/previews/ravecam.png
+    desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
+    meta: iOS · Android
+    links:
+      - { label: site, url: "https://ravecam.onrender.com/" }
 
   - id: firecomm
     category: open-source

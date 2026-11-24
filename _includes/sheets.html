@@ -2,7 +2,8 @@
   Sheet content for every project, plus the <dialog> that
   panels.js fills from a <template id="sheet-<id>">.
 {%- endcomment -%}
-{% for p in site.data.projects.projects %}
+{% assign deck_projects = site.data.projects.projects | where_exp: "p", "p.deck != false" %}
+{% for p in deck_projects %}
 {%- assign cs = site.pages | where: "project", p.id | first -%}
 {%- capture cs_url -%}/apps/{{ p.id }}/{%- endcapture -%}
 {%- assign parts = "" | split: "" -%}
