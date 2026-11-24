@@ -342,31 +342,30 @@
   }
 }
 
-.activity-list { display: flex; flex-direction: column; gap: 0.35rem; }
+.activity-list { display: flex; flex-direction: column; gap: 0.55rem; }
+// Two lines per event: action + time on top, repo name under it.
 .activity-item {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.6rem; // close to the language rows (0.62rem)
-  line-height: 1.2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.1rem 0.5rem;
+  font-size: 0.62rem;
+  line-height: 1.25;
   color: var(--fg-muted);
 
-  .activity-icon { width: 10px; height: 10px; flex-shrink: 0; opacity: 0.7; }
-  a {
-    min-width: 0;
+  &:hover .activity-verb { text-decoration: underline; }
+
+  .activity-verb { color: var(--fg); }
+  .activity-repo {
+    grid-column: 1 / -1;
     overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--fg);
-
-    &:hover { text-decoration: underline; }
   }
   .activity-time {
-    flex-shrink: 0;
-    margin-left: auto;
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
-    color: var(--fg-muted);
   }
 }
 
