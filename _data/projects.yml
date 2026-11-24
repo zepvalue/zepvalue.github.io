@@ -71,16 +71,6 @@ projects:
       - { label: site, url: "https://zepvalue.github.io/zippy-fit/" }
       - { label: source, url: "https://github.com/zepvalue/zippy-fit" }
 
-  - id: media-sync
-    category: products
-    name: media_sync
-    tint: "#38bdf8"
-    desc: "A personal local tool to republish your own short-form videos to TikTok."
-    lang: Python
-    color: "#3572A5"
-    case_study: true
-    links: []
-
   - id: firecomm
     category: open-source
     name: firecomm

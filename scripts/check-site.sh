@@ -11,11 +11,11 @@ check() { if eval "$2"; then echo "ok   $1"; else echo "FAIL $1"; fail=1; fi; }
 count() { grep -o "$1" "$2" 2>/dev/null | wc -l | tr -d ' '; }
 
 # ── Case-study pages ──────────────────────────────────────────────────────
-for slug in ubqart zippy-fit firecomm media-sync; do
+for slug in ubqart zippy-fit firecomm; do
   check "case study /apps/$slug/ exists" "[ -f '$SITE/apps/$slug/index.html' ]"
   check "case study /apps/$slug/ uses case-study layout" "grep -q 'class=\"cs\"' '$SITE/apps/$slug/index.html' 2>/dev/null"
 done
-check "media-sync keeps its TikTok text" "grep -q 'Content Posting API' '$SITE/apps/media-sync/index.html' 2>/dev/null"
+check "media-sync page is gone" "[ ! -e '$SITE/apps/media-sync' ] && ! grep -q 'data-sheet=\"media-sync\"' '$H'"
 check "no page for projects without a case study" "[ ! -e '$SITE/apps/luxlife' ] && [ ! -e '$SITE/apps/luxlife.html' ]"
 check "zippy-fit case study links to its site" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$SITE/apps/zippy-fit/index.html'"
 
@@ -26,10 +26,10 @@ for page in "$A" "$H"; do
   for id in products open-source backend web; do
     check "$n: panel #$id" "grep -q '<section class=\"panel\" id=\"$id\"' '$page'"
   done
-  check "$n: 13 project items" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 13 ]"
-  check "$n: 13 sheet templates" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 13 ]"
+  check "$n: 12 project items" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 12 ]"
+  check "$n: 12 sheet templates" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 12 ]"
   check "$n: sheet dialog" "grep -q '<dialog class=\"sheet\"' '$page'"
-  check "$n: 3 case-study labels (not UbqArt)" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 3 ]"
+  check "$n: 2 case-study labels (not UbqArt)" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 2 ]"
   check "$n: items keep a real link without JS" "grep -q 'href=\"/apps/ubqart/\" data-sheet=\"ubqart\"' '$page' && grep -q 'href=\"https://luxlife.site/\" data-sheet=\"luxlife\"' '$page'"
   check "$n: zippy-fit site link" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$page'"
   check "$n: npm items have live-number hooks" "grep -q 'data-np=\"firecomm-dl\"' '$page' && grep -q 'data-np=\"two-auth-v\"' '$page'"
