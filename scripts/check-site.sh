@@ -52,6 +52,17 @@ check "home: no languages section" "! grep -q 'gh-lang' '$H' && ! grep -q '>Lang
 check "home: one title, Engineer who ships" "grep -A1 'id=\"typed-strings\"' '$H' | tail -1 | grep -qx ' *<span>Engineer who ships</span>'"
 check "home: no Projects link row (the deck replaces it)" "! grep -q 'class=\"link-label\">Projects<' '$H'"
 
+# ── Home hero for clients ─────────────────────────────────────────────────
+line_of() { grep -n "$1" "$H" | head -1 | cut -d: -f1; }
+check "hero: headline for founders" "grep -q 'I build and ship MVPs for founders.' '$H'"
+check "hero: Book a call goes to Calendly" "grep -q 'href=\"https://calendly.com/zepvalue\"' '$H' && grep -q '>Book a call<' '$H'"
+check "hero: email as the second option" "grep -q '>or email me<' '$H'"
+check "hero: starting price in USD" "grep -q 'From \\\$100/hour' '$H'"
+check "hero: Available now badge, no operational" "grep -q '>Available now<' '$H' && ! grep -q '>operational<' '$H'"
+check "hero: numbers card with 8 years" "grep -q 'class=\"card stats-card\"' '$H' && grep -q '>8<' '$H'"
+check "hero: dev cards sit in the proof section below the hero" "[ -n \"\$(line_of 'id=\"proof\"')\" ] && [ \"\$(line_of 'npm-card')\" -gt \"\$(line_of 'id=\"proof\"')\" ] && [ \"\$(line_of 'id=\"gh-contrib\"')\" -gt \"\$(line_of 'id=\"proof\"')\" ]"
+check "head: title and description speak to clients" "grep -q '<title>[^<]*MVPs for founders' '$H' && grep -q '<meta name=\"description\" content=\"[^\"]*MVPs' '$H'"
+
 # ── Site-wide ─────────────────────────────────────────────────────────────
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"
 check "tests folder is not published" "[ ! -e '$SITE/tests' ]"

@@ -1,10 +1,11 @@
 ---
 layout: default
 ---
+{% assign hire = site.data.hire %}
 <div class="home-wrap">
   <div class="layout" data-github-user="{{ site.json.github_user }}" data-timezone="{{ site.json.timezone }}">
 
-    <!-- ════════ LEFT SIDEBAR — live GitHub ════════ -->
+    <!-- ════════ LEFT SIDEBAR — founder story + numbers ════════ -->
     <aside class="sidebar-left">
       <!-- founder · UbqArt -->
       <section class="card founder-card">
@@ -19,28 +20,105 @@ layout: default
         </div>
       </section>
 
-      <!-- published npm packages (live from npm) -->
-      <section class="card npm-card">
-        <div class="npm-head">
-          <span class="npm-badge">npm</span>
-          <span class="npm-title">Published packages</span>
+      <!-- numbers (from _data/hire.yml) -->
+      <section class="card stats-card" aria-label="In numbers">
+        {% for s in hire.stats %}
+        <div class="stat">
+          <span class="stat-value">{{ s.value }}</span>
+          <span class="stat-label">{{ s.label }}</span>
         </div>
-        <a class="npm-pkg" href="https://www.npmjs.com/package/firecomm" target="_blank" rel="noopener">
-          <span class="npm-pkg-top">
-            <span class="npm-pkg-name">firecomm<span class="npm-pkg-ver" data-np="firecomm-v">v2.0.5</span></span>
-            <span class="npm-pkg-dl" data-np="firecomm-dl">695 &darr;/yr</span>
-          </span>
-          <span class="npm-pkg-desc">Open-source gRPC library for Node</span>
-        </a>
-        <a class="npm-pkg" href="https://www.npmjs.com/package/two-auth" target="_blank" rel="noopener">
-          <span class="npm-pkg-top">
-            <span class="npm-pkg-name">two-auth<span class="npm-pkg-ver" data-np="two-auth-v">v2.0.3</span></span>
-            <span class="npm-pkg-dl" data-np="two-auth-dl">236 &darr;/yr</span>
-          </span>
-          <span class="npm-pkg-desc">Two-factor SMS auth with Twilio in 3 lines</span>
-        </a>
+        {% endfor %}
       </section>
+    </aside>
 
+    <!-- ════════ CENTER COLUMN ════════ -->
+    <main class="center">
+      {% if site.json.avatar %}
+      <a href="{{ site.json.profiles.github | default: '/' }}" target="_blank" rel="noopener">
+        <img class="avatar" src="{{ site.json.avatar }}" alt="{{ site.json.name }}" width="88" height="88" />
+      </a>
+      {% endif %}
+
+      <h1 class="name">{{ site.json.name | default: site.title }}</h1>
+
+      {% if site.json.description %}
+      <div id="typed-strings" hidden>
+        {% for line in site.json.description %}<span>{{ line }}</span>{% endfor %}
+      </div>
+      <p class="bio"><span id="typed"></span><span class="cursor">|</span></p>
+      {% endif %}
+
+      <p class="hero-headline">{{ hire.headline }}</p>
+      <p class="hero-sub">{{ hire.sub }}</p>
+
+      <div class="hero-cta">
+        <a class="btn-primary" href="{{ hire.calendly }}" target="_blank" rel="noopener">Book a call</a>
+        <a class="cta-secondary" href="mailto:{{ site.json.contact.email }}">or email me</a>
+      </div>
+      <p class="hero-price">From {{ hire.price }}</p>
+
+      <div class="hero-status">
+        <span class="uptime-badge">
+          <span class="uptime-dot operational"></span>
+          <span>{{ hire.availability }}</span>
+        </span>
+        <span class="timezone" id="clock">—</span>
+      </div>
+
+      <nav class="links">
+        {% for link in site.links %}
+        {% assign scheme = link.url | slice: 0, 4 %}
+        <a class="link-icon-btn" href="{{ link.url }}" aria-label="{{ link.label }}" title="{{ link.label }}"{% if scheme == "http" or scheme == "mail" %} target="_blank" rel="noopener"{% endif %}>
+          {% include icon.html name=link.icon class="link-icon" %}
+        </a>
+        {% endfor %}
+      </nav>
+
+      <footer class="center-footer">
+        <span>© {{ site.time | date: '%Y' }} · {{ site.json.name }}</span>
+      </footer>
+    </main>
+
+    <!-- ════════ RIGHT COLUMN — projects deck ════════ -->
+    <aside class="sidebar-right" aria-label="Projects">
+      {% include project-deck.html class="deck--column" %}
+    </aside>
+
+  </div>
+</div>
+
+<!-- ════════ PROOF — open source and GitHub activity, below the hero ════════ -->
+<section class="proof" id="proof" aria-labelledby="proof-title">
+  <h2 class="section-title" id="proof-title">Open source &amp; activity</h2>
+  <div class="proof-grid">
+    <!-- contribution graph, last 21 weeks (filled from assets/data/contributions.json) -->
+    <section class="card contrib-card" aria-label="GitHub contributions">
+      <div class="contrib" id="gh-contrib"></div>
+    </section>
+
+    <!-- published npm packages (live from npm) -->
+    <section class="card npm-card">
+      <div class="npm-head">
+        <span class="npm-badge">npm</span>
+        <span class="npm-title">Published packages</span>
+      </div>
+      <a class="npm-pkg" href="https://www.npmjs.com/package/firecomm" target="_blank" rel="noopener">
+        <span class="npm-pkg-top">
+          <span class="npm-pkg-name">firecomm<span class="npm-pkg-ver" data-np="firecomm-v">v2.0.5</span></span>
+          <span class="npm-pkg-dl" data-np="firecomm-dl">695 &darr;/yr</span>
+        </span>
+        <span class="npm-pkg-desc">Open-source gRPC library for Node</span>
+      </a>
+      <a class="npm-pkg" href="https://www.npmjs.com/package/two-auth" target="_blank" rel="noopener">
+        <span class="npm-pkg-top">
+          <span class="npm-pkg-name">two-auth<span class="npm-pkg-ver" data-np="two-auth-v">v2.0.3</span></span>
+          <span class="npm-pkg-dl" data-np="two-auth-dl">236 &darr;/yr</span>
+        </span>
+        <span class="npm-pkg-desc">Two-factor SMS auth with Twilio in 3 lines</span>
+      </a>
+    </section>
+
+    <div class="proof-stack">
       <!-- pinned repos -->
       <section class="card pinned">
         <span class="pinned-title">Pinned</span>
@@ -68,58 +146,9 @@ layout: default
           </div>
         </div>
       </section>
-
-      <!-- contribution graph, last 21 weeks (filled from assets/data/contributions.json) -->
-      <section class="card contrib-card" aria-label="GitHub contributions">
-        <div class="contrib" id="gh-contrib"></div>
-      </section>
-    </aside>
-
-    <!-- ════════ CENTER COLUMN ════════ -->
-    <main class="center">
-      {% if site.json.avatar %}
-      <a href="{{ site.json.profiles.github | default: '/' }}" target="_blank" rel="noopener">
-        <img class="avatar" src="{{ site.json.avatar }}" alt="{{ site.json.name }}" width="88" height="88" />
-      </a>
-      {% endif %}
-
-      <h1 class="name">{{ site.json.name | default: site.title }}</h1>
-
-      {% if site.json.description %}
-      <div id="typed-strings" hidden>
-        {% for line in site.json.description %}<span>{{ line }}</span>{% endfor %}
-      </div>
-      <p class="bio"><span id="typed"></span><span class="cursor">|</span></p>
-      {% endif %}
-
-      <p class="timezone" id="clock">—</p>
-
-      <span class="uptime-badge">
-        <span class="uptime-dot operational"></span>
-        <span id="uptime-text">operational</span>
-      </span>
-
-      <nav class="links">
-        {% for link in site.links %}
-        {% assign scheme = link.url | slice: 0, 4 %}
-        <a class="link-icon-btn" href="{{ link.url }}" aria-label="{{ link.label }}" title="{{ link.label }}"{% if scheme == "http" or scheme == "mail" %} target="_blank" rel="noopener"{% endif %}>
-          {% include icon.html name=link.icon class="link-icon" %}
-        </a>
-        {% endfor %}
-      </nav>
-
-      <footer class="center-footer">
-        <span>© {{ site.time | date: '%Y' }} · {{ site.json.name }}</span>
-      </footer>
-    </main>
-
-    <!-- ════════ RIGHT COLUMN — projects deck ════════ -->
-    <aside class="sidebar-right" aria-label="Projects">
-      {% include project-deck.html class="deck--column" %}
-    </aside>
-
+    </div>
   </div>
-</div>
+</section>
 
 {% include sheets.html %}
 

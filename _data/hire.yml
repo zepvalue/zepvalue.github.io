@@ -1,0 +1,16 @@
+# Hero copy for clients on the home page (_layouts/home.html).
+# Data files reload under `make serve`, unlike _config.yml.
+headline: "I build and ship MVPs for founders."
+sub: "Web and mobile, from idea to launch in weeks."
+calendly: "https://calendly.com/zepvalue"
+price: "$100/hour"
+availability: "Available now"
+
+# Numbers card in the left column. Keep every figure true.
+stats:
+  - value: 8
+    label: years shipping
+  - value: 4
+    label: products built
+  - value: 2
+    label: npm packages

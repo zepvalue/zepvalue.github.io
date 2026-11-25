@@ -79,7 +79,7 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
-  grid-template-rows: auto auto 1fr auto; // pinned + activity take the spare height; graph sits last
+  grid-template-rows: auto 1fr; // the numbers card takes the spare height
   gap: 0.5rem;
   align-items: start;
   align-self: stretch;
@@ -96,16 +96,50 @@
   gap: 0.4rem;
 }
 
-.founder-badge {
+// Badges are neutral: green is kept for actions and live signals only.
+.founder-badge,
+.npm-badge {
   font-family: var(--font-mono);
   font-size: 0.55rem;
   font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  padding: 0.1rem 0.35rem;
+  color: var(--fg);
+  background: var(--surface-2);
+  border: 1px solid var(--border-hover);
+  padding: 0.05rem 0.35rem;
   border-radius: 3px;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+}
+.founder-badge { text-transform: uppercase; }
+
+// Numbers card: fills the rest of the left column as three equal rows with
+// hairline dividers, so the height reads as layout, not empty space.
+.stats-card {
+  grid-column: span 2;
+  align-self: stretch;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-auto-rows: 1fr;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+
+  & + & { border-top: 1px solid var(--border); }
+}
+.stat-value {
+  min-width: 3rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
 }
 
 .founder-head {
@@ -148,22 +182,10 @@
 
 // Published npm packages card
 .npm-card {
-  grid-column: span 2;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-}
-
-.npm-badge {
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  font-weight: 600;
-  color: #fff;
-  background: #cb3837;
-  padding: 0.1rem 0.3rem;
-  border-radius: 3px;
-  letter-spacing: 0.02em;
 }
 
 .npm-head {
@@ -247,8 +269,6 @@
 
 // ── Pinned repos card ───────────────────────────────────────────────────────
 .pinned {
-  min-height: 11rem;
-  align-self: stretch;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -294,11 +314,9 @@
 }
 .lang-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-// ── Languages + activity card ───────────────────────────────────────────────
-// Same padding and title style as the Pinned card next to it.
+// ── Activity card ───────────────────────────────────────────────────────────
+// Same padding and title style as the Pinned card above it.
 .activity-card {
-  min-height: 11rem;
-  align-self: stretch;
   padding: 0.75rem;
 }
 
@@ -334,11 +352,10 @@
   }
 }
 
-// ── Contribution graph (GitHub-style, last 21 weeks, left column card) ─────
+// ── Contribution graph (GitHub-style, last 21 weeks, in the proof section) ─
 // Columns are weeks, rows are weekdays (Sun first). Both the month row and the
 // day grid use one column per week, so the labels line up with the squares.
 .contrib-card {
-  grid-column: span 2;
   min-width: 0;
   padding: 0.75rem;
   display: flex;
@@ -451,13 +468,78 @@
   .cursor { animation: blink 1s step-end infinite; }
 }
 
+// ── Hero pitch: headline, call to action, price ────────────────────────────
+.hero-headline {
+  margin-top: 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-wrap: balance;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+.hero-sub {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+  text-wrap: balance;
+  animation: fadeUp 0.5s ease 0.24s both;
+}
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1.5rem;
+  animation: fadeUp 0.5s ease 0.28s both;
+}
+.btn-primary {
+  padding: 0.65rem 1.4rem;
+  border-radius: 0.5rem;
+  background: var(--green);
+  color: var(--bg);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.15s ease;
+
+  &:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  &:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+}
+.cta-secondary {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-hover);
+  transition: color 0.15s ease;
+
+  &:hover { color: var(--fg); }
+}
+.hero-price {
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+.hero-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 1.5rem 0 1.75rem;
+  animation: fadeUp 0.5s ease 0.32s both;
+}
+
 .timezone {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--fg-muted);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 0.75rem;
-  animation: fadeUp 0.5s ease 0.24s both;
 }
 
 .uptime-badge {
@@ -469,10 +551,8 @@
   border: 1px solid var(--border);
   border-radius: 1rem;
   font-size: 0.65rem;
-  color: var(--fg-muted);
-  margin-bottom: 2rem;
+  color: var(--fg);
   transition: border-color 0.2s ease;
-  animation: fadeUp 0.5s ease 0.28s both;
 
   &:hover { border-color: var(--border-hover); }
 
@@ -535,6 +615,37 @@
 }
 
 // ════════════════════════════════════════════════════════════════════════
+//  PROOF — open source and GitHub activity, below the hero
+// ════════════════════════════════════════════════════════════════════════
+// Same three column widths as the hero, so the edges line up.
+.proof {
+  padding: 1rem 2rem 4rem;
+}
+.section-title {
+  width: min(100%, 66.5rem);
+  margin: 0 auto 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.proof-grid {
+  display: grid;
+  grid-template-columns: 22.5rem 20rem 20rem;
+  gap: 2rem;
+  justify-content: center;
+  align-items: start; // each card keeps its own height; no empty stretched boxes
+}
+.proof-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+// ════════════════════════════════════════════════════════════════════════
 //  Responsive — collapse to single centered column
 // ════════════════════════════════════════════════════════════════════════
 @media (max-width: 1100px) {
@@ -569,5 +680,12 @@
     grid-template-rows: none;
   }
 
-  .github { height: auto; min-height: 150px; }
+  .proof { padding: 0 1rem 3rem; }
+  .section-title { max-width: 360px; }
+  .proof-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    max-width: 360px;
+    margin: 0 auto;
+  }
 }
