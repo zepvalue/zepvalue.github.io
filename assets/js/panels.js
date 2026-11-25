@@ -67,6 +67,8 @@
       if (i === current) tab.setAttribute("aria-current", "true");
       else tab.removeAttribute("aria-current");
     });
+    fitHeight(current, last);
+
     var active = tabs[current];
     if (active && tabsNav.scrollWidth > tabsNav.clientWidth) {
       // Keep the current tab in view inside the tab row (no page scroll).
@@ -75,6 +77,16 @@
         tabsNav.scrollLeft = l - 8;
       }
     }
+  }
+
+  // Where the CSS sets --deck-fit: 1 (the home deck on phones), the deck is as
+  // tall as the panel in view, so a short panel leaves no gap above the arrows.
+  // Elsewhere the CSS height stays.
+  function fitHeight(first, last) {
+    var fit = getComputedStyle(deck).getPropertyValue("--deck-fit").trim() === "1";
+    if (!fit) { track.style.height = ""; return; }
+    var heights = panels.map(function (p) { return p.offsetHeight; });
+    track.style.height = core.visibleHeight(heights, first, last) + "px";
   }
 
   function go(i, smooth) {

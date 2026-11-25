@@ -62,7 +62,17 @@
 
 // Home page right column: no name in the bar (it is in the centre column),
 // and the bar is not sticky. Its height comes from _home.scss (.sidebar-right).
+// The panel has no box here: the project cards sit on the page like the left
+// column's cards (one level of borders), and spare height is plain background.
 .deck--column {
+  .panel {
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+  // Same surface as the left column's cards.
+  .panel-list:not(.is-featured) .item-link { background: var(--surface); }
   .deck-name { display: none; }
   .deck-bar { position: static; padding-bottom: 0; background: none; }
   .deck-arrows { margin-left: auto; }
@@ -117,7 +127,8 @@
 
 // ── Panel content ─────────────────────────────────────────────────────────
 
-.panel-head { margin-bottom: 1rem; }
+// Spacing is on a 4px grid: 0.25 / 0.5 / 0.75 / 1 / 1.5rem.
+.panel-head { margin-bottom: 0.75rem; }
 
 .panel-title {
   display: flex;
@@ -125,11 +136,9 @@
   gap: 0.55rem;
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
+  color: var(--fg);
 }
 
 .panel-count {
@@ -138,12 +147,12 @@
   border-radius: 999px;
   font-size: var(--text-xs);
   font-weight: 400;
-  letter-spacing: 0;
   line-height: 1.5;
+  color: var(--muted);
 }
 
 .panel-note {
-  margin: 0.35rem 0 0;
+  margin: 0.25rem 0 0;
   font-size: var(--text-sm);
   color: var(--muted);
 }
@@ -151,7 +160,7 @@
 .panel-list {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -159,27 +168,17 @@
   &.is-featured { gap: 0.75rem; }
 }
 
-// List panels (all but Products): each project is a bordered card. In the
-// deck, the cards share the panel's height, so a panel with 2 projects has
-// no empty space; they never shrink below their content (the panel scrolls).
-.deck.is-ready .panel {
-  display: flex;
-  flex-direction: column;
-
-  .panel-list:not(.is-featured) { flex: 1 0 auto; }
-  .panel-list:not(.is-featured) > .panel-item { flex: 1 0 auto; display: flex; min-width: 0; }
-}
-
+// List panels (all but Products): each project is a bordered card that fits
+// its content: head row (icon, title, badge), description, meta footer.
 .item-link {
   display: flex;
-  flex: 1;
+  flex-direction: column;
   min-width: 0; // lets the one-line footer truncate instead of widening the card
-  align-items: stretch;
   gap: 0.75rem;
-  padding: 0.85rem;
+  padding: 1rem;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 0.65rem;
+  border-radius: 0.5rem;
   color: inherit;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 
@@ -188,6 +187,7 @@
     border-color: var(--border-hover);
 
     .item-arrow { color: var(--fg); transform: translate(2px, -2px); }
+    .item-cs { color: var(--fg); }
   }
 
   &:focus-visible {
@@ -198,8 +198,8 @@
   // Products: screenshot cards without a frame.
   .is-featured & {
     display: block;
-    margin: 0 -0.55rem;
-    padding: 0.55rem;
+    margin: 0 -0.5rem;
+    padding: 0.5rem;
     background: none;
     border: 0;
 
@@ -207,14 +207,46 @@
   }
 }
 
+.item-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+
+  .npm-badge { margin-left: auto; }
+}
+
+// Neutral icon square: the colour lives in the badges and language dots.
+.item-icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--fg-soft);
+
+  .item-icon-svg { width: 1rem; height: 1rem; }
+}
+
 .item-foot {
   display: flex;
-  flex-wrap: wrap; // npm numbers go to a second line instead of being cut
   align-items: center;
-  gap: 0.25rem 0.75rem;
-  margin-top: auto; // pins the row to the bottom of a stretched card
-  padding-top: 0.6rem;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
   min-width: 0;
+}
+
+.item-cs {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--fg-soft);
+  white-space: nowrap;
+  transition: color 0.15s ease;
 }
 
 .item-lang {
@@ -253,7 +285,7 @@
     display: grid;
     place-items: center;
     font-family: var(--font-sans);
-    font-size: 1.5rem;
+    font-size: var(--text-lg);
     font-weight: 600;
     color: var(--tint);
     background: color-mix(in srgb, var(--tint) 10%, var(--surface-2));
@@ -271,15 +303,17 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.55rem;
-  font-size: 0.92rem;
+  margin-top: 0.5rem;
 }
 
 .item-name {
-  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-md);
+  font-weight: 600;
   color: var(--fg);
-
-  .npm-badge, .cs-label { font-size: var(--text-xs); vertical-align: 0.1em; }
 }
 
 .item-meta {
@@ -290,27 +324,17 @@
   white-space: nowrap;
 }
 
-.item-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 0.25rem;
-  min-width: 0;
-}
-
 .item-desc {
   font-size: var(--text-sm);
-  line-height: 1.45;
-  color: var(--text);
+  line-height: 1.5;
+  color: var(--fg-soft);
 }
 
 .item-sub {
   min-width: 0;
   overflow: hidden;
-  font-family: var(--font-mono);
   font-size: var(--text-xs);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--muted);
@@ -324,7 +348,7 @@
   height: 2rem;
   border-radius: 0.5rem;
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--tint);
   background: color-mix(in srgb, var(--tint) 14%, transparent);
@@ -397,7 +421,7 @@
 
 .deck-btn {
   width: 2.25rem;
-  font-size: 1.3rem;
+  font-size: var(--text-md);
   line-height: 1;
 
   @media (pointer: coarse) { width: 2.75rem; }
@@ -407,8 +431,7 @@
   padding: 0 1.1rem;
   font-family: var(--font-sans);
   font-size: var(--text-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 
 // ── Project sheet (<dialog>) ──────────────────────────────────────────────
@@ -475,7 +498,7 @@ html:has(.sheet[open]) { overflow: hidden; }
   align-items: center;
   gap: 0.75rem;
 
-  .app-mark { width: 2.5rem; height: 2.5rem; font-size: 1.1rem; }
+  .app-mark { width: 2.5rem; height: 2.5rem; font-size: var(--text-md); }
 }
 
 .sheet-title {
@@ -485,7 +508,7 @@ html:has(.sheet[open]) { overflow: hidden; }
   gap: 0.5rem;
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   font-weight: 600;
 
   .founder-badge, .npm-badge { font-size: var(--text-xs); }
@@ -529,7 +552,7 @@ html:has(.sheet[open]) { overflow: hidden; }
   }
 
   dt { font-size: var(--text-xs); color: var(--muted); }
-  dd { margin: 0; font-size: 0.95rem; font-weight: 500; }
+  dd { margin: 0; font-size: var(--text-sm); font-weight: 600; }
 }
 
 .sheet-links {
@@ -556,7 +579,7 @@ html:has(.sheet[open]) { overflow: hidden; }
 .sheet-more {
   display: inline-block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--green);
 
   &:hover { text-decoration: underline; }

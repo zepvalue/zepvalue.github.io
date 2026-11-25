@@ -1,12 +1,15 @@
 // ── Case-study pages (/apps/<id>/) and the "case study" card label ──────────
 
+// Neutral pill, same shape as the tinted badges, so it doesn't pull the eye.
 .cs-label {
-  padding: 0.05rem 0.5rem;
-  border-radius: 0.3rem;
-  background: var(--fg);
-  color: var(--bg);
+  padding: 0 0.45rem;
+  border: 1px solid var(--border-hover);
+  border-radius: 999px;
+  color: var(--fg-soft);
   font-size: var(--text-xs);
   font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
 .cs {
@@ -35,7 +38,7 @@
   gap: 0.6rem;
   margin-bottom: 0.6rem;
 
-  .founder-badge, .npm-badge { font-size: 0.65rem; }
+  .founder-badge, .npm-badge { font-size: var(--text-xs); }
 }
 
 .cs-meta {

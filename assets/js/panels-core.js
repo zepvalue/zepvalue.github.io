@@ -38,7 +38,19 @@
     return j >= 0 && j < ids.length ? ids[j] : null;
   }
 
-  var api = { parseHash: parseHash, namedPanel: namedPanel, nearestIndex: nearestIndex, neighbor: neighbor };
+  // Height the deck needs to show panels first..last: the tallest of them.
+  function visibleHeight(heights, first, last) {
+    var max = 0;
+    for (var i = Math.max(0, first); i <= Math.min(last, heights.length - 1); i++) {
+      if (heights[i] > max) max = heights[i];
+    }
+    return max;
+  }
+
+  var api = {
+    parseHash: parseHash, namedPanel: namedPanel, nearestIndex: nearestIndex,
+    neighbor: neighbor, visibleHeight: visibleHeight
+  };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PanelsCore = api;
 })(this);

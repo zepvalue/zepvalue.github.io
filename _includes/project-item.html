@@ -17,24 +17,26 @@
     {% endif %}
     <span class="item-cap">
       <span class="item-name">{{ p.name }}</span>
-      {% if show_label %}<span class="cs-label">case study</span>{% endif %}
+      {% if show_label %}<span class="cs-label">Case study</span>{% endif %}
       <span class="item-meta">{% if p.badge == "founder" %}founder{% elsif p.meta %}{{ p.meta }}{% else %}{{ p.lang }}{% endif %}</span>
     </span>
   {% else %}
     {%- assign host = p.links.first.url | remove: "https://" | remove: "http://" | remove: "www." | split: "/" | first -%}
-    <span class="app-mark" style="--tint:{{ p.color | default: p.tint | default: '#71717a' }}" aria-hidden="true">{{ p.name | slice: 0 | upcase }}</span>
-    <span class="item-body">
-      <span class="item-name">{{ p.name }}{% if p.badge == "npm" %} <span class="npm-badge">npm</span>{% endif %}{% if show_label %} <span class="cs-label">case study</span>{% endif %}</span>
-      <span class="item-desc">{{ p.desc }}</span>
-      <span class="item-foot">
-        {% if p.lang %}<span class="item-lang"><span class="lang-dot" style="background:{{ p.color | default: '#71717a' }}"></span>{{ p.lang }}</span>{% endif %}
-        {% if p.badge == "npm" %}
-        <span class="item-sub is-live"><span data-np="{{ p.id }}-v">v{{ p.npm_version }}</span> · <span data-np="{{ p.id }}-dl">{{ p.npm_downloads }} ↓/yr</span></span>
-        {% else %}
-        <span class="item-sub">{{ host }}</span>
-        {% endif %}
-        <span class="item-arrow" aria-hidden="true">{% if p.case_study %}&rarr;{% else %}&nearr;{% endif %}</span>
-      </span>
+    {%- if p.badge == "npm" -%}{%- assign icon = "package" -%}{%- elsif p.category == "web" -%}{%- assign icon = "globe" -%}{%- else -%}{%- assign icon = "code" -%}{%- endif %}
+    <span class="item-head">
+      <span class="item-icon">{% include icon.html name=icon class="item-icon-svg" %}</span>
+      <span class="item-name">{{ p.name }}</span>
+      {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
+    </span>
+    <span class="item-desc">{{ p.desc }}</span>
+    <span class="item-foot">
+      {% if p.lang and p.badge != "npm" %}<span class="item-lang"><span class="lang-dot" style="background:{{ p.color | default: '#71717a' }}"></span>{{ p.lang }}</span>{% endif %}
+      {% if p.badge == "npm" %}
+      <span class="item-sub is-live"><span data-np="{{ p.id }}-v">v{{ p.npm_version }}</span> · <span data-np="{{ p.id }}-dl">{{ p.npm_downloads }}/yr</span></span>
+      {% else %}
+      <span class="item-sub">{{ host }}</span>
+      {% endif %}
+      {% if show_label %}<span class="item-cs">Case study &rarr;</span>{% else %}<span class="item-arrow" aria-hidden="true">{% if p.case_study %}&rarr;{% else %}&nearr;{% endif %}</span>{% endif %}
     </span>
   {% endif %}
   </a>

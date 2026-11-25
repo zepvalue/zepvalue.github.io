@@ -4,7 +4,8 @@
   --border: #27272a;
   --border-hover: #3f3f46;
   --fg: #fafafa;
-  --fg-muted: #71717a;
+  --fg-muted: #71717a; // meta: labels, dates, versions
+  --fg-soft: #a1a1aa;  // body text inside cards
   --accent: #fafafa;
   --accent-bright: #ffffff;
   --green: #22c55e;
@@ -22,6 +23,8 @@
   --font-mono: "Fira Code", "SF Mono", "JetBrains Mono", ui-monospace, monospace;
 
   // Type scale: five sizes only. Nothing smaller than --text-xs.
+  // Two weights only: 400 for text, 600 for titles, badges and buttons.
+  // Sentence case everywhere; the code font only for the clock.
   --text-xs: 0.75rem;  // labels, badges, graph, meta
   --text-sm: 0.875rem; // card text
   --text-md: 1rem;     // card titles, body

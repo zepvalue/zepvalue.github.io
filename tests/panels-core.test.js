@@ -2,7 +2,7 @@
 // Run: node --test tests/panels-core.test.js   (or: make test)
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { parseHash, nearestIndex, neighbor, namedPanel } = require("../assets/js/panels-core.js");
+const { parseHash, nearestIndex, neighbor, namedPanel, visibleHeight } = require("../assets/js/panels-core.js");
 
 const panels = ["products", "open-source", "backend", "web"];
 const projects = { ubqart: 0, "zippy-fit": 0, firecomm: 1, sharad: 3 };
@@ -55,4 +55,17 @@ test("neighbor: steps inside the list and stops at the ends", () => {
   assert.equal(neighbor(ids, "c", 1), null);
   assert.equal(neighbor(ids, "a", -1), null);
   assert.equal(neighbor(ids, "x", 1), null);
+});
+
+test("visibleHeight: one visible panel gives its own height", () => {
+  assert.equal(visibleHeight([600, 280, 420, 300], 1, 1), 280);
+});
+
+test("visibleHeight: several visible panels give the tallest of them", () => {
+  assert.equal(visibleHeight([600, 280, 420, 300], 1, 2), 420);
+});
+
+test("visibleHeight: range is clamped to the list", () => {
+  assert.equal(visibleHeight([600, 280], 1, 5), 280);
+  assert.equal(visibleHeight([], 0, 0), 0);
 });

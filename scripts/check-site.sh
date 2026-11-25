@@ -34,13 +34,17 @@ for page in "$A" "$H"; do
   check "$n: 11 project items (no UbqArt)" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 11 ]"
   check "$n: 11 sheet templates (no UbqArt)" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 11 ]"
   check "$n: sheet dialog" "grep -q '<dialog class=\"sheet\"' '$page'"
-  check "$n: 2 case-study labels" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 2 ]"
+  check "$n: 2 case-study labels" "[ \"\$(grep -oE 'class=\"(cs-label|item-cs)\"' '$page' | wc -l | tr -d ' ')\" -eq 2 ]"
   check "$n: UbqArt is not in the deck" "! grep -q 'data-sheet=\"ubqart\"' '$page' && ! grep -q 'id=\"sheet-ubqart\"' '$page'"
   check "$n: products order is LuxLife, zippy-fit, StashCam" "[ \"\$(grep -o 'data-sheet=\"[a-z-]*\"' '$page' | head -3 | tr -d '\n')\" = 'data-sheet=\"luxlife\"data-sheet=\"zippy-fit\"data-sheet=\"stashcam\"' ]"
   check "$n: items keep a real link without JS" "grep -q 'href=\"/apps/zippy-fit/\" data-sheet=\"zippy-fit\"' '$page' && grep -q 'href=\"https://luxlife.site/\" data-sheet=\"luxlife\"' '$page'"
   check "$n: 8 list cards have a footer row" "[ \"\$(count 'class=\"item-foot\"' '$page')\" -eq 8 ]"
   check "$n: zippy-fit site link" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$page'"
   check "$n: npm items have live-number hooks" "grep -q 'data-np=\"firecomm-dl\"' '$page' && grep -q 'data-np=\"two-auth-v\"' '$page'"
+  check "$n: list cards have a neutral icon" "[ \"\$(count 'class=\"item-icon\"' '$page')\" -eq 8 ]"
+  check "$n: list cards have a head row with the title" "[ \"\$(count 'class=\"item-head\"' '$page')\" -eq 8 ]"
+  check "$n: downloads say /yr, no arrow glyph" "! grep -q '↓/yr' '$page'"
+  check "$n: case study is a footer link in list cards" "grep -q 'class=\"item-cs\">Case study' '$page'"
   check "$n: loads panels.js" "grep -q 'src=\"/assets/js/panels.js\"' '$page'"
 done
 
@@ -57,7 +61,7 @@ line_of() { grep -n "$1" "$H" | head -1 | cut -d: -f1; }
 check "hero: headline for founders" "grep -q 'I build and ship MVPs for founders.' '$H'"
 check "hero: Book a call goes to Calendly" "grep -q 'href=\"https://calendly.com/zepvalue\"' '$H' && grep -q '>Book a call<' '$H'"
 check "hero: email as the second option" "grep -q '>or email me<' '$H'"
-check "hero: starting price in USD" "grep -q 'From \\\$100/hour' '$H'"
+check "hero: no price shown" "! grep -q 'hero-price' '$H' && ! grep -q '/hour' '$H'"
 check "hero: Available now badge, no operational" "grep -q '>Available now<' '$H' && ! grep -q '>operational<' '$H'"
 check "hero: no numbers card" "! grep -q 'stats-card' '$H'"
 check "hero: one screen, no section below the hero" "! grep -q 'id=\"proof\"' '$H'"
@@ -69,6 +73,12 @@ check "hero: firecomm card links to docs, source and case study" "grep -A20 'cre
 check "npm card: one-line rows, no descriptions" "! grep -q 'class=\"npm-pkg-desc\"' '$H'"
 check "hero: UbqArt badge says ex-founder" "grep -q 'class=\"founder-badge\">ex-founder<' '$H'"
 check "head: title and description speak to clients" "grep -q '<title>[^<]*MVPs for founders' '$H' && grep -q '<meta name=\"description\" content=\"[^\"]*MVPs' '$H'"
+
+# ── Favicon ───────────────────────────────────────────────────────────────
+check "favicon: SVG icon linked in the head" "grep -q '<link rel=\"icon\" type=\"image/svg+xml\" href=\"/assets/favicon.svg\"' '$H'"
+check "favicon: every icon the head links exists" "( for f in \$(grep -oE 'href=\"/assets/[^\"]*(png|ico|svg|webmanifest)\"' '$H' | cut -d'\"' -f2); do [ -f \"$SITE\$f\" ] || exit 1; done )"
+check "favicon: every manifest icon exists" "( for f in \$(grep -oE '\"src\":\"[^\"]*\"' '$SITE/assets/site.webmanifest' | cut -d'\"' -f4); do [ -f \"$SITE\$f\" ] || exit 1; done )"
+check "favicon: manifest has the site name" "grep -q '\"name\":\"Giuseppe Zep V\"' '$SITE/assets/site.webmanifest'"
 
 # ── Site-wide ─────────────────────────────────────────────────────────────
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"

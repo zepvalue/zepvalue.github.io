@@ -82,7 +82,7 @@
     PKGS.forEach(function (pkg) {
       npm("https://api.npmjs.org/downloads/point/last-year/" + pkg)
         .then(function (d) {
-          set('[data-np="' + pkg + '-dl"]', compact(d.downloads) + " ↓/yr");
+          set('[data-np="' + pkg + '-dl"]', compact(d.downloads) + "/yr");
         })
         .catch(function () {});
       npm("https://registry.npmjs.org/" + pkg + "/latest")
