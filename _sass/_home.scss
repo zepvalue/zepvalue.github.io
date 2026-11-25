@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem 2rem; // 1.5rem top and bottom keeps 1280×720 free of vertical scroll
 }
 
 // Three columns: left cards | profile | deck. They share one top and bottom
@@ -79,7 +79,7 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
-  grid-template-rows: auto 1fr; // the numbers card takes the spare height
+  grid-template-rows: auto auto 1fr; // the graph card takes the spare height
   gap: 0.5rem;
   align-items: start;
   align-self: stretch;
@@ -110,37 +110,6 @@
   letter-spacing: 0.02em;
 }
 .founder-badge { text-transform: uppercase; }
-
-// Numbers card: fills the rest of the left column as three equal rows with
-// hairline dividers, so the height reads as layout, not empty space.
-.stats-card {
-  grid-column: span 2;
-  align-self: stretch;
-  padding: 0 1.25rem;
-  display: grid;
-  grid-auto-rows: 1fr;
-}
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0;
-
-  & + & { border-top: 1px solid var(--border); }
-}
-.stat-value {
-  min-width: 3rem;
-  font-size: 2.5rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--fg);
-  font-variant-numeric: tabular-nums;
-}
-.stat-label {
-  font-size: 0.8rem;
-  color: var(--fg-muted);
-}
 
 .founder-head {
   display: flex;
@@ -182,6 +151,7 @@
 
 // Published npm packages card
 .npm-card {
+  grid-column: span 2;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -194,12 +164,13 @@
   gap: 0.45rem;
 
   .npm-title { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
-  .npm-total {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    color: var(--fg-muted);
-  }
+}
+
+// One live total for both packages, under the card title
+.npm-total {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--green);
 }
 
 .npm-pkg {
@@ -229,12 +200,6 @@
   font-weight: 400;
   color: var(--fg-muted);
   margin-left: 0.3rem;
-}
-.npm-pkg-dl {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  color: var(--green);
-  white-space: nowrap;
 }
 .npm-pkg-desc {
   font-size: 0.6rem;
@@ -267,99 +232,20 @@
   margin-top: 0.1rem;
 }
 
-// ── Pinned repos card ───────────────────────────────────────────────────────
-.pinned {
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.pinned-title,
-.card-title {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-}
-
-.pinned-list { display: flex; flex-direction: column; gap: 0.375rem; }
-
-.pinned-repo {
-  display: block;
-  padding: 0.5rem 0.625rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 0.375rem;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-
-  &:hover { transform: translateY(-1px); border-color: var(--border-hover); }
-}
-
-.pinned-name { font-size: 0.7rem; font-weight: 500; color: var(--fg); }
-.pinned-desc {
-  font-size: 0.6rem;
-  color: var(--fg-muted);
-  margin-top: 0.15rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pinned-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.55rem;
-  color: var(--fg-muted);
-  margin-top: 0.25rem;
-}
 .lang-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-// ── Activity card ───────────────────────────────────────────────────────────
-// Same padding and title style as the Pinned card above it.
-.activity-card {
-  padding: 0.75rem;
-}
-
-.activity-block { display: flex; flex-direction: column; gap: 0.6rem; }
-
-.block-title { font-size: 0.7rem; font-weight: 500; color: var(--fg-muted); }
-
-.activity-list { display: flex; flex-direction: column; gap: 0.65rem; }
-
-// Two lines per event: action + time on top, repo name under it.
-.activity-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.1rem 0.5rem;
-  font-size: 0.62rem;
-  line-height: 1.25;
-  color: var(--fg-muted);
-
-  &:hover .activity-verb { text-decoration: underline; }
-
-  .activity-verb { color: var(--fg); }
-  .activity-repo {
-    grid-column: 1 / -1;
-    overflow: hidden;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .activity-time {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-// ── Contribution graph (GitHub-style, last 21 weeks, in the proof section) ─
+// ── Contribution graph (GitHub-style, last 21 weeks, left column) ──────────
 // Columns are weeks, rows are weekdays (Sun first). Both the month row and the
 // day grid use one column per week, so the labels line up with the squares.
+// The card fills the rest of the column; the graph sits centred in it.
 .contrib-card {
+  grid-column: span 2;
+  align-self: stretch;
   min-width: 0;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
 }
 .contrib-total {
@@ -615,37 +501,6 @@
 }
 
 // ════════════════════════════════════════════════════════════════════════
-//  PROOF — open source and GitHub activity, below the hero
-// ════════════════════════════════════════════════════════════════════════
-// Same three column widths as the hero, so the edges line up.
-.proof {
-  padding: 1rem 2rem 4rem;
-}
-.section-title {
-  width: min(100%, 66.5rem);
-  margin: 0 auto 1rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
-.proof-grid {
-  display: grid;
-  grid-template-columns: 22.5rem 20rem 20rem;
-  gap: 2rem;
-  justify-content: center;
-  align-items: start; // each card keeps its own height; no empty stretched boxes
-}
-.proof-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-width: 0;
-}
-
-// ════════════════════════════════════════════════════════════════════════
 //  Responsive — collapse to single centered column
 // ════════════════════════════════════════════════════════════════════════
 @media (max-width: 1100px) {
@@ -678,14 +533,5 @@
     justify-self: stretch;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
-  }
-
-  .proof { padding: 0 1rem 3rem; }
-  .section-title { max-width: 360px; }
-  .proof-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    max-width: 360px;
-    margin: 0 auto;
   }
 }

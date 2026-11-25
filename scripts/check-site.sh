@@ -46,7 +46,7 @@ done
 
 # ── Home page ─────────────────────────────────────────────────────────────
 check "home: deck sits in the right column" "grep -q '<aside class=\"sidebar-right\"' '$H'"
-check "home: left sidebar and profile stay" "grep -q 'class=\"sidebar-left\"' '$H' && grep -q 'id=\"clock\"' '$H' && grep -q 'id=\"gh-pinned\"' '$H'"
+check "home: left sidebar and profile stay" "grep -q 'class=\"sidebar-left\"' '$H' && grep -q 'id=\"clock\"' '$H' && grep -q 'id=\"gh-contrib\"' '$H'"
 check "home: still loads home.js" "grep -q 'src=\"/assets/js/home.js\"' '$H'"
 check "home: no languages section" "! grep -q 'gh-lang' '$H' && ! grep -q '>Languages<' '$H'"
 check "home: one title, Engineer who ships" "grep -A1 'id=\"typed-strings\"' '$H' | tail -1 | grep -qx ' *<span>Engineer who ships</span>'"
@@ -59,8 +59,12 @@ check "hero: Book a call goes to Calendly" "grep -q 'href=\"https://calendly.com
 check "hero: email as the second option" "grep -q '>or email me<' '$H'"
 check "hero: starting price in USD" "grep -q 'From \\\$100/hour' '$H'"
 check "hero: Available now badge, no operational" "grep -q '>Available now<' '$H' && ! grep -q '>operational<' '$H'"
-check "hero: numbers card with 8 years" "grep -q 'class=\"card stats-card\"' '$H' && grep -q '>8<' '$H'"
-check "hero: dev cards sit in the proof section below the hero" "[ -n \"\$(line_of 'id=\"proof\"')\" ] && [ \"\$(line_of 'npm-card')\" -gt \"\$(line_of 'id=\"proof\"')\" ] && [ \"\$(line_of 'id=\"gh-contrib\"')\" -gt \"\$(line_of 'id=\"proof\"')\" ]"
+check "hero: no numbers card" "! grep -q 'stats-card' '$H'"
+check "hero: one screen, no section below the hero" "! grep -q 'id=\"proof\"' '$H'"
+check "hero: npm and graph sit in the left column" "[ -n \"\$(line_of 'npm-card')\" ] && [ \"\$(line_of 'npm-card')\" -lt \"\$(line_of 'class=\"center\"')\" ] && [ \"\$(line_of 'id=\"gh-contrib\"')\" -lt \"\$(line_of 'class=\"center\"')\" ]"
+check "hero: Pinned and Activity are gone" "! grep -q 'id=\"gh-pinned\"' '$H' && ! grep -q 'id=\"gh-activity\"' '$H'"
+check "npm card: one last-year total, no per-package downloads" "grep -q 'id=\"npm-total\">[^<]*downloads in the last year<' '$H' && ! grep -q 'class=\"npm-pkg-dl\"' '$H'"
+check "hero: UbqArt badge says ex-founder" "grep -q 'class=\"founder-badge\">ex-founder<' '$H'"
 check "head: title and description speak to clients" "grep -q '<title>[^<]*MVPs for founders' '$H' && grep -q '<meta name=\"description\" content=\"[^\"]*MVPs' '$H'"
 
 # ── Site-wide ─────────────────────────────────────────────────────────────
