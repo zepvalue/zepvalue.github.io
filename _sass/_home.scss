@@ -335,10 +335,12 @@
 // ── Contribution graph (GitHub-style, last 53 weeks, full-width row below) ──
 // Columns are weeks, rows are weekdays (Sun first). Both the month row and the
 // day grid use one column per week, so the labels line up with the squares.
+// Unframed: no card box, a thin rule above, sits on the page background.
 .contrib-card {
   width: 100%;
   max-width: 44rem;
-  padding: 1rem 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
