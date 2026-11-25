@@ -79,19 +79,12 @@
       return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });
     };
 
-    var totalYr = 0, done = 0;
     PKGS.forEach(function (pkg) {
       npm("https://api.npmjs.org/downloads/point/last-year/" + pkg)
         .then(function (d) {
           set('[data-np="' + pkg + '-dl"]', compact(d.downloads) + " ↓/yr");
-          totalYr += d.downloads || 0;
         })
-        .catch(function () {})
-        .then(function () {
-          if (++done === PKGS.length && totalYr) {
-            set("#npm-total", compact(totalYr) + " downloads / yr");
-          }
-        });
+        .catch(function () {});
       npm("https://registry.npmjs.org/" + pkg + "/latest")
         .then(function (d) { set('[data-np="' + pkg + '-v"]', "v" + d.version); })
         .catch(function () {});
