@@ -2,7 +2,7 @@
 // Run: node --test tests/contrib-core.test.js   (or: make test)
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { buildWeeks, levelFor } = require("../assets/js/contrib-core.js");
+const { buildWeeks, levelFor, monthLabels, totalCount } = require("../assets/js/contrib-core.js");
 
 test("levelFor: zero commits is level 0", () => {
   assert.equal(levelFor(0, 10), 0);
@@ -53,4 +53,22 @@ test("buildWeeks: crosses into a new column each Sunday", () => {
 
 test("buildWeeks: empty input gives no weeks", () => {
   assert.deepEqual(buildWeeks([]), []);
+});
+
+test("monthLabels: labels the column that holds the 1st of a month", () => {
+  // 2026-11-01 is a Sunday, so it starts column 1 (column 0 is 10-25 to 10-31).
+  const days = [];
+  for (let d = 25; d <= 31; d++) days.push({ date: `2026-10-${d}`, count: 0 });
+  for (let d = 1; d <= 7; d++) days.push({ date: `2026-11-0${d}`, count: 0 });
+  assert.deepEqual(monthLabels(buildWeeks(days)), [{ col: 1, label: "Nov" }]);
+});
+
+test("monthLabels: no label when the 1st is not in range", () => {
+  const days = [{ date: "2026-11-22", count: 0 }, { date: "2026-11-23", count: 0 }];
+  assert.deepEqual(monthLabels(buildWeeks(days)), []);
+});
+
+test("totalCount: sums every day's commits", () => {
+  const days = [{ date: "2026-11-22", count: 2 }, { date: "2026-11-23", count: 0 }, { date: "2026-11-24", count: 5 }];
+  assert.equal(totalCount(days), 7);
 });

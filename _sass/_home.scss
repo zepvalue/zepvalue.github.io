@@ -75,7 +75,7 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
-  grid-template-rows: auto auto 1fr; // the last row (pinned + languages) takes the spare height
+  grid-template-rows: auto auto 1fr auto; // the last row (pinned + languages) takes the spare height
   gap: 0.5rem;
   align-items: start;
   align-self: stretch;
@@ -330,35 +330,79 @@
   }
 }
 
-// ── Contribution graph (last 53 weeks, under Activity) ─────────────────────
-// Columns are weeks, cells are days. Columns share the card width, so the
-// graph fills the space and never overflows it.
-.contrib {
-  display: flex;
-  gap: 2px;
-  margin-top: 0.75rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--border);
-}
-.contrib-col {
-  flex: 1 1 0;
-  min-width: 0;
+// ── Contribution graph (GitHub-style, last 53 weeks, under Pinned + Activity)
+// Columns are weeks, rows are weekdays (Sun first). Both the month row and the
+// day grid use one column per week, so the labels line up with the squares.
+.contrib-card {
+  grid-column: span 2;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+.contrib-total {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--fg-muted);
+}
+.contrib-chart {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  column-gap: 0.4rem;
+  row-gap: 0.3rem;
+}
+.contrib-months,
+.contrib-grid {
+  grid-column: 2;
+  display: grid;
   gap: 2px;
+}
+.contrib-months {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+.contrib-months { grid-row: 1; }
+.contrib-days {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  line-height: 1;
+  color: var(--fg-muted);
+}
+.contrib-grid {
+  grid-row: 2;
+  grid-template-rows: repeat(7, auto);
+  grid-auto-flow: column;
 }
 .contrib-cell {
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  border-radius: 1px;
-  background: var(--border);
+  border-radius: 2px;
+  background: #161b22;
 
-  &.level-1 { background: rgba(250, 250, 250, 0.18); }
-  &.level-2 { background: rgba(250, 250, 250, 0.38); }
-  &.level-3 { background: rgba(250, 250, 250, 0.62); }
-  &.level-4 { background: rgba(250, 250, 250, 0.9); }
+  &.level-1 { background: #0e4429; }
+  &.level-2 { background: #006d32; }
+  &.level-3 { background: #26a641; }
+  &.level-4 { background: #39d353; }
   &.is-empty { background: transparent; }
+}
+.contrib-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.5rem;
+  color: var(--fg-muted);
+
+  span:not(.contrib-cell) { margin: 0 0.25rem; }
+  .contrib-cell { width: 9px; }
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -434,42 +478,28 @@
   }
 }
 
-// ── Center link rows ────────────────────────────────────────────────────────
+// ── Center link icons ───────────────────────────────────────────────────────
+// Icon-only links. The label lives in aria-label and title.
 .links {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
-.link-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
+.link-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 0.5rem;
   color: var(--fg);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   animation: fadeUp 0.5s ease both;
 
-  &:hover {
-    background: var(--border);
-    border-color: var(--border-hover);
-
-    .arrow { opacity: 0.7; transform: translateX(2px); }
-  }
-
-  .link-icon { width: 18px; height: 18px; opacity: 0.7; flex-shrink: 0; }
-  .link-label { flex: 1; text-align: left; }
-  .arrow {
-    width: 14px;
-    height: 14px;
-    opacity: 0.4;
-    transition: opacity 0.15s ease, transform 0.15s ease;
-  }
+  &:hover { background: var(--surface); }
+  .link-icon { width: 20px; height: 20px; opacity: 0.7; transition: opacity 0.15s ease; }
+  &:hover .link-icon { opacity: 1; }
 
   // staggered entrance
   &:nth-child(1) { animation-delay: 0.32s; }

@@ -105,19 +105,49 @@
       .then(function (data) {
         var days = (data && data.days) || [];
         if (!days.length) return;
-        var max = days.reduce(function (m, d) { return Math.max(m, d.count); }, 0);
-        var weeks = window.ContribCore.buildWeeks(days);
-        box.innerHTML = weeks.map(function (week) {
-          return '<div class="contrib-col">' + week.map(function (d) {
-            if (!d) return '<span class="contrib-cell is-empty"></span>';
-            var lvl = window.ContribCore.levelFor(d.count, max);
-            return '<span class="contrib-cell level-' + lvl + '" title="' +
-              d.count + " contributions on " + d.date + '"></span>';
-          }).join("") + "</div>";
-        }).join("");
+        box.innerHTML = renderGraph(days);
       })
       .catch(function () { /* leave the card without a graph */ });
   })();
+
+  // GitHub-style graph: month row, weekday labels, day grid, legend.
+  function renderGraph(days) {
+    var CC = window.ContribCore;
+    var max = days.reduce(function (m, d) { return Math.max(m, d.count); }, 0);
+    var weeks = CC.buildWeeks(days);
+    var cols = "repeat(" + weeks.length + ", minmax(0, 1fr))";
+
+    var cells = [];
+    weeks.forEach(function (week) {
+      week.forEach(function (d) {
+        if (!d) {
+          cells.push('<span class="contrib-cell is-empty"></span>');
+        } else {
+          cells.push('<span class="contrib-cell level-' + CC.levelFor(d.count, max) +
+            '" title="' + d.count + " contributions on " + d.date + '"></span>');
+        }
+      });
+    });
+
+    var months = CC.monthLabels(weeks).map(function (m) {
+      return '<span style="grid-column:' + (m.col + 1) + '">' + m.label + "</span>";
+    }).join("");
+    var dayNames = ["", "Mon", "", "Wed", "", "Fri", ""].map(function (t) {
+      return "<span>" + t + "</span>";
+    }).join("");
+    var legend = [0, 1, 2, 3, 4].map(function (l) {
+      return '<span class="contrib-cell level-' + l + '"></span>';
+    }).join("");
+
+    return '<p class="contrib-total">' + CC.totalCount(days).toLocaleString("en-US") +
+      " contributions in the last year</p>" +
+      '<div class="contrib-chart">' +
+        '<div class="contrib-months" style="grid-template-columns:' + cols + '">' + months + "</div>" +
+        '<div class="contrib-days">' + dayNames + "</div>" +
+        '<div class="contrib-grid" style="grid-template-columns:' + cols + '">' + cells.join("") + "</div>" +
+      "</div>" +
+      '<div class="contrib-legend"><span>Less</span>' + legend + "<span>More</span></div>";
+  }
 
   if (!USER) return;
 

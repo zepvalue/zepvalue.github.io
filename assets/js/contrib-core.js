@@ -30,7 +30,27 @@
     return weeks;
   }
 
-  var api = { levelFor: levelFor, buildWeeks: buildWeeks };
+  // Month labels for the graph header: one entry for each column that holds
+  // the 1st of a month. Returns [{ col, label }].
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function monthLabels(weeks) {
+    var out = [];
+    weeks.forEach(function (week, col) {
+      week.forEach(function (d) {
+        if (d && d.date.slice(8) === "01") {
+          out.push({ col: col, label: MONTHS[Number(d.date.slice(5, 7)) - 1] });
+        }
+      });
+    });
+    return out;
+  }
+
+  // Sum of every day's commits, for the "N contributions in the last year" line.
+  function totalCount(days) {
+    return days.reduce(function (s, d) { return s + d.count; }, 0);
+  }
+
+  var api = { levelFor: levelFor, buildWeeks: buildWeeks, monthLabels: monthLabels, totalCount: totalCount };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.ContribCore = api;
 })(typeof window !== "undefined" ? window : globalThis);
