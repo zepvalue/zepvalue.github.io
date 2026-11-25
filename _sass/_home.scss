@@ -96,20 +96,25 @@
   gap: 0.4rem;
 }
 
-// Badges are neutral: green is kept for actions and live signals only.
+// Badges are tinted, never solid: a soft fill and matching text, so they add
+// colour without competing with the green "Book a call" button.
+//   ex-founder → purple (UbqArt's brand), creator → blue, npm → npm red
 .founder-badge,
 .npm-badge {
+  --badge: 139, 92, 246; // purple
   font-family: var(--font-mono);
   font-size: 0.55rem;
   font-weight: 600;
-  color: var(--fg);
-  background: var(--surface-2);
-  border: 1px solid var(--border-hover);
+  color: #c4b5fd;
+  background: rgba(var(--badge), 0.14);
+  border: 1px solid rgba(var(--badge), 0.35);
   padding: 0.05rem 0.35rem;
   border-radius: 3px;
   letter-spacing: 0.02em;
 }
 .founder-badge { text-transform: uppercase; }
+.founder-badge.is-creator { --badge: 59, 130, 246; color: #93c5fd; }
+.npm-badge { --badge: 203, 56, 55; color: #fca5a5; }
 
 .founder-head {
   display: flex;
