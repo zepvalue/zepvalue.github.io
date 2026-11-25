@@ -114,12 +114,13 @@ layout: default
       {% include project-deck.html class="deck--column" %}
     </aside>
 
-  </div>
+    <!-- contribution graph, last 53 weeks, under the left and centre columns
+         (filled from assets/data/contributions.json) -->
+    <section class="contrib-card" aria-label="GitHub contributions">
+      <div class="contrib" id="gh-contrib"></div>
+    </section>
 
-  <!-- contribution graph, last 53 weeks (filled from assets/data/contributions.json) -->
-  <section class="contrib-card" aria-label="GitHub contributions">
-    <div class="contrib" id="gh-contrib"></div>
-  </section>
+  </div>
 </div>
 
 {% include sheets.html %}

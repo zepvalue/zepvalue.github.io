@@ -5,20 +5,29 @@
 .home-wrap {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
   padding: 2rem;
 }
 
+// Bento grid on wide screens:
+//   row 1: left cards | profile | deck
+//   row 2: contribution graph (left + profile) | deck continues
+// Every block shares the edges of the blocks next to it.
 .layout {
   display: grid;
-  grid-template-columns: auto 20rem 20rem;
+  // 22.5rem = the left sidebar's two 11rem columns + its 0.5rem gap. A fixed
+  // width stops the graph's 53 columns from widening the first column.
+  grid-template-columns: 22.5rem 20rem 20rem;
+  grid-template-rows: auto auto;
   gap: 2rem;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
 }
+.sidebar-left { grid-column: 1; grid-row: 1; }
+.center { grid-column: 2; grid-row: 1; }
+.sidebar-right { grid-column: 3; grid-row: 1 / span 2; }
+.contrib-card { grid-column: 1 / 3; grid-row: 2; }
 
 // Projects deck (see _panels.scss).
 // On wide screens the three columns share one top and bottom edge. The row
@@ -337,8 +346,7 @@
 // day grid use one column per week, so the labels line up with the squares.
 // Unframed: no card box, a thin rule above, sits on the page background.
 .contrib-card {
-  width: 100%;
-  max-width: 44rem;
+  min-width: 0;
   padding-top: 1rem;
   border-top: 1px solid var(--border);
   display: flex;
@@ -390,7 +398,7 @@
   width: 100%;
   aspect-ratio: 1;
   border-radius: 2px;
-  background: #161b22;
+  background: var(--surface-2); // site grey, not GitHub's blue-grey; darker than level 1
 
   &.level-1 { background: #0e4429; }
   &.level-2 { background: #006d32; }
@@ -416,6 +424,9 @@
 .center {
   width: 20rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .avatar {
@@ -490,6 +501,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 1.25rem;
+  margin-bottom: 2.5rem; // keeps space above the footer when the column is short
 }
 
 .link-icon-btn {
@@ -516,7 +528,8 @@
 
 // ── Center footer ───────────────────────────────────────────────────────────
 .center-footer {
-  margin-top: 2.5rem;
+  align-self: stretch;
+  margin-top: auto; // pinned to the bottom of row 1, level with the left cards
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
   font-size: 0.75rem;
@@ -543,6 +556,10 @@
     max-width: 360px;
     width: 100%;
   }
+
+  // One column: drop the bento placement and stack in source order.
+  .sidebar-left, .center, .sidebar-right, .contrib-card { grid-column: auto; grid-row: auto; }
+  .contrib-card { order: 4; }
 
   .center { order: 1; width: 100%; }
 
