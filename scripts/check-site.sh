@@ -74,6 +74,12 @@ check "npm card: one-line rows, no descriptions" "! grep -q 'class=\"npm-pkg-des
 check "hero: UbqArt badge says ex-founder" "grep -q 'class=\"founder-badge\">ex-founder<' '$H'"
 check "head: title and description speak to clients" "grep -q '<title>[^<]*MVPs for founders' '$H' && grep -q '<meta name=\"description\" content=\"[^\"]*MVPs' '$H'"
 
+# ── Favicon ───────────────────────────────────────────────────────────────
+check "favicon: SVG icon linked in the head" "grep -q '<link rel=\"icon\" type=\"image/svg+xml\" href=\"/assets/favicon.svg\"' '$H'"
+check "favicon: every icon the head links exists" "( for f in \$(grep -oE 'href=\"/assets/[^\"]*(png|ico|svg|webmanifest)\"' '$H' | cut -d'\"' -f2); do [ -f \"$SITE\$f\" ] || exit 1; done )"
+check "favicon: every manifest icon exists" "( for f in \$(grep -oE '\"src\":\"[^\"]*\"' '$SITE/assets/site.webmanifest' | cut -d'\"' -f4); do [ -f \"$SITE\$f\" ] || exit 1; done )"
+check "favicon: manifest has the site name" "grep -q '\"name\":\"Giuseppe Zep V\"' '$SITE/assets/site.webmanifest'"
+
 # ── Site-wide ─────────────────────────────────────────────────────────────
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"
 check "tests folder is not published" "[ ! -e '$SITE/tests' ]"
