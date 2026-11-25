@@ -76,7 +76,8 @@ check "head: title and description speak to clients" "grep -q '<title>[^<]*MVPs 
 
 # ── Favicon ───────────────────────────────────────────────────────────────
 check "favicon: SVG icon linked in the head" "grep -q '<link rel=\"icon\" type=\"image/svg+xml\" href=\"/assets/favicon.svg\"' '$H'"
-check "favicon: every icon the head links exists" "( for f in \$(grep -oE 'href=\"/assets/[^\"]*(png|ico|svg|webmanifest)\"' '$H' | cut -d'\"' -f2); do [ -f \"$SITE\$f\" ] || exit 1; done )"
+check "favicon: favicon.ico at the site root (browsers ask for /favicon.ico)" "[ -f '$SITE/favicon.ico' ] && grep -q 'href=\"/favicon.ico\"' '$H'"
+check "favicon: every icon the head links exists" "( for f in \$(grep -oE 'href=\"/[^\"]*\\.(png|ico|svg|webmanifest)\"' '$H' | cut -d'\"' -f2); do [ -f \"$SITE\$f\" ] || exit 1; done )"
 check "favicon: every manifest icon exists" "( for f in \$(grep -oE '\"src\":\"[^\"]*\"' '$SITE/assets/site.webmanifest' | cut -d'\"' -f4); do [ -f \"$SITE\$f\" ] || exit 1; done )"
 check "favicon: manifest has the site name" "grep -q '\"name\":\"Giuseppe Zep V\"' '$SITE/assets/site.webmanifest'"
 
