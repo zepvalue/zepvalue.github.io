@@ -1,7 +1,7 @@
 # this is only for search engines, it does not appear in the home
 # as long as the json variables name and description are provided
 title: Giuseppe Zep V
-description: Software Engineer
+description: I build and ship MVPs for founders. Web and mobile, from idea to launch in weeks.
 baseurl: ""
 url: https://zepvalue.github.io
 
@@ -13,6 +13,8 @@ json:
   # the bio is "typed" out under your name; add more lines for a rotating effect
   description:
     - Engineer who ships
+  # shown after the name in the browser tab and in search results
+  tagline: MVPs for founders, web and mobile
   github_user: zepvalue
   # live local time is shown using this IANA timezone
   timezone: Europe/Rome

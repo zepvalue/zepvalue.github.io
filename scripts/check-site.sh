@@ -46,11 +46,29 @@ done
 
 # ── Home page ─────────────────────────────────────────────────────────────
 check "home: deck sits in the right column" "grep -q '<aside class=\"sidebar-right\"' '$H'"
-check "home: left sidebar and profile stay" "grep -q 'class=\"sidebar-left\"' '$H' && grep -q 'id=\"clock\"' '$H' && grep -q 'id=\"gh-pinned\"' '$H'"
+check "home: left sidebar and profile stay" "grep -q 'class=\"sidebar-left\"' '$H' && grep -q 'id=\"clock\"' '$H' && grep -q 'id=\"gh-contrib\"' '$H'"
 check "home: still loads home.js" "grep -q 'src=\"/assets/js/home.js\"' '$H'"
 check "home: no languages section" "! grep -q 'gh-lang' '$H' && ! grep -q '>Languages<' '$H'"
 check "home: one title, Engineer who ships" "grep -A1 'id=\"typed-strings\"' '$H' | tail -1 | grep -qx ' *<span>Engineer who ships</span>'"
 check "home: no Projects link row (the deck replaces it)" "! grep -q 'class=\"link-label\">Projects<' '$H'"
+
+# ── Home hero for clients ─────────────────────────────────────────────────
+line_of() { grep -n "$1" "$H" | head -1 | cut -d: -f1; }
+check "hero: headline for founders" "grep -q 'I build and ship MVPs for founders.' '$H'"
+check "hero: Book a call goes to Calendly" "grep -q 'href=\"https://calendly.com/zepvalue\"' '$H' && grep -q '>Book a call<' '$H'"
+check "hero: email as the second option" "grep -q '>or email me<' '$H'"
+check "hero: starting price in USD" "grep -q 'From \\\$100/hour' '$H'"
+check "hero: Available now badge, no operational" "grep -q '>Available now<' '$H' && ! grep -q '>operational<' '$H'"
+check "hero: no numbers card" "! grep -q 'stats-card' '$H'"
+check "hero: one screen, no section below the hero" "! grep -q 'id=\"proof\"' '$H'"
+check "hero: npm and graph sit in the left column" "[ -n \"\$(line_of 'npm-card')\" ] && [ \"\$(line_of 'npm-card')\" -lt \"\$(line_of 'class=\"center\"')\" ] && [ \"\$(line_of 'id=\"gh-contrib\"')\" -lt \"\$(line_of 'class=\"center\"')\" ]"
+check "hero: Pinned and Activity are gone" "! grep -q 'id=\"gh-pinned\"' '$H' && ! grep -q 'id=\"gh-activity\"' '$H'"
+check "npm card: one all-time total in the header, no per-package downloads" "grep -A5 'class=\"npm-head\"' '$H' | grep -q 'id=\"npm-total\">[0-9.k+]* downloads<' && ! grep -q 'last year' '$H' && ! grep -q 'class=\"npm-pkg-dl\"' '$H'"
+check "hero: firecomm card sits between UbqArt and npm" "[ -n \"\$(line_of 'creator-card')\" ] && [ \"\$(line_of 'founder-card')\" -lt \"\$(line_of 'creator-card')\" ] && [ \"\$(line_of 'creator-card')\" -lt \"\$(line_of 'npm-card')\" ]"
+check "hero: firecomm card links to docs, source and case study" "grep -A20 'creator-card' '$H' | grep -q 'href=\"https://firecomm.github.io\"' && grep -A20 'creator-card' '$H' | grep -q 'href=\"https://github.com/zepvalue/firecomm\"' && grep -A20 'creator-card' '$H' | grep -q 'href=\"/apps/firecomm/\"'"
+check "npm card: one-line rows, no descriptions" "! grep -q 'class=\"npm-pkg-desc\"' '$H'"
+check "hero: UbqArt badge says ex-founder" "grep -q 'class=\"founder-badge\">ex-founder<' '$H'"
+check "head: title and description speak to clients" "grep -q '<title>[^<]*MVPs for founders' '$H' && grep -q '<meta name=\"description\" content=\"[^\"]*MVPs' '$H'"
 
 # ── Site-wide ─────────────────────────────────────────────────────────────
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"

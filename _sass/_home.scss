@@ -7,7 +7,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem 2rem; // 1.5rem top and bottom keeps 1280×720 free of vertical scroll
+  isolation: isolate; // keeps the background layers below behind the content
+
+  // Background, pure CSS and static (nothing moves, no image files):
+  //   ::before  dot grid that fades out towards the screen edges
+  //   ::after   faint green glow behind the pitch in the centre column
+  // Both are fixed to the screen, so they stay put on long phone scrolls.
+  &::before,
+  &::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  &::before {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1.5px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 30%, transparent 100%);
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 30%, transparent 100%);
+  }
+  &::after {
+    background: radial-gradient(ellipse 28% 38% at 50% 42%, rgba(34, 197, 94, 0.11), transparent 70%);
+  }
 }
 
 // Three columns: left cards | profile | deck. They share one top and bottom
@@ -79,7 +102,7 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
-  grid-template-rows: auto auto 1fr auto; // pinned + activity take the spare height; graph sits last
+  grid-template-rows: auto auto auto 1fr; // UbqArt, firecomm, npm; the graph takes the spare height
   gap: 0.5rem;
   align-items: start;
   align-self: stretch;
@@ -96,27 +119,35 @@
   gap: 0.4rem;
 }
 
-.founder-badge {
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
+// Badges are tinted, never solid: a soft fill and matching text, so they add
+// colour without competing with the green "Book a call" button.
+//   ex-founder → purple (UbqArt's brand), creator → blue, npm → npm red
+.founder-badge,
+.npm-badge {
+  --badge: 139, 92, 246; // purple
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
   font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  padding: 0.1rem 0.35rem;
+  color: #c4b5fd;
+  background: rgba(var(--badge), 0.14);
+  border: 1px solid rgba(var(--badge), 0.35);
+  padding: 0.05rem 0.35rem;
   border-radius: 3px;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
 }
+.founder-badge { text-transform: uppercase; }
+.founder-badge.is-creator { --badge: 59, 130, 246; color: #93c5fd; }
+.npm-badge { --badge: 203, 56, 55; color: #fca5a5; }
 
 .founder-head {
   display: flex;
   align-items: center;
   gap: 0.45rem;
 
-  .founder-name { font-size: 0.85rem; font-weight: 600; color: var(--fg); }
+  .founder-name { font-size: var(--text-md); font-weight: 600; color: var(--fg); }
   .founder-tag {
     margin-left: auto;
-    font-size: 0.6rem;
+    font-size: var(--text-xs);
     color: var(--fg-muted);
     transition: color 0.15s ease;
   }
@@ -124,7 +155,7 @@
 }
 
 .founder-blurb {
-  font-size: 0.62rem;
+  font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--fg-muted);
   margin: 0;
@@ -136,8 +167,8 @@
   gap: 0.4rem 0.75rem;
 
   a {
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
     color: var(--fg-muted);
     transition: color 0.15s ease;
 
@@ -155,118 +186,30 @@
   gap: 0.4rem;
 }
 
-.npm-badge {
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  font-weight: 600;
-  color: #fff;
-  background: #cb3837;
-  padding: 0.1rem 0.3rem;
-  border-radius: 3px;
-  letter-spacing: 0.02em;
-}
-
 .npm-head {
   display: flex;
   align-items: center;
   gap: 0.45rem;
 
-  .npm-title { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
-  .npm-total {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    color: var(--fg-muted);
-  }
+  .npm-title { font-size: var(--text-md); font-weight: 600; color: var(--fg); }
 }
 
+// All-time total for both packages, right-aligned in the card header
+.npm-total {
+  margin-left: auto;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--green);
+  white-space: nowrap;
+}
+
+// One line per package: name on the left, version on the right
 .npm-pkg {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.5rem 0.625rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 0.375rem;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-
-  &:hover { transform: translateY(-1px); border-color: var(--border-hover); }
-}
-
-.npm-pkg-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 0.5rem;
-}
-
-.npm-pkg-name { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
-.npm-pkg-ver {
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  font-weight: 400;
-  color: var(--fg-muted);
-  margin-left: 0.3rem;
-}
-.npm-pkg-dl {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  color: var(--green);
-  white-space: nowrap;
-}
-.npm-pkg-desc {
-  font-size: 0.6rem;
-  color: var(--fg-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.gh-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--border);
-  padding-top: 0.5rem;
-  margin-top: 0.5rem;
-  text-align: center;
-}
-
-.gh-stat-value {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--fg);
-  white-space: nowrap;
-}
-.gh-stat-label {
-  font-size: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--fg-muted);
-  margin-top: 0.1rem;
-}
-
-// ── Pinned repos card ───────────────────────────────────────────────────────
-.pinned {
-  min-height: 11rem;
-  align-self: stretch;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.pinned-title,
-.card-title {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-}
-
-.pinned-list { display: flex; flex-direction: column; gap: 0.375rem; }
-
-.pinned-repo {
-  display: block;
-  padding: 0.5rem 0.625rem;
+  padding: 0.4rem 0.625rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 0.375rem;
@@ -275,78 +218,31 @@
   &:hover { transform: translateY(-1px); border-color: var(--border-hover); }
 }
 
-.pinned-name { font-size: 0.7rem; font-weight: 500; color: var(--fg); }
-.pinned-desc {
-  font-size: 0.6rem;
+.npm-pkg-name { font-size: var(--text-sm); font-weight: 600; color: var(--fg); }
+.npm-pkg-ver {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   color: var(--fg-muted);
-  margin-top: 0.15rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-.pinned-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.55rem;
-  color: var(--fg-muted);
-  margin-top: 0.25rem;
-}
+
 .lang-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-// ── Languages + activity card ───────────────────────────────────────────────
-// Same padding and title style as the Pinned card next to it.
-.activity-card {
-  min-height: 11rem;
-  align-self: stretch;
-  padding: 0.75rem;
-}
-
-.activity-block { display: flex; flex-direction: column; gap: 0.6rem; }
-
-.block-title { font-size: 0.7rem; font-weight: 500; color: var(--fg-muted); }
-
-.activity-list { display: flex; flex-direction: column; gap: 0.65rem; }
-
-// Two lines per event: action + time on top, repo name under it.
-.activity-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.1rem 0.5rem;
-  font-size: 0.62rem;
-  line-height: 1.25;
-  color: var(--fg-muted);
-
-  &:hover .activity-verb { text-decoration: underline; }
-
-  .activity-verb { color: var(--fg); }
-  .activity-repo {
-    grid-column: 1 / -1;
-    overflow: hidden;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .activity-time {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-// ── Contribution graph (GitHub-style, last 21 weeks, left column card) ─────
+// ── Contribution graph (GitHub-style, last 21 weeks, left column) ──────────
 // Columns are weeks, rows are weekdays (Sun first). Both the month row and the
 // day grid use one column per week, so the labels line up with the squares.
+// The card fills the rest of the column; the graph sits centred in it.
 .contrib-card {
   grid-column: span 2;
+  align-self: stretch;
   min-width: 0;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
 }
 .contrib-total {
-  font-size: 0.7rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   color: var(--fg-muted);
 }
@@ -363,8 +259,8 @@
   gap: 2px;
 }
 .contrib-months {
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
   color: var(--fg-muted);
   white-space: nowrap;
 }
@@ -375,8 +271,8 @@
   display: grid;
   grid-template-rows: repeat(7, 1fr);
   gap: 2px;
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
   line-height: 1;
   color: var(--fg-muted);
 }
@@ -403,7 +299,7 @@
   justify-content: flex-end;
   align-items: center;
   gap: 3px;
-  font-size: 0.5rem;
+  font-size: var(--text-xs);
   color: var(--fg-muted);
 
   span:not(.contrib-cell) { margin: 0 0.25rem; }
@@ -433,7 +329,7 @@
 }
 
 .name {
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 0.375rem;
@@ -441,7 +337,7 @@
 }
 
 .bio {
-  font-size: 0.875rem;
+  font-size: var(--text-md);
   color: var(--fg-muted);
   font-weight: 400;
   margin-bottom: 0.5rem;
@@ -451,13 +347,78 @@
   .cursor { animation: blink 1s step-end infinite; }
 }
 
+// ── Hero pitch: headline, call to action, price ────────────────────────────
+.hero-headline {
+  margin-top: 1.25rem;
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-wrap: balance;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+.hero-sub {
+  margin-top: 0.5rem;
+  font-size: var(--text-md);
+  line-height: 1.5;
+  color: var(--fg-muted);
+  text-wrap: balance;
+  animation: fadeUp 0.5s ease 0.24s both;
+}
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1.5rem;
+  animation: fadeUp 0.5s ease 0.28s both;
+}
+.btn-primary {
+  padding: 0.65rem 1.4rem;
+  border-radius: 0.5rem;
+  background: var(--green);
+  color: var(--bg);
+  font-size: var(--text-md);
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.15s ease;
+
+  &:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  &:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+}
+.cta-secondary {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-hover);
+  transition: color 0.15s ease;
+
+  &:hover { color: var(--fg); }
+}
+.hero-price {
+  margin-top: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+.hero-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 1.5rem 0 1.75rem;
+  animation: fadeUp 0.5s ease 0.32s both;
+}
+
 .timezone {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--fg-muted);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 0.75rem;
-  animation: fadeUp 0.5s ease 0.24s both;
 }
 
 .uptime-badge {
@@ -468,11 +429,9 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 1rem;
-  font-size: 0.65rem;
-  color: var(--fg-muted);
-  margin-bottom: 2rem;
+  font-size: var(--text-xs);
+  color: var(--fg);
   transition: border-color 0.2s ease;
-  animation: fadeUp 0.5s ease 0.28s both;
 
   &:hover { border-color: var(--border-hover); }
 
@@ -524,7 +483,7 @@
   margin-top: auto; // pinned to the bottom of row 1, level with the left cards
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--fg-muted);
   letter-spacing: 0.02em;
   display: flex;
@@ -568,6 +527,4 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
   }
-
-  .github { height: auto; min-height: 150px; }
 }

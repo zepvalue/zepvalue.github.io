@@ -15,9 +15,18 @@
   --heading: var(--fg);
   --surface-2: #1f1f23;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+  // Inter (loaded from Google Fonts in _includes/head.html) first, so every
+  // machine shows the same face; system fonts only as a fallback.
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
   --font-mono: "Fira Code", "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  // Type scale: five sizes only. Nothing smaller than --text-xs.
+  --text-xs: 0.75rem;  // labels, badges, graph, meta
+  --text-sm: 0.875rem; // card text
+  --text-md: 1rem;     // card titles, body
+  --text-lg: 1.25rem;  // name
+  --text-xl: 1.75rem;  // hero headline
 }
 
 * {
@@ -30,7 +39,9 @@
 // browser font setting (100% = their default, usually 16px).
 html {
   font-size: 100%;
-  @media (min-width: 1280px) { font-size: 112.5%; }
+  // Grow from 1536px, not 1280px: at 1280×720 the one-screen home needs the
+  // standard 16px root to fit without vertical scroll.
+  @media (min-width: 1536px) { font-size: 112.5%; }
   @media (min-width: 1680px) { font-size: 125%; }
   @media (min-width: 2200px) { font-size: 137.5%; }
 

@@ -1,15 +1,16 @@
 ---
 layout: default
 ---
+{% assign hire = site.data.hire %}
 <div class="home-wrap">
   <div class="layout" data-github-user="{{ site.json.github_user }}" data-timezone="{{ site.json.timezone }}">
 
-    <!-- ════════ LEFT SIDEBAR — live GitHub ════════ -->
+    <!-- ════════ LEFT SIDEBAR — founder story + open source proof ════════ -->
     <aside class="sidebar-left">
-      <!-- founder · UbqArt -->
+      <!-- ex-founder · UbqArt -->
       <section class="card founder-card">
         <a class="founder-head" href="https://ubqart.com" target="_blank" rel="noopener">
-          <span class="founder-badge">founder</span>
+          <span class="founder-badge">ex-founder</span>
           <span class="founder-name">UbqArt</span>
           <span class="founder-tag">social network for artists &nearr;</span>
         </a>
@@ -19,54 +20,37 @@ layout: default
         </div>
       </section>
 
+      <!-- creator · firecomm (same card style as UbqArt) -->
+      <section class="card founder-card creator-card">
+        <a class="founder-head" href="/apps/firecomm/">
+          <span class="founder-badge is-creator">creator</span>
+          <span class="founder-name">firecomm</span>
+          <span class="founder-tag">gRPC for Node &rarr;</span>
+        </a>
+        <p class="founder-blurb">Open-source library for typed, streaming gRPC services with less boilerplate.</p>
+        <div class="founder-links">
+          <a href="https://firecomm.github.io" target="_blank" rel="noopener">docs</a>
+          <a href="https://github.com/zepvalue/firecomm" target="_blank" rel="noopener">source</a>
+          <a href="/apps/firecomm/">case study</a>
+        </div>
+      </section>
+
       <!-- published npm packages (live from npm) -->
       <section class="card npm-card">
         <div class="npm-head">
           <span class="npm-badge">npm</span>
           <span class="npm-title">Published packages</span>
+          <!-- all-time total for both packages, from assets/data/npm.json (home.js) -->
+          <span class="npm-total" id="npm-total">6.3k+ downloads</span>
         </div>
         <a class="npm-pkg" href="https://www.npmjs.com/package/firecomm" target="_blank" rel="noopener">
-          <span class="npm-pkg-top">
-            <span class="npm-pkg-name">firecomm<span class="npm-pkg-ver" data-np="firecomm-v">v2.0.5</span></span>
-            <span class="npm-pkg-dl" data-np="firecomm-dl">695 &darr;/yr</span>
-          </span>
-          <span class="npm-pkg-desc">Open-source gRPC library for Node</span>
+          <span class="npm-pkg-name">firecomm</span>
+          <span class="npm-pkg-ver" data-np="firecomm-v">v2.0.5</span>
         </a>
         <a class="npm-pkg" href="https://www.npmjs.com/package/two-auth" target="_blank" rel="noopener">
-          <span class="npm-pkg-top">
-            <span class="npm-pkg-name">two-auth<span class="npm-pkg-ver" data-np="two-auth-v">v2.0.3</span></span>
-            <span class="npm-pkg-dl" data-np="two-auth-dl">236 &darr;/yr</span>
-          </span>
-          <span class="npm-pkg-desc">Two-factor SMS auth with Twilio in 3 lines</span>
+          <span class="npm-pkg-name">two-auth</span>
+          <span class="npm-pkg-ver" data-np="two-auth-v">v2.0.3</span>
         </a>
-      </section>
-
-      <!-- pinned repos -->
-      <section class="card pinned">
-        <span class="pinned-title">Pinned</span>
-        <div class="pinned-list" id="gh-pinned">
-          {% for repo in site.pinned %}
-          <a class="pinned-repo" href="https://github.com/{{ site.json.github_user }}/{{ repo.name }}" target="_blank" rel="noopener">
-            <div class="pinned-name">{{ repo.name }}</div>
-            {% if repo.description %}<div class="pinned-desc">{{ repo.description }}</div>{% endif %}
-            <div class="pinned-meta">
-              {% if repo.color %}<span class="lang-dot" style="background:{{ repo.color }}"></span>{% endif %}
-              <span>{{ repo.language }}</span>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-      </section>
-
-      <!-- recent activity -->
-      <section class="card activity-card">
-        <div class="activity-block">
-          <span class="block-title">Activity</span>
-          <div class="activity-list" id="gh-activity">
-            <div class="skeleton" style="width:100%;height:10px;margin-bottom:4px"></div>
-            <div class="skeleton" style="width:80%;height:10px"></div>
-          </div>
-        </div>
       </section>
 
       <!-- contribution graph, last 21 weeks (filled from assets/data/contributions.json) -->
@@ -92,12 +76,22 @@ layout: default
       <p class="bio"><span id="typed"></span><span class="cursor">|</span></p>
       {% endif %}
 
-      <p class="timezone" id="clock">—</p>
+      <p class="hero-headline">{{ hire.headline }}</p>
+      <p class="hero-sub">{{ hire.sub }}</p>
 
-      <span class="uptime-badge">
-        <span class="uptime-dot operational"></span>
-        <span id="uptime-text">operational</span>
-      </span>
+      <div class="hero-cta">
+        <a class="btn-primary" href="{{ hire.calendly }}" target="_blank" rel="noopener">Book a call</a>
+        <a class="cta-secondary" href="mailto:{{ site.json.contact.email }}">or email me</a>
+      </div>
+      <p class="hero-price">From {{ hire.price }}</p>
+
+      <div class="hero-status">
+        <span class="uptime-badge">
+          <span class="uptime-dot operational"></span>
+          <span>{{ hire.availability }}</span>
+        </span>
+        <span class="timezone" id="clock">—</span>
+      </div>
 
       <nav class="links">
         {% for link in site.links %}
