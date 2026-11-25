@@ -41,10 +41,14 @@
     flex: 0 0 100%;
     scroll-snap-align: start;
     height: clamp(26rem, calc(100svh - 16rem), 46rem);
+    overflow-x: hidden; // the screenshot cards' hover padding pokes out 0.5rem
     overflow-y: auto;
     overscroll-behavior-y: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-hover) transparent;
+    // No visible scrollbar, like the page and the deck track: the panel still
+    // scrolls with wheel, touch and keys.
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
   }
 }
 
@@ -491,6 +495,9 @@ html:has(.sheet[open]) { overflow: hidden; }
   flex: 1;
   overflow-y: auto;
   padding: 1rem 1.25rem 0.5rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
 }
 
 .sheet-head {
