@@ -85,6 +85,7 @@ check "favicon: manifest has the site name" "grep -q '\"name\":\"Giuseppe Zep V\
 
 # ── Site-wide ─────────────────────────────────────────────────────────────
 check "no App Store or Google Play links on the site" "! grep -rqE 'itunes\.apple\.com|apps\.apple\.com|play\.google\.com' '$SITE' --include=*.html"
+check "no Jekyll sample post" "[ -z \"\$(find '$SITE' -name '*welcome-to-jekyll*')\" ] && ! grep -q 'Welcome to Jekyll' '$SITE/blog.html'"
 check "tests folder is not published" "[ ! -e '$SITE/tests' ]"
 
 exit $fail
