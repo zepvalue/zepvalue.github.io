@@ -508,9 +508,18 @@
     contain: none;
     display: block;
 
-    .deck { display: block; }
+    // panels.js sets the track to the height of the panel in view (--deck-fit),
+    // so short panels leave no gap above the arrows. Panels keep their own
+    // content height; the track animates between them.
+    .deck { display: block; --deck-fit: 1; }
     .deck-track { overflow-y: visible; }
-    .deck.is-ready .panel { height: clamp(24rem, calc(100svh - 12rem), 38rem); }
+    .deck.is-ready .deck-track {
+      align-items: flex-start;
+      transition: height 0.25s ease;
+
+      @media (prefers-reduced-motion: reduce) { transition: none; }
+    }
+    .deck.is-ready .panel { height: auto; overflow: visible; }
   }
 
   .sidebar-left {
