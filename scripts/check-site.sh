@@ -57,7 +57,7 @@ line_of() { grep -n "$1" "$H" | head -1 | cut -d: -f1; }
 check "hero: headline for founders" "grep -q 'I build and ship MVPs for founders.' '$H'"
 check "hero: Book a call goes to Calendly" "grep -q 'href=\"https://calendly.com/zepvalue\"' '$H' && grep -q '>Book a call<' '$H'"
 check "hero: email as the second option" "grep -q '>or email me<' '$H'"
-check "hero: starting price in USD" "grep -q 'From \\\$100/hour' '$H'"
+check "hero: no price shown" "! grep -q 'hero-price' '$H' && ! grep -q '/hour' '$H'"
 check "hero: Available now badge, no operational" "grep -q '>Available now<' '$H' && ! grep -q '>operational<' '$H'"
 check "hero: no numbers card" "! grep -q 'stats-card' '$H'"
 check "hero: one screen, no section below the hero" "! grep -q 'id=\"proof\"' '$H'"
