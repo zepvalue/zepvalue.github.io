@@ -19,6 +19,8 @@ check "media_sync privacy and terms pages are gone" "[ ! -e '$SITE/privacy' ] &&
 check "media-sync page is gone" "[ ! -e '$SITE/apps/media-sync' ] && ! grep -q 'data-sheet=\"media-sync\"' '$H'"
 check "no page for projects without a case study" "[ ! -e '$SITE/apps/luxlife' ] && [ ! -e '$SITE/apps/luxlife.html' ]"
 check "zippy-fit case study links to its site" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$SITE/apps/zippy-fit/index.html'"
+check "case study meta separates years and language" "grep -q 'class=\"cs-meta\">2018–2020 · JavaScript<' '$SITE/apps/firecomm/index.html'"
+check "nav and footer use proper case" "grep -q 'class=\"nav-brand\" href=\"/\">Giuseppe Zep V<' '$SITE/apps/firecomm/index.html' && grep -q '>Projects</a>' '$SITE/apps/firecomm/index.html' && grep -q 'rel=\"noopener\">GitHub</a>' '$SITE/apps/firecomm/index.html'"
 check "ubqart case study keeps its screenshot" "grep -q '/assets/previews/ubqart.png' '$SITE/apps/ubqart/index.html' && [ -f '$SITE/assets/previews/ubqart.png' ]"
 
 # ── The projects deck, on /apps/ and on the home page ─────────────────────
