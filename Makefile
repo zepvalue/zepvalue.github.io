@@ -25,7 +25,7 @@ serve: ## Run the site locally with live reload (http://localhost:4000)
 
 test: build ## Build the site, check the projects pages, run JS unit tests (CI-friendly)
 	bash scripts/check-site.sh
-	node --test tests/panels-core.test.js tests/contrib-core.test.js
+	node --test tests/panels-core.test.js tests/contrib-core.test.js tests/npm-ranges.test.js
 
 build: ## Build the static site into _site/
 	bundle exec jekyll build

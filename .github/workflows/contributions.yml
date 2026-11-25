@@ -21,10 +21,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USER: zepvalue
         run: node scripts/fetch-contributions.js
+      - name: Fetch all-time npm downloads
+        run: node scripts/fetch-npm.js
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/data/contributions.json
+          git add assets/data/contributions.json assets/data/npm.json
           git diff --cached --quiet || git commit -m "chore: update contribution data"
           git push

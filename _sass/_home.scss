@@ -79,7 +79,7 @@
 .sidebar-left {
   display: grid;
   grid-template-columns: repeat(2, 11rem);
-  grid-template-rows: auto auto 1fr; // the graph card takes the spare height
+  grid-template-rows: auto auto auto 1fr; // UbqArt, firecomm, npm; the graph takes the spare height
   gap: 0.5rem;
   align-items: start;
   align-self: stretch;
@@ -166,18 +166,22 @@
   .npm-title { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
 }
 
-// One live total for both packages, under the card title
+// All-time total for both packages, right-aligned in the card header
 .npm-total {
+  margin-left: auto;
   font-family: var(--font-mono);
   font-size: 0.6rem;
   color: var(--green);
+  white-space: nowrap;
 }
 
+// One line per package: name on the left, version on the right
 .npm-pkg {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.5rem 0.625rem;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem 0.625rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 0.375rem;
@@ -186,27 +190,11 @@
   &:hover { transform: translateY(-1px); border-color: var(--border-hover); }
 }
 
-.npm-pkg-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
 .npm-pkg-name { font-size: 0.72rem; font-weight: 600; color: var(--fg); }
 .npm-pkg-ver {
   font-family: var(--font-mono);
-  font-size: 0.55rem;
-  font-weight: 400;
-  color: var(--fg-muted);
-  margin-left: 0.3rem;
-}
-.npm-pkg-desc {
   font-size: 0.6rem;
   color: var(--fg-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .gh-stats-grid {

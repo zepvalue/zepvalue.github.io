@@ -20,25 +20,36 @@ layout: default
         </div>
       </section>
 
+      <!-- creator · firecomm (same card style as UbqArt) -->
+      <section class="card founder-card creator-card">
+        <a class="founder-head" href="/apps/firecomm/">
+          <span class="founder-badge">creator</span>
+          <span class="founder-name">firecomm</span>
+          <span class="founder-tag">gRPC for Node &rarr;</span>
+        </a>
+        <p class="founder-blurb">Open-source library for typed, streaming gRPC services with less boilerplate.</p>
+        <div class="founder-links">
+          <a href="https://firecomm.github.io" target="_blank" rel="noopener">docs</a>
+          <a href="https://github.com/zepvalue/firecomm" target="_blank" rel="noopener">source</a>
+          <a href="/apps/firecomm/">case study</a>
+        </div>
+      </section>
+
       <!-- published npm packages (live from npm) -->
       <section class="card npm-card">
         <div class="npm-head">
           <span class="npm-badge">npm</span>
           <span class="npm-title">Published packages</span>
+          <!-- all-time total for both packages, from assets/data/npm.json (home.js) -->
+          <span class="npm-total" id="npm-total">6.3k+ downloads</span>
         </div>
-        <!-- one live total for both packages (filled by home.js) -->
-        <span class="npm-total" id="npm-total">931 downloads in the last year</span>
         <a class="npm-pkg" href="https://www.npmjs.com/package/firecomm" target="_blank" rel="noopener">
-          <span class="npm-pkg-top">
-            <span class="npm-pkg-name">firecomm<span class="npm-pkg-ver" data-np="firecomm-v">v2.0.5</span></span>
-          </span>
-          <span class="npm-pkg-desc">Open-source gRPC library for Node</span>
+          <span class="npm-pkg-name">firecomm</span>
+          <span class="npm-pkg-ver" data-np="firecomm-v">v2.0.5</span>
         </a>
         <a class="npm-pkg" href="https://www.npmjs.com/package/two-auth" target="_blank" rel="noopener">
-          <span class="npm-pkg-top">
-            <span class="npm-pkg-name">two-auth<span class="npm-pkg-ver" data-np="two-auth-v">v2.0.3</span></span>
-          </span>
-          <span class="npm-pkg-desc">Two-factor SMS auth with Twilio in 3 lines</span>
+          <span class="npm-pkg-name">two-auth</span>
+          <span class="npm-pkg-ver" data-np="two-auth-v">v2.0.3</span>
         </a>
       </section>
 

@@ -67,17 +67,22 @@
       return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });
     };
 
-    // The deck shows each package's figure; the npm card shows one total,
-    // written only when every package answered (else the static text stays).
-    var total = 0, answered = 0;
+    // The npm card shows one all-time total, written daily by the Action
+    // (scripts/fetch-npm.js). Rounded down so it never overstates.
+    fetch("/assets/data/npm.json")
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        if (!d || !d.total) return;
+        var t = d.total >= 1000 ? Math.floor(d.total / 100) / 10 + "k+" : String(d.total);
+        set("#npm-total", t + " downloads");
+      })
+      .catch(function () { /* keep the static figure */ });
+
+    // The deck shows each package's last-year figure.
     PKGS.forEach(function (pkg) {
       npm("https://api.npmjs.org/downloads/point/last-year/" + pkg)
         .then(function (d) {
           set('[data-np="' + pkg + '-dl"]', compact(d.downloads) + " ↓/yr");
-          total += d.downloads || 0;
-          if (++answered === PKGS.length) {
-            set("#npm-total", compact(total) + " downloads in the last year");
-          }
         })
         .catch(function () {});
       npm("https://registry.npmjs.org/" + pkg + "/latest")
