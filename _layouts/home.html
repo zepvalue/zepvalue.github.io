@@ -69,6 +69,10 @@ layout: default
         </div>
       </section>
 
+      <!-- contribution graph, last 21 weeks (filled from assets/data/contributions.json) -->
+      <section class="card contrib-card" aria-label="GitHub contributions">
+        <div class="contrib" id="gh-contrib"></div>
+      </section>
     </aside>
 
     <!-- ════════ CENTER COLUMN ════════ -->
@@ -113,12 +117,6 @@ layout: default
     <aside class="sidebar-right" aria-label="Projects">
       {% include project-deck.html class="deck--column" %}
     </aside>
-
-    <!-- contribution graph, last 53 weeks, under the left and centre columns
-         (filled from assets/data/contributions.json) -->
-    <section class="contrib-card" aria-label="GitHub contributions">
-      <div class="contrib" id="gh-contrib"></div>
-    </section>
 
   </div>
 </div>

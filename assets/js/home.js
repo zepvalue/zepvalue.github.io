@@ -111,8 +111,11 @@
   })();
 
   // GitHub-style graph: month row, weekday labels, day grid, legend.
-  function renderGraph(days) {
+  // Shows the last 21 weeks so it fits the left column.
+  var GRAPH_WEEKS = 21;
+  function renderGraph(allDays) {
     var CC = window.ContribCore;
+    var days = CC.lastWeeks(allDays, GRAPH_WEEKS);
     var max = days.reduce(function (m, d) { return Math.max(m, d.count); }, 0);
     var weeks = CC.buildWeeks(days);
     var cols = "repeat(" + weeks.length + ", minmax(0, 1fr))";
@@ -140,7 +143,7 @@
     }).join("");
 
     return '<p class="contrib-total">' + CC.totalCount(days).toLocaleString("en-US") +
-      " contributions in the last year</p>" +
+      " contributions in the last " + GRAPH_WEEKS + " weeks</p>" +
       '<div class="contrib-chart">' +
         '<div class="contrib-months" style="grid-template-columns:' + cols + '">' + months + "</div>" +
         '<div class="contrib-days">' + dayNames + "</div>" +

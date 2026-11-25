@@ -2,7 +2,18 @@
 // Run: node --test tests/contrib-core.test.js   (or: make test)
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { buildWeeks, levelFor, monthLabels, totalCount } = require("../assets/js/contrib-core.js");
+const { buildWeeks, levelFor, monthLabels, totalCount, lastWeeks } = require("../assets/js/contrib-core.js");
+
+// Consecutive days from start (YYYY-MM-DD), n of them, all with count 1.
+function range(start, n) {
+  const out = [];
+  const d = new Date(start + "T00:00:00Z");
+  for (let i = 0; i < n; i++) {
+    out.push({ date: d.toISOString().slice(0, 10), count: 1 });
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return out;
+}
 
 test("levelFor: zero commits is level 0", () => {
   assert.equal(levelFor(0, 10), 0);
@@ -66,6 +77,33 @@ test("monthLabels: labels the column that holds the 1st of a month", () => {
 test("monthLabels: no label when the 1st is not in range", () => {
   const days = [{ date: "2026-11-22", count: 0 }, { date: "2026-11-23", count: 0 }];
   assert.deepEqual(monthLabels(buildWeeks(days)), []);
+});
+
+test("lastWeeks: keeps exactly n week columns, starting on a Sunday", () => {
+  // 2025-11-23 to 2026-11-25 (Wednesday), like the real data.
+  const days = range("2025-11-23", 368);
+  const kept = lastWeeks(days, 21);
+  assert.equal(kept[0].date, "2026-07-05"); // Sunday, 20 weeks before Sun 2026-11-22
+  assert.equal(kept[kept.length - 1].date, "2026-11-25");
+  assert.equal(buildWeeks(kept).length, 21);
+});
+
+test("lastWeeks: returns everything when there are fewer than n weeks", () => {
+  const days = range("2026-11-22", 4);
+  assert.deepEqual(lastWeeks(days, 21), days);
+});
+
+test("monthLabels: labels the first column when the next label is far enough away", () => {
+  // Starts Sun 2026-07-05; Aug 1 is in column 3, so column 0 gets "Jul".
+  const labels = monthLabels(buildWeeks(range("2026-07-05", 35)));
+  assert.deepEqual(labels[0], { col: 0, label: "Jul" });
+  assert.deepEqual(labels[1], { col: 3, label: "Aug" });
+});
+
+test("monthLabels: skips the first column when the next label is too close", () => {
+  // Starts Sun 2026-07-19; Aug 1 is in column 1, so "Jul" would overlap it.
+  const labels = monthLabels(buildWeeks(range("2026-07-19", 21)));
+  assert.deepEqual(labels, [{ col: 1, label: "Aug" }]);
 });
 
 test("totalCount: sums every day's commits", () => {
