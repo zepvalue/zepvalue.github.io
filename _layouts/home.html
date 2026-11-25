@@ -69,10 +69,6 @@ layout: default
         </div>
       </section>
 
-      <!-- contribution graph, last 53 weeks (filled from assets/data/contributions.json) -->
-      <section class="card contrib-card">
-        <div class="contrib" id="gh-contrib" aria-label="GitHub contributions, last year"></div>
-      </section>
     </aside>
 
     <!-- ════════ CENTER COLUMN ════════ -->
@@ -119,6 +115,11 @@ layout: default
     </aside>
 
   </div>
+
+  <!-- contribution graph, last 53 weeks (filled from assets/data/contributions.json) -->
+  <section class="card contrib-card" aria-label="GitHub contributions">
+    <div class="contrib" id="gh-contrib"></div>
+  </section>
 </div>
 
 {% include sheets.html %}
