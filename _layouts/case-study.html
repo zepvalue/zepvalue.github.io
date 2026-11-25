@@ -21,7 +21,8 @@ layout: page
     <div class="cs-kicker">
       {% if p.badge == "founder" %}<span class="founder-badge">founder</span>{% endif %}
       {% if p.badge == "npm" %}<span class="npm-badge">npm</span>{% endif %}
-      <span class="cs-meta">{% if page.years %}{{ page.years }}{% endif %}{% if page.years and p.meta %} · {% endif %}{{ p.meta | default: p.lang }}</span>
+      {%- assign kind = p.meta | default: p.lang %}
+      <span class="cs-meta">{% if page.years %}{{ page.years }}{% endif %}{% if page.years and kind %} · {% endif %}{{ kind }}</span>
     </div>
     <h1 class="cs-title">{{ p.name }}</h1>
     <p class="cs-lead">{{ page.summary | default: p.desc }}</p>
