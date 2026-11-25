@@ -34,13 +34,17 @@ for page in "$A" "$H"; do
   check "$n: 11 project items (no UbqArt)" "[ \"\$(count '<li class=\"panel-item' '$page')\" -eq 11 ]"
   check "$n: 11 sheet templates (no UbqArt)" "[ \"\$(count '<template id=\"sheet-' '$page')\" -eq 11 ]"
   check "$n: sheet dialog" "grep -q '<dialog class=\"sheet\"' '$page'"
-  check "$n: 2 case-study labels" "[ \"\$(count 'class=\"cs-label' '$page')\" -eq 2 ]"
+  check "$n: 2 case-study labels" "[ \"\$(grep -oE 'class=\"(cs-label|item-cs)\"' '$page' | wc -l | tr -d ' ')\" -eq 2 ]"
   check "$n: UbqArt is not in the deck" "! grep -q 'data-sheet=\"ubqart\"' '$page' && ! grep -q 'id=\"sheet-ubqart\"' '$page'"
   check "$n: products order is LuxLife, zippy-fit, StashCam" "[ \"\$(grep -o 'data-sheet=\"[a-z-]*\"' '$page' | head -3 | tr -d '\n')\" = 'data-sheet=\"luxlife\"data-sheet=\"zippy-fit\"data-sheet=\"stashcam\"' ]"
   check "$n: items keep a real link without JS" "grep -q 'href=\"/apps/zippy-fit/\" data-sheet=\"zippy-fit\"' '$page' && grep -q 'href=\"https://luxlife.site/\" data-sheet=\"luxlife\"' '$page'"
   check "$n: 8 list cards have a footer row" "[ \"\$(count 'class=\"item-foot\"' '$page')\" -eq 8 ]"
   check "$n: zippy-fit site link" "grep -q 'href=\"https://zepvalue.github.io/zippy-fit/\"' '$page'"
   check "$n: npm items have live-number hooks" "grep -q 'data-np=\"firecomm-dl\"' '$page' && grep -q 'data-np=\"two-auth-v\"' '$page'"
+  check "$n: list cards have a neutral icon" "[ \"\$(count 'class=\"item-icon\"' '$page')\" -eq 8 ]"
+  check "$n: list cards have a head row with the title" "[ \"\$(count 'class=\"item-head\"' '$page')\" -eq 8 ]"
+  check "$n: downloads say /yr, no arrow glyph" "! grep -q '↓/yr' '$page'"
+  check "$n: case study is a footer link in list cards" "grep -q 'class=\"item-cs\">Case study' '$page'"
   check "$n: loads panels.js" "grep -q 'src=\"/assets/js/panels.js\"' '$page'"
 done
 

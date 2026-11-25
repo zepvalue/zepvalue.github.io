@@ -128,14 +128,14 @@
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: 600;
+  line-height: 1.5;
   color: #c4b5fd;
   background: rgba(var(--badge), 0.14);
-  border: 1px solid rgba(var(--badge), 0.35);
-  padding: 0.05rem 0.35rem;
-  border-radius: 3px;
-  letter-spacing: 0.02em;
+  border: 1px solid rgba(var(--badge), 0.3);
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  white-space: nowrap;
 }
-.founder-badge { text-transform: uppercase; }
 .founder-badge.is-creator { --badge: 59, 130, 246; color: #93c5fd; }
 .npm-badge { --badge: 203, 56, 55; color: #fca5a5; }
 
@@ -157,7 +157,7 @@
 .founder-blurb {
   font-size: var(--text-sm);
   line-height: 1.5;
-  color: var(--fg-muted);
+  color: var(--fg-soft);
   margin: 0;
 }
 
@@ -220,8 +220,8 @@
 
 .npm-pkg-name { font-size: var(--text-sm); font-weight: 600; color: var(--fg); }
 .npm-pkg-ver {
-  font-family: var(--font-mono);
   font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
   color: var(--fg-muted);
 }
 
@@ -243,8 +243,7 @@
 }
 .contrib-total {
   font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--fg-muted);
+  color: var(--fg-soft);
 }
 .contrib-chart {
   display: grid;
@@ -396,13 +395,6 @@
   transition: color 0.15s ease;
 
   &:hover { color: var(--fg); }
-}
-.hero-price {
-  margin-top: 0.6rem;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  color: var(--fg-muted);
-  animation: fadeUp 0.5s ease 0.3s both;
 }
 .hero-status {
   display: flex;
