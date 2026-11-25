@@ -62,7 +62,17 @@
 
 // Home page right column: no name in the bar (it is in the centre column),
 // and the bar is not sticky. Its height comes from _home.scss (.sidebar-right).
+// The panel has no box here: the project cards sit on the page like the left
+// column's cards (one level of borders), and spare height is plain background.
 .deck--column {
+  .panel {
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+  // Same surface as the left column's cards.
+  .panel-list:not(.is-featured) .item-link { background: var(--surface); }
   .deck-name { display: none; }
   .deck-bar { position: static; padding-bottom: 0; background: none; }
   .deck-arrows { margin-left: auto; }
@@ -117,7 +127,8 @@
 
 // ── Panel content ─────────────────────────────────────────────────────────
 
-.panel-head { margin-bottom: 1rem; }
+// Spacing is on a 4px grid: 0.25 / 0.5 / 0.75 / 1 / 1.5rem.
+.panel-head { margin-bottom: 0.75rem; }
 
 .panel-title {
   display: flex;
@@ -141,7 +152,7 @@
 }
 
 .panel-note {
-  margin: 0.35rem 0 0;
+  margin: 0.25rem 0 0;
   font-size: var(--text-sm);
   color: var(--muted);
 }
@@ -149,7 +160,7 @@
 .panel-list {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -163,11 +174,11 @@
   display: flex;
   flex-direction: column;
   min-width: 0; // lets the one-line footer truncate instead of widening the card
-  gap: 0.5rem;
-  padding: 0.85rem 1rem;
+  gap: 0.75rem;
+  padding: 1rem;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 0.65rem;
+  border-radius: 0.5rem;
   color: inherit;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 
@@ -187,8 +198,8 @@
   // Products: screenshot cards without a frame.
   .is-featured & {
     display: block;
-    margin: 0 -0.55rem;
-    padding: 0.55rem;
+    margin: 0 -0.5rem;
+    padding: 0.5rem;
     background: none;
     border: 0;
 
@@ -199,7 +210,7 @@
 .item-head {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   min-width: 0;
 
   .npm-badge { margin-left: auto; }
@@ -224,8 +235,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.25rem;
-  padding-top: 0.6rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--border);
   min-width: 0;
 }
@@ -293,7 +303,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.55rem;
+  margin-top: 0.5rem;
 }
 
 .item-name {
