@@ -330,6 +330,37 @@
   }
 }
 
+// ── Contribution graph (last 53 weeks, under Activity) ─────────────────────
+// Columns are weeks, cells are days. Columns share the card width, so the
+// graph fills the space and never overflows it.
+.contrib {
+  display: flex;
+  gap: 2px;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+.contrib-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.contrib-cell {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 1px;
+  background: var(--border);
+
+  &.level-1 { background: rgba(250, 250, 250, 0.18); }
+  &.level-2 { background: rgba(250, 250, 250, 0.38); }
+  &.level-3 { background: rgba(250, 250, 250, 0.62); }
+  &.level-4 { background: rgba(250, 250, 250, 0.9); }
+  &.is-empty { background: transparent; }
+}
+
 // ════════════════════════════════════════════════════════════════════════
 //  CENTER COLUMN
 // ════════════════════════════════════════════════════════════════════════

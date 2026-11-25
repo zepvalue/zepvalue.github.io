@@ -72,7 +72,7 @@ projects:
     name: StashCam
     tint: "#ec4899"
     preview: /assets/previews/stashcam.png
-    desc: "A camera for nights out — every shot goes into its event folder, never your camera roll, and your crew can join in."
+    desc: "Shoot trick videos or anything else. Every photo and video is saved in StashCam’s own gallery, so your main gallery stays clean."
     meta: iOS · Android
     links:
       - { label: site, url: "https://stashcam.onrender.com/" }

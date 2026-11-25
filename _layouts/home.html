@@ -24,7 +24,6 @@ layout: default
         <div class="npm-head">
           <span class="npm-badge">npm</span>
           <span class="npm-title">Published packages</span>
-          <span class="npm-total" id="npm-total">930+ downloads / yr</span>
         </div>
         <a class="npm-pkg" href="https://www.npmjs.com/package/firecomm" target="_blank" rel="noopener">
           <span class="npm-pkg-top">
@@ -68,6 +67,8 @@ layout: default
             <div class="skeleton" style="width:80%;height:10px"></div>
           </div>
         </div>
+        <!-- contribution graph, last 53 weeks (filled from assets/data/contributions.json) -->
+        <div class="contrib" id="gh-contrib" aria-label="GitHub contributions, last year"></div>
       </section>
     </aside>
 
@@ -121,6 +122,7 @@ layout: default
 
 {% include sheets.html %}
 
+<script src="/assets/js/contrib-core.js" defer></script>
 <script src="/assets/js/home.js" defer></script>
 <script src="/assets/js/panels-core.js" defer></script>
 <script src="/assets/js/panels.js" defer></script>

@@ -79,23 +79,44 @@
       return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(); });
     };
 
-    var totalYr = 0, done = 0;
     PKGS.forEach(function (pkg) {
       npm("https://api.npmjs.org/downloads/point/last-year/" + pkg)
         .then(function (d) {
           set('[data-np="' + pkg + '-dl"]', compact(d.downloads) + " ↓/yr");
-          totalYr += d.downloads || 0;
         })
-        .catch(function () {})
-        .then(function () {
-          if (++done === PKGS.length && totalYr) {
-            set("#npm-total", compact(totalYr) + " downloads / yr");
-          }
-        });
+        .catch(function () {});
       npm("https://registry.npmjs.org/" + pkg + "/latest")
         .then(function (d) { set('[data-np="' + pkg + '-v"]', "v" + d.version); })
         .catch(function () {});
     });
+  })();
+
+  function compact(n) {
+    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k";
+    return String(n);
+  }
+
+  // ── Contribution graph (static JSON written daily by the Action) ─────────
+  (function contributionGraph() {
+    var box = document.getElementById("gh-contrib");
+    if (!box || !window.ContribCore) return;
+    fetch("/assets/data/contributions.json")
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) {
+        var days = (data && data.days) || [];
+        if (!days.length) return;
+        var max = days.reduce(function (m, d) { return Math.max(m, d.count); }, 0);
+        var weeks = window.ContribCore.buildWeeks(days);
+        box.innerHTML = weeks.map(function (week) {
+          return '<div class="contrib-col">' + week.map(function (d) {
+            if (!d) return '<span class="contrib-cell is-empty"></span>';
+            var lvl = window.ContribCore.levelFor(d.count, max);
+            return '<span class="contrib-cell level-' + lvl + '" title="' +
+              d.count + " contributions on " + d.date + '"></span>';
+          }).join("") + "</div>";
+        }).join("");
+      })
+      .catch(function () { /* leave the card without a graph */ });
   })();
 
   if (!USER) return;
@@ -105,39 +126,10 @@
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); });
   };
 
-  // ── Profile stats + pinned fallback ───────────────────────────
-  Promise.all([
-    json("https://api.github.com/users/" + USER),
-    json("https://api.github.com/users/" + USER + "/repos?per_page=100&sort=pushed")
-  ]).then(function (res) {
-    var user = res[0], repos = res[1] || [];
-    var stars = repos.reduce(function (s, r) { return s + (r.stargazers_count || 0); }, 0);
-
-    renderStats({
-      Repos: user.public_repos,
-      Stars: stars,
-      Followers: user.followers,
-      Following: user.following
-    });
-
-    fillPinnedIfEmpty(repos);
-  }).catch(function () { /* leave dashes */ });
-
-  function renderStats(map) {
-    var grid = document.getElementById("gh-stats");
-    if (!grid) return;
-    var order = ["Repos", "Stars", "Followers", "Following"];
-    grid.innerHTML = order.map(function (k) {
-      var v = map[k] == null ? "—" : compact(map[k]);
-      return '<div><div class="gh-stat-value">' + v +
-        '</div><div class="gh-stat-label">' + k + "</div></div>";
-    }).join("");
-  }
-
-  function compact(n) {
-    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k";
-    return String(n);
-  }
+  // ── Pinned fallback from the public repo list ─────────────────
+  json("https://api.github.com/users/" + USER + "/repos?per_page=100&sort=pushed")
+    .then(function (repos) { fillPinnedIfEmpty(repos || []); })
+    .catch(function () { /* leave the pinned card as it is */ });
 
   function fillPinnedIfEmpty(repos) {
     var box = document.getElementById("gh-pinned");
